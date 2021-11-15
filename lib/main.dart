@@ -1,3 +1,4 @@
+import 'package:ecast/Screens/sign_in_screen.dart';
 import 'package:ecast/Screens/splash_screen.dart';
 import 'package:ecast/Screens/wrapper.dart';
 import 'package:ecast/Utils/constants.dart';
@@ -9,11 +10,11 @@ void main() {
     theme: ThemeData(
       brightness: Brightness.dark,
       scaffoldBackgroundColor: kBackgroundColor,
-      primaryColor: kPrimaryColor,
     ),
     routes: {
       '/': (context) => const SplashScreen(),
       '/wrapper': (context) => const Wrapper(),
+      '/signin': (context) => const SignIn()
     },
   ));
 }

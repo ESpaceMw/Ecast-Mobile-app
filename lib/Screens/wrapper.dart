@@ -7,6 +7,7 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        // ignore: sized_box_for_whitespace
         body: Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
@@ -38,10 +39,7 @@ class Wrapper extends StatelessWidget {
               child: const Text(
                 "Sign Up",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: textStyle,
               ),
             ),
           ),
@@ -71,10 +69,7 @@ class Wrapper extends StatelessWidget {
               child: const Text(
                 'Sign In',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: textStyle,
               ),
             ),
           ),
