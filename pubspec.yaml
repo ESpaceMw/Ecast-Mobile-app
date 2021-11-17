@@ -35,7 +35,9 @@ dependencies:
   flutter_local_notifications: ^9.0.3
   date_format: ^2.0.4
   fluttertoast: ^8.0.8
+  is_first_run: ^1.0.0
   flutter_spinkit: ^5.1.0
+  
 
 
   # The following adds the Cupertino Icons font to your application.

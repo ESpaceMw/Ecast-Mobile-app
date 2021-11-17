@@ -10,6 +10,13 @@ void main() {
     theme: ThemeData(
       brightness: Brightness.dark,
       scaffoldBackgroundColor: kBackgroundColor,
+      accentColor: whiteColor,
+      textTheme: const TextTheme(
+        headline1: TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     ),
     routes: {
       '/': (context) => const SplashScreen(),

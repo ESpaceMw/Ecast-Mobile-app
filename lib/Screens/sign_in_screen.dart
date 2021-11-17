@@ -1,5 +1,8 @@
+import 'package:ecast/Services/api.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -9,8 +12,9 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  TextEditingController _email = TextEditingController();
-  TextEditingController _password = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  Future<SharedPreferences> prefs = SharedPreferences.getInstance();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +28,7 @@ class _SignInState extends State<SignIn> {
               children: [
                 const Center(
                   child: Text(
-                    "Sign In",
+                    "LOGIN",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -49,10 +53,16 @@ class _SignInState extends State<SignIn> {
                           hintText: "Email",
                           labelText: "Email",
                           fillColor: whiteColor,
-                          border: OutlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: whiteColor,
-                              width: 2,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
                             ),
                           ),
                           errorBorder: OutlineInputBorder(
@@ -82,10 +92,10 @@ class _SignInState extends State<SignIn> {
                           ),
                           hintText: "Password",
                           labelText: "Password",
-                          border: OutlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                              color: whiteColor,
-                              width: 2,
+                              color: Colors.white,
+                              width: 1.0,
                             ),
                           ),
                           errorBorder: OutlineInputBorder(
@@ -94,26 +104,47 @@ class _SignInState extends State<SignIn> {
                               width: 2,
                             ),
                           ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        padding: const EdgeInsets.all(14.5),
-                        decoration: const BoxDecoration(
-                          color: btnColor,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(
-                              8.6,
+                      GestureDetector(
+                        onTap: submitData,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          padding: const EdgeInsets.all(14.5),
+                          decoration: const BoxDecoration(
+                            color: btnColor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                8.6,
+                              ),
                             ),
                           ),
+                          child: const Text(
+                            "Sign in",
+                            textAlign: TextAlign.center,
+                            style: textStyle,
+                          ),
                         ),
-                        child: const Text(
-                          "Sign in",
-                          textAlign: TextAlign.center,
-                          style: textStyle,
+                      ),
+                      const SizedBox(
+                        height: 13,
+                      ),
+                      const Text(
+                        'Forgot Password?',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
                       )
                     ],
@@ -125,5 +156,13 @@ class _SignInState extends State<SignIn> {
         ),
       ),
     );
+  }
+
+  Future submitData() async {
+    Dialogs.showLoadingDialog(context, keyLoader);
+    ApiCalls()
+        .signin(_email.text, _password.text)
+        .then((data) => {print(data)});
+    try {} catch (e) {}
   }
 }
