@@ -11,3 +11,12 @@ const textStyle = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.bold,
 );
+
+const btnStyle = BoxDecoration(
+  color: btnColor,
+  borderRadius: BorderRadius.all(
+    Radius.circular(
+      8.6,
+    ),
+  ),
+);

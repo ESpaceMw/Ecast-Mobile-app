@@ -41,6 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               const SpinKitThreeBounce(
                 color: kPrimaryColor,
+                size: 30,
               )
             ],
           ),

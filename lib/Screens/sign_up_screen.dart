@@ -1,54 +1,77 @@
-import 'package:ecast/Services/api.dart';
 import 'package:ecast/Utils/constants.dart';
-import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({Key? key}) : super(key: key);
+class SignUp extends StatefulWidget {
+  const SignUp({Key? key}) : super(key: key);
 
   @override
-  _SignInState createState() => _SignInState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
+  final TextEditingController _username = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  final TextEditingController _confirmed = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
             height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width * 0.9,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Center(
-                    child: Image(
-                  image: AssetImage('assets/logos/logo.png'),
-                )),
-                const SizedBox(
-                  height: 15,
+                Image.asset(
+                  "assets/logos/logo.png",
+                  width: MediaQuery.of(context).size.width * 0.7,
                 ),
                 Form(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextFormField(
-                        controller: _email,
-                        keyboardType: TextInputType.emailAddress,
-                        enableSuggestions: true,
+                        controller: _username,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(
-                            Icons.email_outlined,
+                            Icons.person,
                             color: whiteColor,
                           ),
-                          hintText: "Email",
+                          hintText: "Create a username",
+                          labelText: "Username",
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: whiteColor,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: _email,
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.email,
+                            color: whiteColor,
+                          ),
+                          hintText: "Input your email",
                           labelText: "Email",
-                          fillColor: whiteColor,
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: whiteColor,
@@ -75,8 +98,6 @@ class _SignInState extends State<SignIn> {
                       TextFormField(
                         controller: _password,
                         obscureText: true,
-                        keyboardType: TextInputType.emailAddress,
-                        enableSuggestions: true,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(
                             Icons.lock,
@@ -86,9 +107,15 @@ class _SignInState extends State<SignIn> {
                             Icons.visibility,
                             color: whiteColor,
                           ),
-                          hintText: "Password",
+                          hintText: "Create a password",
                           labelText: "Password",
                           enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: whiteColor,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.white,
                               width: 1.0,
@@ -100,10 +127,37 @@ class _SignInState extends State<SignIn> {
                               width: 2,
                             ),
                           ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: _confirmed,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: whiteColor,
+                          ),
+                          hintText: "Confirm your password",
+                          labelText: "Password Confirmation",
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: whiteColor,
+                              width: 1.0,
+                            ),
+                          ),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.white,
                               width: 1.0,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
                             ),
                           ),
                         ),
@@ -111,39 +165,31 @@ class _SignInState extends State<SignIn> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 15,
-                      ),
                       GestureDetector(
-                        onTap: submitData,
+                        onTap: () {},
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.8,
+                          width: MediaQuery.of(context).size.width * 0.9,
                           padding: const EdgeInsets.all(14.5),
                           decoration: btnStyle,
                           child: const Text(
-                            "Sign in",
+                            "Sign Up",
                             textAlign: TextAlign.center,
                             style: textStyle,
                           ),
                         ),
                       ),
                       const SizedBox(
-                        height: 13,
+                        height: 20,
                       ),
-                      Column(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Don\'t have an account Yet?'),
+                          const Text('Already have an account?'),
                           TextButton(
                             onPressed: () =>
-                                Navigator.pushNamed(context, '/signup'),
+                                Navigator.pushNamed(context, '/signin'),
                             child: const Text(
-                              'Sign Up',
+                              'Sign in',
                               style: TextStyle(
                                 color: kPrimaryColor,
                               ),
@@ -153,21 +199,12 @@ class _SignInState extends State<SignIn> {
                       )
                     ],
                   ),
-                ),
+                )
               ],
             ),
           ),
         ),
       ),
     );
-  }
-
-  Future submitData() async {
-    //TODO: validate form fields
-    Dialogs.showLoadingDialog(context, keyLoader);
-    ApiCalls()
-        .signin(_email.text, _password.text)
-        .then((data) => {print(data)});
-    try {} catch (e) {}
   }
 }
