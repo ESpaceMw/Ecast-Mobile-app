@@ -27,19 +27,15 @@ class _SignInState extends State<SignIn> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Center(
-                  child: Text(
-                    "LOGIN",
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                    child: Image(
+                  image: AssetImage('assets/logos/logo.png'),
+                )),
                 const SizedBox(
                   height: 15,
                 ),
                 Form(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextFormField(
                         controller: _email,
@@ -115,6 +111,15 @@ class _SignInState extends State<SignIn> {
                       const SizedBox(
                         height: 20,
                       ),
+                      const Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
                       GestureDetector(
                         onTap: submitData,
                         child: Container(
@@ -138,14 +143,20 @@ class _SignInState extends State<SignIn> {
                       const SizedBox(
                         height: 13,
                       ),
-                      const Text(
-                        'Forgot Password?',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Column(
+                        children: [
+                          const Text('Don\'t have an account Yet?'),
+                          TextButton(
+                            onPressed: () =>
+                                Navigator.pushNamed(context, '/signup'),
+                            child: const Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                color: kPrimaryColor,
+                              ),
+                            ),
+                          )
+                        ],
                       )
                     ],
                   ),
@@ -159,6 +170,7 @@ class _SignInState extends State<SignIn> {
   }
 
   Future submitData() async {
+    //TODO: validate form fields
     Dialogs.showLoadingDialog(context, keyLoader);
     ApiCalls()
         .signin(_email.text, _password.text)

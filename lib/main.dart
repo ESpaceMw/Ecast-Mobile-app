@@ -10,7 +10,7 @@ void main() {
     theme: ThemeData(
       brightness: Brightness.dark,
       scaffoldBackgroundColor: kBackgroundColor,
-      accentColor: whiteColor,
+      primaryColor: whiteColor,
       textTheme: const TextTheme(
         headline1: TextStyle(
           fontSize: 25,
