@@ -164,10 +164,11 @@ class _SignInState extends State<SignIn> {
 
   Future submitData() async {
     //TODO: validate form fields
-    Dialogs.showLoadingDialog(context, keyLoader);
-    ApiCalls()
-        .signin(_email.text, _password.text)
-        .then((data) => {print(data)});
-    try {} catch (e) {}
+    // Dialogs.showLoadingDialog(context, keyLoader);
+    // ApiCalls()
+    //     .signin(_email.text, _password.text)
+    //     .then((data) => {print(data)});
+    // try {} catch (e) {}
+    Navigator.pushNamed(context, '/home');
   }
 }

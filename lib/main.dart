@@ -1,3 +1,4 @@
+import 'package:ecast/Screens/home_screen.dart';
 import 'package:ecast/Screens/sign_in_screen.dart';
 import 'package:ecast/Screens/sign_up_screen.dart';
 import 'package:ecast/Screens/splash_screen.dart';
@@ -23,7 +24,8 @@ void main() {
       '/': (context) => const SplashScreen(),
       '/wrapper': (context) => const Wrapper(),
       '/signin': (context) => const SignIn(),
-      '/signup': (context) => const SignUp()
+      '/signup': (context) => const SignUp(),
+      '/home': (context) => const HomeScreen()
     },
   ));
 }

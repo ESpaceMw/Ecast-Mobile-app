@@ -166,7 +166,7 @@ class _SignUpState extends State<SignUp> {
                         height: 20,
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: registerUser,
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.9,
                           padding: const EdgeInsets.all(14.5),
@@ -206,5 +206,14 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
+  }
+}
+
+Future registerUser() async {
+  try {
+    // validate/sanitize data
+    // Register logic
+  } catch (e) {
+    // Handle error
   }
 }
