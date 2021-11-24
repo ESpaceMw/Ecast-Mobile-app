@@ -22,7 +22,7 @@ final List<BottomNavigationBarItem> bottomTabs = [
     icon: Icon(
       Icons.video_library_sharp,
     ),
-    label: "Video",
+    label: "library",
   ),
   const BottomNavigationBarItem(
       icon: Icon(
