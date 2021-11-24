@@ -14,7 +14,7 @@ final List<BottomNavigationBarItem> bottomTabs = [
   ),
   const BottomNavigationBarItem(
     icon: Icon(
-      Icons.nature_people,
+      Icons.people,
     ),
     label: "People",
   ),

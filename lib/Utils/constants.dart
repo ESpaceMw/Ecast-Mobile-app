@@ -21,3 +21,10 @@ const btnStyle = BoxDecoration(
     ),
   ),
 );
+
+BoxDecoration boxColor = BoxDecoration(
+  color: codeColor,
+  borderRadius: BorderRadius.circular(
+    10.6,
+  ),
+);

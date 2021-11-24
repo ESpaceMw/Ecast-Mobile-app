@@ -11,9 +11,8 @@ class _LibraryState extends State<Library> {
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Icon(
-        Icons.library_add,
-      ),
-    );
+        child: Icon(
+      Icons.library_add,
+    ));
   }
 }
