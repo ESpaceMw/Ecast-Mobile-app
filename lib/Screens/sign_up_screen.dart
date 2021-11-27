@@ -1,5 +1,6 @@
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {
@@ -314,19 +315,24 @@ class _SignUpState extends State<SignUp> {
   }
 
   Future registerUser() async {
+    var firstname = _firstname.text,
+        lastname = _lastname.text,
+        email = _email.text,
+        country = _country.text,
+        phonenumber = _phonenumber.text,
+        password = _password.text;
+    Dialogs.showLoadingDialog(context, keyLoader);
     try {
       ApiCalls()
-          .signup(_firstname.text, _lastname.text, _email.text, _country.text,
-              _phonenumber.text, _password.text)
+          .signup(firstname, lastname, email, country, phonenumber, password)
           .then(
-            (user) => {
-              print(user),
-            },
+            (user) => {Navigator.pushReplacementNamed(context, '/signin')},
           );
       // validate/sanitize data
       // Register logic
     } catch (e) {
       // Handle error
+      print(e);
     }
   }
 }

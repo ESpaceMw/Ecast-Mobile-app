@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-var url = 'https://ecast.espacemw.com';
+var url = 'http://10.0.2.2:8000';
 
 class ApiCalls {
   signin(email, password) async {
@@ -29,6 +29,9 @@ class ApiCalls {
         "country": country,
         "phone_number": phonenumber,
         "password": password,
+        "gender": "M",
+        "date_of_birth": "2001-01-31",
+        "city": "Lilongwe",
       });
       var jsonData = convert.jsonDecode(response.body);
       return jsonData;
