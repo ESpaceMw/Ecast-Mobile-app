@@ -2,6 +2,9 @@ import 'package:ecast/Services/api.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
@@ -14,7 +17,9 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  var url = 'http://10.0.2.2:8000/api/v1/auth/login';
+  final GlobalKey<State> keyLoader = GlobalKey<State>();
+  final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -164,13 +169,47 @@ class _SignInState extends State<SignIn> {
 
   Future submitData() async {
     // TODO: validate form fields
-    // Dialogs.showLoadingDialog(context, keyLoader);
-    // ApiCalls()
-    //     .signin(_email.text, _password.text)
-    //     .then((data) => {print(data)});
-    // try {} catch (e) {
-    //   print(e);
-    // }
-    Navigator.pushNamed(context, '/home');
+    Dialogs.showLoadingDialog(context, keyLoader);
+
+    try {
+      var response = await http.post(Uri.parse(url), body: {
+        "email": _email.text,
+        "password": _password.text,
+      });
+      var token = convert.jsonDecode(response.body);
+      print(token['access_token']);
+      if (token['message'] != 'These credentials do not match our records') {
+        prefs.then((SharedPreferences prefs) {
+          return prefs.setBool("loggedin", true);
+        });
+        prefs.then((SharedPreferences prefs) {
+          return prefs.setString("token", token['access_token']);
+        });
+        Fluttertoast.showToast(
+          msg: "Login Successful",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: btnColor,
+          textColor: whiteColor,
+          fontSize: 16.0,
+        );
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        Navigator.pop(context);
+        Fluttertoast.showToast(
+          msg: token['message'],
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: btnColor,
+          textColor: whiteColor,
+          fontSize: 13.0,
+        );
+      }
+    } catch (e) {
+      print(e);
+    }
+    // Navigator.pushNamed(context, '/home');
   }
 }
