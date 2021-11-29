@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/loader.dart';
@@ -176,8 +177,8 @@ class _SignInState extends State<SignIn> {
         "email": _email.text,
         "password": _password.text,
       });
+
       var token = convert.jsonDecode(response.body);
-      print(token['access_token']);
       if (token['message'] != 'These credentials do not match our records') {
         prefs.then((SharedPreferences prefs) {
           return prefs.setBool("loggedin", true);
@@ -207,9 +208,28 @@ class _SignInState extends State<SignIn> {
           fontSize: 13.0,
         );
       }
-    } catch (e) {
-      print(e);
-    }
-    // Navigator.pushNamed(context, '/home');
+    } on HttpException {
+      Navigator.pop(context);
+      Fluttertoast.showToast(
+        msg: "Server Error",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: btnColor,
+        textColor: whiteColor,
+        fontSize: 13.0,
+      );
+    } on SocketException {
+      Navigator.pop(context);
+      Fluttertoast.showToast(
+        msg: "Check your internet connection",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: btnColor,
+        textColor: whiteColor,
+        fontSize: 13.0,
+      );
+    } catch (e) {}
   }
 }
