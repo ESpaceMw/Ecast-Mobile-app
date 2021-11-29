@@ -1,5 +1,8 @@
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Menu extends StatefulWidget {
   const Menu({Key? key}) : super(key: key);
@@ -9,6 +12,12 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
+  @override
+  void initState() async {
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -163,6 +172,30 @@ class _MenuState extends State<Menu> {
           ),
           trailing: const Icon(
             Icons.arrow_forward_rounded,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        GestureDetector(
+          onTap: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setBool("loggedin", false);
+            Navigator.pushReplacementNamed(context, '/wrapper');
+          },
+          child: ListTile(
+            leading: Container(
+              padding: const EdgeInsets.all(15.0),
+              decoration: boxColor,
+              child: const Icon(
+                Icons.logout_outlined,
+                size: 30,
+              ),
+            ),
+            title: const Text(
+              "Logout",
+              style: textStyle,
+            ),
           ),
         )
       ],
