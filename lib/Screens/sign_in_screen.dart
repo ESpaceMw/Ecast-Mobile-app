@@ -214,7 +214,8 @@ class _SignInState extends State<SignIn> {
       });
 
       var token = convert.jsonDecode(response.body);
-      if (token['message'] != 'These credentials do not match our records') {
+      if (token['message'] != 'These credentials do not match our records' &&
+          response.statusCode == 200) {
         // ignore: non_constant_identifier_names
         Map decode_options = convert.jsonDecode(response.body);
         String? user = convert.jsonEncode(decode_options['user']);

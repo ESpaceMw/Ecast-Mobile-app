@@ -206,6 +206,8 @@ class _MenuState extends State<Menu> {
           onTap: () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             prefs.setBool("loggedin", false);
+            prefs.setString("user", "");
+            prefs.setString("token", "");
             Navigator.pushReplacementNamed(context, '/wrapper');
           },
           child: ListTile(
