@@ -7,6 +7,7 @@ const whiteColor = Colors.white;
 const errorColor = Colors.red;
 const codeColor = Color(0xFF37474F);
 final GlobalKey<State> keyLoader = GlobalKey<State>();
+var url = 'http://10.0.2.2:8000';
 
 const textStyle = TextStyle(
   fontSize: 18,

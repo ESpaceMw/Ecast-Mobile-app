@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
@@ -8,19 +7,29 @@ import 'dart:convert' as convert;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ForgotPassword extends StatefulWidget {
-  const ForgotPassword({Key? key}) : super(key: key);
+class ResetPassword extends StatefulWidget {
+  const ResetPassword({Key? key}) : super(key: key);
 
   @override
-  _ForgotPasswordState createState() => _ForgotPasswordState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _ForgotPasswordState extends State<ForgotPassword> {
-  final TextEditingController _email = TextEditingController();
+class _ResetPasswordState extends State<ResetPassword> {
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _confirmed = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+
+  _fetchToken() async {}
+
+  @override
+  void initState() {
+    _fetchToken();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final email = ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -38,10 +47,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
-                    controller: _email,
+                    controller: _password,
                     validator: (value) {
                       if (value == '') {
-                        return 'Please enter your email';
+                        return 'Please create your new Password';
                       }
                       return null;
                     },
@@ -50,8 +59,59 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         Icons.email_outlined,
                         color: whiteColor,
                       ),
-                      hintText: "Email",
-                      labelText: "Email",
+                      hintText: "Create a new Password",
+                      labelText: "Password",
+                      fillColor: whiteColor,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: whiteColor,
+                          width: 1.0,
+                        ),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: errorColor,
+                          width: 2,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.white,
+                          width: 1.0,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: errorColor,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: _confirmed,
+                    obscureText: true,
+                    validator: (value) {
+                      if (value == '') {
+                        return 'Please confirm your password';
+                      } else if (_password.text != _confirmed.text) {
+                        return 'Make sure the password match';
+                      }
+                      return null;
+                    },
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.email_outlined,
+                        color: whiteColor,
+                      ),
+                      hintText: "Please confirm your password",
+                      labelText: "Confirm Password",
                       fillColor: whiteColor,
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -87,7 +147,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   onTap: () {
                     final form = _formkey.currentState;
                     if (form != null && form.validate()) {
-                      SendCode();
+                      resetPassword();
                     }
                   },
                   child: Container(
@@ -95,7 +155,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     padding: const EdgeInsets.all(14.5),
                     decoration: btnStyle,
                     child: const Text(
-                      "Send Code",
+                      "Reset Password",
                       textAlign: TextAlign.center,
                       style: textStyle,
                     ),
@@ -109,33 +169,40 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
   }
 
-  // ignore: non_constant_identifier_names
-  Future SendCode() async {
+  Future resetPassword() async {
     Dialogs.showLoadingDialog(context, keyLoader);
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var url = 'http://10.0.2.2:8000/api/v1/auth/forgot-password';
-      var response =
-          await http.post(Uri.parse(url), body: {'email': _email.text});
+    final email = ModalRoute.of(context)!.settings.arguments as String;
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      var response = await http.post(
+        Uri.parse("$url/api/v1/auth/password-reset"),
+        body: {
+          'token': prefs.getString("reset_token"),
+          "email": email,
+          "password": _password.text,
+        },
+      );
       if (response.statusCode != 400 && response.statusCode == 200) {
         var jsonData = convert.jsonDecode(response.body);
-        var token = jsonData['token'];
-        prefs.setString("reset_token", token);
-        Navigator.pushNamed(
-          context,
-          '/reset',
-          arguments: {
-            "email": _email.text,
-          },
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Password changed successfully changed",
+            ),
+          ),
         );
+        Navigator.pushReplacementNamed(context, '/signin');
       } else {
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-            "User does not exists",
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Invalid Token",
+            ),
           ),
-        ));
+        );
       }
     } on HttpException {
       Navigator.pop(context);
@@ -150,14 +217,18 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Please, check your internet connection"),
+          content: Text(
+            "Please, Check your Internet connection",
+          ),
         ),
       );
     } catch (e) {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Oop! Something went wrong"),
+          content: Text(
+            "Oops! something went wrong",
+          ),
         ),
       );
     }
