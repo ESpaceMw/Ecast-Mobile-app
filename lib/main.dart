@@ -1,3 +1,4 @@
+import 'package:ecast/Screens/forgotpassword.dart';
 import 'package:ecast/Screens/home_screen.dart';
 import 'package:ecast/Screens/sign_in_screen.dart';
 import 'package:ecast/Screens/sign_up_screen.dart';
@@ -30,7 +31,8 @@ Future main() async {
           : const Wrapper(),
       '/signin': (context) => const SignIn(),
       '/signup': (context) => const SignUp(),
-      '/home': (context) => const HomeScreen()
+      '/home': (context) => const HomeScreen(),
+      '/forgotpassword': (context) => const ForgotPassword(),
     },
   ));
 }

@@ -166,10 +166,15 @@ class _SignInState extends State<SignIn> {
                       ),
                       Column(
                         children: [
-                          const Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              fontSize: 16,
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/forgotpassword');
+                            },
+                            child: const Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                           const SizedBox(
