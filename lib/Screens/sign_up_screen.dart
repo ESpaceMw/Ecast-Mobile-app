@@ -16,10 +16,11 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmed = TextEditingController();
   final TextEditingController _phonenumber = TextEditingController();
+  var gender = 'M';
   final TextEditingController _lastname = TextEditingController();
-  String gender = "Male";
   final TextEditingController _country = TextEditingController();
   final TextEditingController _city = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,17 +31,25 @@ class _SignUpState extends State<SignUp> {
             width: MediaQuery.of(context).size.width * 0.9,
             child: ListView(
               children: [
-                // Image.asset(
-                //   "assets/logos/logo.png",
-                //   width: MediaQuery.of(context).size.width * 0.7,
-                // ),
-                const SizedBox(
-                  height: 50,
+                Center(
+                  child: Image(
+                    image: const AssetImage(
+                      'assets/logos/logo.png',
+                    ),
+                    width: MediaQuery.of(context).size.width * 0.6,
+                  ),
                 ),
                 Form(
+                  key: _formkey,
                   child: Column(
                     children: [
                       TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Please Enter yout first name';
+                          }
+                          return null;
+                        },
                         controller: _firstname,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(
@@ -53,6 +62,12 @@ class _SignUpState extends State<SignUp> {
                             borderSide: BorderSide(
                               color: whiteColor,
                               width: 1.0,
+                            ),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
@@ -73,6 +88,12 @@ class _SignUpState extends State<SignUp> {
                         height: 20,
                       ),
                       TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Please Enter yout Last name';
+                          }
+                          return null;
+                        },
                         controller: _lastname,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(
@@ -93,6 +114,12 @@ class _SignUpState extends State<SignUp> {
                               width: 1.0,
                             ),
                           ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
+                            ),
+                          ),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: errorColor,
@@ -105,6 +132,12 @@ class _SignUpState extends State<SignUp> {
                         height: 20,
                       ),
                       TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Please Enter your Email';
+                          }
+                          return null;
+                        },
                         controller: _email,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(
@@ -125,6 +158,12 @@ class _SignUpState extends State<SignUp> {
                               width: 1.0,
                             ),
                           ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
+                            ),
+                          ),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: errorColor,
@@ -137,6 +176,12 @@ class _SignUpState extends State<SignUp> {
                         height: 20,
                       ),
                       TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Please Enter your Phone number';
+                          }
+                          return null;
+                        },
                         controller: _phonenumber,
                         keyboardType: TextInputType.phone,
                         decoration: const InputDecoration(
@@ -158,6 +203,12 @@ class _SignUpState extends State<SignUp> {
                               width: 1.0,
                             ),
                           ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
+                            ),
+                          ),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: errorColor,
@@ -169,7 +220,53 @@ class _SignUpState extends State<SignUp> {
                       const SizedBox(
                         height: 20,
                       ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        decoration: BoxDecoration(
+                            // color: whiteColor,
+                            border: Border.all(color: whiteColor, width: 1.0),
+                            borderRadius: BorderRadius.circular(8.7),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: kBackgroundColor,
+                                blurRadius: 7.8,
+                              )
+                            ]),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            value: gender,
+                            onChanged: (data) {
+                              setState(() {
+                                gender = data.toString();
+                              });
+                            },
+                            items: genders
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    value,
+                                    textAlign: TextAlign.start,
+                                    style: const TextStyle(),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Please Enter your Country';
+                          }
+                          return null;
+                        },
                         controller: _country,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(
@@ -190,6 +287,12 @@ class _SignUpState extends State<SignUp> {
                               width: 1.0,
                             ),
                           ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
+                            ),
+                          ),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: errorColor,
@@ -202,6 +305,56 @@ class _SignUpState extends State<SignUp> {
                         height: 20,
                       ),
                       TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Please Enter your City';
+                          }
+                          return null;
+                        },
+                        controller: _city,
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.location_city,
+                            color: whiteColor,
+                          ),
+                          hintText: "City",
+                          labelText: "City",
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: whiteColor,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            ),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Please create a new password';
+                          }
+                          return null;
+                        },
                         controller: _password,
                         obscureText: true,
                         decoration: const InputDecoration(
@@ -227,6 +380,12 @@ class _SignUpState extends State<SignUp> {
                               width: 1.0,
                             ),
                           ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
+                            ),
+                          ),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: errorColor,
@@ -239,12 +398,26 @@ class _SignUpState extends State<SignUp> {
                         height: 20,
                       ),
                       TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Please Confirm your password';
+                          } else if (_password.text != _confirmed.text) {
+                            return 'Make sure the passwords match';
+                          }
+                          return null;
+                        },
                         controller: _confirmed,
                         obscureText: true,
                         decoration: const InputDecoration(
                           prefixIcon: Icon(
                             Icons.person,
                             color: whiteColor,
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
+                            ),
                           ),
                           hintText: "Confirm your password",
                           labelText: "Password Confirmation",
@@ -272,7 +445,12 @@ class _SignUpState extends State<SignUp> {
                         height: 20,
                       ),
                       GestureDetector(
-                        onTap: registerUser,
+                        onTap: () {
+                          final form = _formkey.currentState;
+                          if (form != null && form.validate()) {
+                            registerUser();
+                          }
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.9,
                           padding: const EdgeInsets.all(14.5),
@@ -320,11 +498,13 @@ class _SignUpState extends State<SignUp> {
         email = _email.text,
         country = _country.text,
         phonenumber = _phonenumber.text,
-        password = _password.text;
+        password = _password.text,
+        city = _city.text;
     Dialogs.showLoadingDialog(context, keyLoader);
     try {
       ApiCalls()
-          .signup(firstname, lastname, email, country, phonenumber, password)
+          .signup(firstname, lastname, email, country, phonenumber, gender,
+              city, password)
           .then(
             (user) => {Navigator.pushReplacementNamed(context, '/signin')},
           );

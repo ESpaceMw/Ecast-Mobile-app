@@ -23,7 +23,7 @@ class Wrapper extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/signup');
+              Navigator.pushNamed(context, '/signin');
             },
             child: Container(
               width: MediaQuery.of(context).size.width * 0.9,
@@ -37,7 +37,7 @@ class Wrapper extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                "Sign Up",
+                "Sign In",
                 textAlign: TextAlign.center,
                 style: textStyle,
               ),
@@ -48,7 +48,7 @@ class Wrapper extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, '/signin');
+              Navigator.pushNamed(context, '/signup');
             },
             child: Container(
               width: MediaQuery.of(context).size.width * 0.9,
@@ -67,7 +67,7 @@ class Wrapper extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                'Sign In',
+                'Sign Up',
                 textAlign: TextAlign.center,
                 style: textStyle,
               ),

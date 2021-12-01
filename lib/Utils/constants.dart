@@ -28,3 +28,5 @@ BoxDecoration boxColor = BoxDecoration(
     10.6,
   ),
 );
+
+List<String> genders = ["M", "F"];

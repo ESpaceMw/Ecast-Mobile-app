@@ -20,6 +20,7 @@ class _SignInState extends State<SignIn> {
   final TextEditingController _password = TextEditingController();
   var url = 'http://10.0.2.2:8000/api/v1/auth/login';
   final GlobalKey<State> keyLoader = GlobalKey<State>();
+  final _formkey = GlobalKey<FormState>();
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
   @override
   Widget build(BuildContext context) {
@@ -40,10 +41,17 @@ class _SignInState extends State<SignIn> {
                   height: 15,
                 ),
                 Form(
+                  key: _formkey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Please enter your email';
+                          }
+                          return null;
+                        },
                         controller: _email,
                         keyboardType: TextInputType.emailAddress,
                         enableSuggestions: true,
@@ -59,6 +67,12 @@ class _SignInState extends State<SignIn> {
                             borderSide: BorderSide(
                               color: whiteColor,
                               width: 1.0,
+                            ),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
@@ -79,6 +93,12 @@ class _SignInState extends State<SignIn> {
                         height: 20,
                       ),
                       TextFormField(
+                        validator: (value) {
+                          if (value == '') {
+                            return 'Please enter your email';
+                          }
+                          return null;
+                        },
                         controller: _password,
                         obscureText: true,
                         keyboardType: TextInputType.emailAddress,
@@ -100,6 +120,12 @@ class _SignInState extends State<SignIn> {
                               width: 1.0,
                             ),
                           ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: errorColor,
+                              width: 2,
+                            ),
+                          ),
                           errorBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: errorColor,
@@ -115,19 +141,15 @@ class _SignInState extends State<SignIn> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
-                      ),
-                      const Text(
-                        'Forgot Password?',
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(
                         height: 15,
                       ),
                       GestureDetector(
-                        onTap: submitData,
+                        onTap: () {
+                          final form = _formkey.currentState;
+                          if (form != null && form.validate()) {
+                            submitData();
+                          }
+                        },
                         child: Container(
                           width: MediaQuery.of(context).size.width * 0.8,
                           padding: const EdgeInsets.all(14.5),
@@ -144,6 +166,15 @@ class _SignInState extends State<SignIn> {
                       ),
                       Column(
                         children: [
+                          const Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 13,
+                          ),
                           const Text('Don\'t have an account Yet?'),
                           TextButton(
                             onPressed: () =>
@@ -169,7 +200,6 @@ class _SignInState extends State<SignIn> {
   }
 
   Future submitData() async {
-    // TODO: validate form fields
     Dialogs.showLoadingDialog(context, keyLoader);
 
     try {
@@ -180,9 +210,16 @@ class _SignInState extends State<SignIn> {
 
       var token = convert.jsonDecode(response.body);
       if (token['message'] != 'These credentials do not match our records') {
+        // ignore: non_constant_identifier_names
+        Map decode_options = convert.jsonDecode(response.body);
+        String? user = convert.jsonEncode(decode_options['user']);
+        prefs.then((SharedPreferences prefs) {
+          return prefs.setString("user", user);
+        });
         prefs.then((SharedPreferences prefs) {
           return prefs.setBool("loggedin", true);
         });
+
         prefs.then((SharedPreferences prefs) {
           return prefs.setString("token", token['access_token']);
         });

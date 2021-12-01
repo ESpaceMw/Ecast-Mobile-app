@@ -1,7 +1,9 @@
+import 'package:ecast/Models/user_model.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Menu extends StatefulWidget {
@@ -12,9 +14,25 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
+  // var url = 'http://10.0.2.2:8000/api/user';
+  List<User> parseUser(String responseBody) {
+    final parsed =
+        convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
+    return parsed.map<User>((json) => User.fromJson(json)).toList();
+  }
+
+  var user = 'user';
+  _getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Map userMap = convert.jsonDecode(prefs.getString("user").toString());
+    setState(() {
+      user = userMap['first_name'] + " " + userMap['last_name'];
+    });
+  }
+
   @override
-  void initState() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
+  void initState() {
+    _getUserData();
     super.initState();
   }
 
@@ -27,20 +45,27 @@ class _MenuState extends State<Menu> {
         ),
         Row(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                "assets/logos/user.png",
+                width: MediaQuery.of(context).size.width * 0.2,
+              ),
+            ),
             const SizedBox(
-              width: 80,
+              width: 10,
             ),
             Column(
-              children: const [
+              children: [
                 Text(
-                  "Nhlanhla Dhaka",
+                  user,
                   style: textStyle,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20),
+                const Padding(
+                  padding: EdgeInsets.only(left: 5),
                   child: Text('I love God , i love people'),
                 )
               ],
