@@ -506,7 +506,9 @@ class _SignUpState extends State<SignUp> {
           .signup(firstname, lastname, email, country, phonenumber, gender,
               city, password)
           .then(
-            (user) => {Navigator.pushReplacementNamed(context, '/signin')},
+            (user) => {
+              Navigator.pushReplacementNamed(context, '/signin'),
+            },
           );
       // validate/sanitize data
       // Register logic

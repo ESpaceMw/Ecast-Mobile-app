@@ -1,9 +1,7 @@
 import 'dart:io';
-import 'package:ecast/Services/api.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -229,50 +227,71 @@ class _SignInState extends State<SignIn> {
         prefs.then((SharedPreferences prefs) {
           return prefs.setString("token", token['access_token']);
         });
-        Fluttertoast.showToast(
-          msg: "Login Successful",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: btnColor,
-          textColor: whiteColor,
-          fontSize: 16.0,
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Login Successfull!",
+              textAlign: TextAlign.center,
+              style: snackBarText,
+            ),
+            backgroundColor: btnColor,
+            elevation: 17,
+          ),
         );
         Navigator.pushReplacementNamed(context, '/home');
       } else {
         Navigator.pop(context);
-        Fluttertoast.showToast(
-          msg: token['message'],
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-          backgroundColor: btnColor,
-          textColor: whiteColor,
-          fontSize: 13.0,
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "User does not exists",
+              textAlign: TextAlign.center,
+              style: snackBarText,
+            ),
+            backgroundColor: btnColor,
+            elevation: 17,
+          ),
         );
       }
     } on HttpException {
       Navigator.pop(context);
-      Fluttertoast.showToast(
-        msg: "Server Error",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: btnColor,
-        textColor: whiteColor,
-        fontSize: 13.0,
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Server error, contact system admistartor",
+            textAlign: TextAlign.center,
+            style: snackBarText,
+          ),
+          backgroundColor: btnColor,
+          elevation: 17,
+        ),
       );
     } on SocketException {
       Navigator.pop(context);
-      Fluttertoast.showToast(
-        msg: "Check your internet connection",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-        backgroundColor: btnColor,
-        textColor: whiteColor,
-        fontSize: 13.0,
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Check your internet connection",
+            textAlign: TextAlign.center,
+            style: snackBarText,
+          ),
+          backgroundColor: btnColor,
+          elevation: 17,
+        ),
       );
-    } catch (e) {}
+    } catch (e) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Oops! something went wrong",
+            textAlign: TextAlign.center,
+            style: snackBarText,
+          ),
+          backgroundColor: btnColor,
+          elevation: 17,
+        ),
+      );
+    }
   }
 }

@@ -14,6 +14,11 @@ const textStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+const snackBarText = TextStyle(
+  color: whiteColor,
+  fontSize: 17,
+);
+
 const btnStyle = BoxDecoration(
   color: btnColor,
   borderRadius: BorderRadius.all(
