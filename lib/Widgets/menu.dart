@@ -118,22 +118,25 @@ class _MenuState extends State<Menu> {
         const SizedBox(
           height: 20,
         ),
-        ListTile(
-          leading: Container(
-            padding: const EdgeInsets.all(15.0),
-            decoration: boxColor,
-            child: const Icon(
-              Icons.notes_outlined,
-              color: whiteColor,
-              size: 30,
+        GestureDetector(
+          onTap: () => Navigator.pushNamed(context, '/notes'),
+          child: ListTile(
+            leading: Container(
+              padding: const EdgeInsets.all(15.0),
+              decoration: boxColor,
+              child: const Icon(
+                Icons.notes_outlined,
+                color: whiteColor,
+                size: 30,
+              ),
             ),
-          ),
-          title: const Text(
-            "Notes",
-            style: textStyle,
-          ),
-          trailing: const Icon(
-            Icons.arrow_forward_rounded,
+            title: const Text(
+              "Notes",
+              style: textStyle,
+            ),
+            trailing: const Icon(
+              Icons.arrow_forward_rounded,
+            ),
           ),
         ),
         const SizedBox(
