@@ -3,6 +3,8 @@ import 'package:ecast/Widgets/components/downloads.dart';
 import 'package:ecast/Widgets/components/subscription.dart';
 import 'package:ecast/Widgets/components/top_tab_options.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);
@@ -13,9 +15,12 @@ class Library extends StatefulWidget {
 
 class _LibraryState extends State<Library> {
   int _currentBuild = 0;
+  final ScrollController _Controller = ScrollController();
   @override
   Widget build(BuildContext context) {
     return ListView(
+      controller: _Controller,
+      shrinkWrap: true,
       children: [
         const SizedBox(
           height: 15,

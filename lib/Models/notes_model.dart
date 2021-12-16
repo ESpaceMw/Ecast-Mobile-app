@@ -14,4 +14,14 @@ class Note {
     required this.userId,
     required this.podcast,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'userid': userId,
+      'body': body,
+      'podcast': podcast,
+    };
+  }
 }

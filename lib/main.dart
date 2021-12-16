@@ -13,14 +13,7 @@ import 'package:path/path.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final database = openDatabase(
-    join(await getDatabasesPath(), 'notes_database.db'),
-    onCreate: (db, version) {
-      return db.execute(
-          "CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT, body TEXT, userId TEXT, podcast TEXT)");
-    },
-    version: 1,
-  );
+
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
