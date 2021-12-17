@@ -45,7 +45,6 @@ class _HomeState extends State<Home> {
     DateTime now = DateTime.now();
     var timenow = int.parse(DateFormat('kk').format(now));
     String message = timeChecker(timenow);
-    print(message);
     return ListView(
       children: [
         Stack(
@@ -59,7 +58,7 @@ class _HomeState extends State<Home> {
                   kBackgroundColor,
                 ],
               ).createShader(rect),
-              blendMode: BlendMode.color,
+              blendMode: BlendMode.darken,
               child: Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
@@ -68,7 +67,7 @@ class _HomeState extends State<Home> {
                     image: AssetImage('assets/images/img_7.jpg'),
                     fit: BoxFit.cover,
                     colorFilter:
-                        ColorFilter.mode(Colors.black45, BlendMode.srcATop),
+                        ColorFilter.mode(Colors.black45, BlendMode.darken),
                   ),
                 ),
               ),
@@ -91,7 +90,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(
+                    margin: const EdgeInsets.only(
                       top: 10,
                     ),
                     child: const Icon(

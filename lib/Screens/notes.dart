@@ -45,9 +45,9 @@ class _NotesState extends State<Notes> {
       var data = await db.query('notes');
       print(data);
     } else {
-      await db.execute(
-        'CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT, body TEXT, userId TEXT, podcast TEXT)',
-      );
+      // await db.execute(
+      //   'CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT, body TEXT, userId TEXT, podcast TEXT)',
+      // );
       await db.insert('notes', {
         "id": 1,
         "title": "Test Title",
