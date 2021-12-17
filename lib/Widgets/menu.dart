@@ -76,22 +76,27 @@ class _MenuState extends State<Menu> {
           height: 20,
         ),
         Container(),
-        ListTile(
-          leading: Container(
-            padding: const EdgeInsets.all(15.0),
-            decoration: boxColor,
-            child: const Icon(
-              Icons.wallet_travel,
-              color: whiteColor,
-              size: 30,
+        GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, '/premium');
+          },
+          child: ListTile(
+            leading: Container(
+              padding: const EdgeInsets.all(15.0),
+              decoration: boxColor,
+              child: const Icon(
+                Icons.wallet_travel,
+                color: whiteColor,
+                size: 30,
+              ),
             ),
-          ),
-          title: const Text(
-            "Premium",
-            style: textStyle,
-          ),
-          trailing: const Icon(
-            Icons.arrow_forward_rounded,
+            title: const Text(
+              "Premium",
+              style: textStyle,
+            ),
+            trailing: const Icon(
+              Icons.arrow_forward_rounded,
+            ),
           ),
         ),
         const SizedBox(

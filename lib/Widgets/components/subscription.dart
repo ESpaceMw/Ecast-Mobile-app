@@ -89,27 +89,34 @@ class ChannelsList extends StatelessWidget {
       ),
       itemCount: photos.length,
       itemBuilder: (context, index) {
-        return Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-          color: Colors.blueGrey[900],
-          child: Container(
-            alignment: Alignment.center,
-            child: Column(
-              children: [
-                Flexible(
-                    child: Padding(
-                  padding: const EdgeInsets.only(top: 8, bottom: 9),
-                  child: CachedNetworkImage(
-                    imageUrl: photos[index].thumbnail,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(
-                      color: btnColor,
+        return GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, '/view', arguments: {
+              "data": photos[index],
+            });
+          },
+          child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            color: Colors.blueGrey[900],
+            child: Container(
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Flexible(
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 9),
+                    child: CachedNetworkImage(
+                      imageUrl: photos[index].thumbnail,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(
+                        color: btnColor,
+                      ),
                     ),
-                  ),
-                )),
-                const Text('Title')
-              ],
+                  )),
+                  const Text('Title')
+                ],
+              ),
             ),
           ),
         );
