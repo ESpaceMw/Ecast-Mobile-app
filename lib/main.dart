@@ -39,7 +39,6 @@ Future main() async {
       '/signup': (context) => const SignUp(),
       '/home': (context) => const HomeScreen(),
       '/notes': (context) => const Notes(),
-      '/view': (context) => const ViewChannel(),
       '/premium': (context) => const Premium(),
       '/forgotpassword': (context) => const ForgotPassword(),
     },

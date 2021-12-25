@@ -48,13 +48,13 @@ class _NotesState extends State<Notes> {
       // await db.execute(
       //   'CREATE TABLE notes(id INTEGER PRIMARY KEY, title TEXT, body TEXT, userId TEXT, podcast TEXT)',
       // );
-      await db.insert('notes', {
-        "id": 1,
-        "title": "Test Title",
-        'body': "test body",
-        'userId': '1',
-        "podcast": "string theory"
-      });
+      // await db.insert('notes', {
+      //   "id": 1,
+      //   "title": "Test Title",
+      //   'body': "test body",
+      //   'userId': '1',
+      //   "podcast": "string theory"
+      // });
       var data = await db.query('notes');
       print(data);
     }

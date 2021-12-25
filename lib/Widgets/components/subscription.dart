@@ -1,4 +1,5 @@
 import 'package:ecast/Models/channels.dart';
+import 'package:ecast/Screens/view_channel.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -91,9 +92,9 @@ class ChannelsList extends StatelessWidget {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, '/view', arguments: {
-              "data": photos[index],
-            });
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    ViewChannel(channelDetails: photos[index])));
           },
           child: Card(
             shape: RoundedRectangleBorder(
