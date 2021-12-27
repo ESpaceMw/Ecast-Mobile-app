@@ -17,6 +17,14 @@ class ViewChannel extends StatefulWidget {
 }
 
 class _ViewChannelState extends State<ViewChannel> {
+  Future getEpisodes() async {}
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getEpisodes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
