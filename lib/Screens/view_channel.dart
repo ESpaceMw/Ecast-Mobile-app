@@ -143,7 +143,7 @@ class _ViewChannelState extends State<ViewChannel> {
             ),
             Positioned(
                 top: MediaQuery.of(context).size.height * 0.55,
-                left: MediaQuery.of(context).size.width * 0.3,
+                left: MediaQuery.of(context).size.width * 0.26,
                 child: Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -187,6 +187,7 @@ class _ViewChannelState extends State<ViewChannel> {
 
   Future subScribe(context) async {
     var url = 'http://10.0.2.2:8000/api/v1/subscription/unsubscribe';
+    var alerts = 'http://10.0.2.2:8000/api/v1/alerts/create';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map userMap = convert.jsonDecode(prefs.getString("user").toString());
     // Dialogs.showLoadingDialog(context, keyLoader);
@@ -197,7 +198,12 @@ class _ViewChannelState extends State<ViewChannel> {
         'channels_id': widget.channelDetails.id,
       });
       if (response.statusCode == 200) {
-        var data = convert.jsonDecode(response.body);
+        await http.post(Uri.parse(alerts), body: {
+          'user_id': userMap['id'],
+          'title': "Subscription",
+          'content': "unSubscribed to channel",
+          'type': "daata"
+        });
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
