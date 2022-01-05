@@ -1,4 +1,5 @@
 import 'package:ecast/Models/user_model.dart';
+import 'package:ecast/Screens/charts_screen.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
@@ -103,6 +104,10 @@ class _MenuState extends State<Menu> {
           height: 20,
         ),
         GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const ChartsScreen()));
+          },
           child: ListTile(
             leading: Container(
               padding: const EdgeInsets.all(15.0),

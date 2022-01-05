@@ -178,7 +178,7 @@ class _ViewChannelState extends State<ViewChannel> {
                     const SizedBox(
                       width: 10,
                     ),
-                    Icon(Icons.share)
+                    const Icon(Icons.share)
                   ],
                 )),
           ],
