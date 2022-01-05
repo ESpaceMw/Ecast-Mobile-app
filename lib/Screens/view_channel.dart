@@ -147,7 +147,9 @@ class _ViewChannelState extends State<ViewChannel> {
                 child: Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(Icons.bookmark_outline),
+                    GestureDetector(
+                      child: const Icon(Icons.feed_sharp),
+                    ),
                     const SizedBox(
                       width: 10,
                     ),
@@ -202,7 +204,7 @@ class _ViewChannelState extends State<ViewChannel> {
           'user_id': userMap['id'],
           'title': "Subscription",
           'content': "unSubscribed to channel",
-          'type': "daata"
+          'type': "data"
         });
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(

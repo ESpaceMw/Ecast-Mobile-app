@@ -1,4 +1,3 @@
-import 'package:ecast/Models/data.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/logic.dart';
 import 'package:flutter/material.dart';
@@ -13,26 +12,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Widget _buildC(BuildContext context, int index) {
-    return Container(
-      width: 15,
-      key: songs[index]['id'],
-      child: Stack(
-        children: [
-          Container(
-            width: 150,
-            height: 200,
-            color: kPrimaryColor,
-          ),
-          Image.asset(
-            songs[index]['img'],
-            width: 30,
-          ),
-          Text(songs[index]['title'])
-        ],
-      ),
-    );
-  }
+  
 
   @override
   void initState() {

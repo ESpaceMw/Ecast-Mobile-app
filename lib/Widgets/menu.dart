@@ -66,7 +66,7 @@ class _MenuState extends State<Menu> {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(left: 5),
-                  child: Text('I love God , i love people'),
+                  child: Text('Dude'),
                 )
               ],
             )
