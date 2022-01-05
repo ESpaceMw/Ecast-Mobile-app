@@ -102,22 +102,24 @@ class _MenuState extends State<Menu> {
         const SizedBox(
           height: 20,
         ),
-        ListTile(
-          leading: Container(
-            padding: const EdgeInsets.all(15.0),
-            decoration: boxColor,
-            child: const Icon(
-              Icons.table_chart,
-              color: whiteColor,
-              size: 30,
+        GestureDetector(
+          child: ListTile(
+            leading: Container(
+              padding: const EdgeInsets.all(15.0),
+              decoration: boxColor,
+              child: const Icon(
+                Icons.table_chart,
+                color: whiteColor,
+                size: 30,
+              ),
             ),
-          ),
-          title: const Text(
-            "Charts",
-            style: textStyle,
-          ),
-          trailing: const Icon(
-            Icons.arrow_forward_rounded,
+            title: const Text(
+              "Charts",
+              style: textStyle,
+            ),
+            trailing: const Icon(
+              Icons.arrow_forward_rounded,
+            ),
           ),
         ),
         const SizedBox(
