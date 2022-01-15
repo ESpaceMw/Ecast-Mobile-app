@@ -13,9 +13,10 @@ class Charts {
 
   factory Charts.fromJson(Map<String, dynamic> parsedJon) {
     return Charts(
-        id: parsedJon['id'],
-        title: parsedJon['title'],
-        url: parsedJon['url'],
-        thumbnail: parsedJon['thumbnailUrl']);
+      id: parsedJon['id'],
+      title: parsedJon['title'],
+      url: parsedJon['url'],
+      thumbnail: parsedJon['thumbnailUrl'],
+    );
   }
 }
