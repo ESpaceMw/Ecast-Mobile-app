@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Models/charts.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/logic.dart';
@@ -15,6 +16,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final ScrollController _scrollController = ScrollController();
+
   List<Charts> ParseCharts(String res) {
     final parsed = convert.jsonDecode(res).cast<Map<String, dynamic>>();
     return parsed.map<Charts>((json) => Charts.fromJson(json)).toList();
@@ -38,6 +41,8 @@ class _HomeState extends State<Home> {
     var timenow = int.parse(DateFormat('kk').format(now));
     String message = timeChecker(timenow);
     return ListView(
+      controller: _scrollController,
+      // shrinkWrap: true,
       children: [
         Stack(
           children: [
@@ -93,9 +98,65 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
+            FutureBuilder<List<Charts>>(
+              future: _getCharts(),
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                    return const Center(
+                      child: Text("Fetch somethin"),
+                    );
+                  case ConnectionState.active:
+                  case ConnectionState.waiting:
+                    return Container(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  case ConnectionState.done:
+                    if (snapshot.hasError) {
+                      return const Center(
+                        child: Text("Ooops, something went wrong"),
+                      );
+                    } else {
+                      return SnapChartList(charts: snapshot.data!);
+                    }
+                }
+              },
+            )
           ],
-        )
+        ),
       ],
     );
+  }
+}
+
+class SnapChartList extends StatelessWidget {
+  const SnapChartList({Key? key, required this.charts}) : super(key: key);
+
+  final List<Charts> charts;
+  // int _focusedIndex = 4;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.horizontal,
+      itemBuilder: (BuildContext context, index) {
+        return CachedNetworkImage(
+          imageUrl: charts[index].thumbnail,
+          placeholder: (context, url) => const CircularProgressIndicator(
+            color: btnColor,
+          ),
+        );
+      },
+      itemCount: charts.length,
+    );
+  }
+
+  void ItemFocus(int p1) {
+    print("Focused");
   }
 }
