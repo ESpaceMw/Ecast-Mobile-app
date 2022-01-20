@@ -1,8 +1,11 @@
+import 'package:ecast/Models/charts.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/logic.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -12,12 +15,21 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  
+  List<Charts> ParseCharts(String res) {
+    final parsed = convert.jsonDecode(res).cast<Map<String, dynamic>>();
+    return parsed.map<Charts>((json) => Charts.fromJson(json)).toList();
+  }
+
+  Future<List<Charts>> _getCharts() async {
+    var response = await http.get(
+        Uri.parse("https://jsonplaceholder.typicode.com/photos/?_limit=10"));
+    return ParseCharts(response.body);
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _getCharts();
   }
 
   @override
