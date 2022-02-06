@@ -14,6 +14,11 @@ const textStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+const info = TextStyle(
+  fontSize: 15,
+  fontWeight: FontWeight.bold,
+);
+
 const snackBarText = TextStyle(
   color: whiteColor,
   fontSize: 17,

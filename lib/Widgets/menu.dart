@@ -1,5 +1,6 @@
 import 'package:ecast/Models/user_model.dart';
 import 'package:ecast/Screens/charts_screen.dart';
+import 'package:ecast/Screens/profile.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
@@ -44,34 +45,40 @@ class _MenuState extends State<Menu> {
         const SizedBox(
           height: 20,
         ),
-        Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                "assets/logos/user.png",
-                width: MediaQuery.of(context).size.width * 0.2,
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => const Profile()));
+          },
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  "assets/logos/user.png",
+                  width: MediaQuery.of(context).size.width * 0.2,
+                ),
               ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Column(
-              children: [
-                Text(
-                  user,
-                  style: textStyle,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 5),
-                  child: Text('Dude'),
-                )
-              ],
-            )
-          ],
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                children: [
+                  Text(
+                    user,
+                    style: textStyle,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 5),
+                    child: Text('Dude'),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
         const SizedBox(
           height: 20,

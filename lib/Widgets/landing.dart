@@ -42,7 +42,7 @@ class _HomeState extends State<Home> {
     String message = timeChecker(timenow);
     return ListView(
       controller: _scrollController,
-      // shrinkWrap: true,
+      shrinkWrap: true,
       children: [
         Stack(
           children: [
@@ -98,33 +98,33 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            FutureBuilder<List<Charts>>(
-              future: _getCharts(),
-              builder: (context, snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return const Center(
-                      child: Text("Fetch somethin"),
-                    );
-                  case ConnectionState.active:
-                  case ConnectionState.waiting:
-                    return Container(
-                      height: MediaQuery.of(context).size.height * 0.8,
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    );
-                  case ConnectionState.done:
-                    if (snapshot.hasError) {
-                      return const Center(
-                        child: Text("Ooops, something went wrong"),
-                      );
-                    } else {
-                      return SnapChartList(charts: snapshot.data!);
-                    }
-                }
-              },
-            )
+            // FutureBuilder<List<Charts>>(
+            //   future: _getCharts(),
+            //   builder: (context, snapshot) {
+            //     switch (snapshot.connectionState) {
+            //       case ConnectionState.none:
+            //         return const Center(
+            //           child: Text("Fetch somethin"),
+            //         );
+            //       case ConnectionState.active:
+            //       case ConnectionState.waiting:
+            //         return Container(
+            //           height: MediaQuery.of(context).size.height * 0.8,
+            //           child: const Center(
+            //             child: CircularProgressIndicator(),
+            //           ),
+            //         );
+            //       case ConnectionState.done:
+            //         if (snapshot.hasError) {
+            //           return const Center(
+            //             child: Text("Ooops, something went wrong"),
+            //           );
+            //         } else {
+            //           return SnapChartList(charts: snapshot.data!);
+            //         }
+            //     }
+            //   },
+            // )
           ],
         ),
       ],

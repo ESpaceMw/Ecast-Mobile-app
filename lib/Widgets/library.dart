@@ -3,8 +3,6 @@ import 'package:ecast/Widgets/components/downloads.dart';
 import 'package:ecast/Widgets/components/subscription.dart';
 import 'package:ecast/Widgets/components/top_tab_options.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);

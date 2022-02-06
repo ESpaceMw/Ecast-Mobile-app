@@ -20,3 +20,18 @@ final List<Widget> tabs = [
     ),
   )
 ];
+
+final List<Widget> profileTabs = [
+  const Text(
+    "Profile",
+    style: TextStyle(
+      fontSize: 17,
+    ),
+  ),
+  const Text(
+    "Plan",
+    style: TextStyle(
+      fontSize: 17,
+    ),
+  )
+];
