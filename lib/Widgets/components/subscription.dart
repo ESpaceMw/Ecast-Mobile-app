@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ecast/Models/channels.dart';
 import 'package:ecast/Screens/view_channel.dart';
 import 'package:ecast/Utils/constants.dart';
@@ -56,18 +58,28 @@ class _SubscriptionsState extends State<Subscriptions> {
             );
 
           case ConnectionState.done:
-            if (snapshot.hasError) {
+            try {
+              if (snapshot.hasError) {
+                return const Center(
+                  child: Text("Ooops, something went wrong"),
+                );
+              } else {
+                if (snapshot.data != []) {
+                  return ChannelsList(photos: snapshot.data!);
+                } else {
+                  return const Center(
+                    child: Text("No subscriptions"),
+                  );
+                }
+              }
+            } on SocketException {
               return const Center(
                 child: Text("Ooops, something went wrong"),
               );
-            } else {
-              if (snapshot.data != []) {
-                return ChannelsList(photos: snapshot.data!);
-              } else {
-                return const Center(
-                  child: Text("No subscriptions"),
-                );
-              }
+            } on HttpException {
+              return const Center(
+                child: Text("Ooops, something went wrong"),
+              );
             }
         }
       },

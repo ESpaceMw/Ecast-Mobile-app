@@ -14,12 +14,6 @@ final List<BottomNavigationBarItem> bottomTabs = [
   ),
   const BottomNavigationBarItem(
     icon: Icon(
-      Icons.people,
-    ),
-    label: "People",
-  ),
-  const BottomNavigationBarItem(
-    icon: Icon(
       Icons.video_library_sharp,
     ),
     label: "library",

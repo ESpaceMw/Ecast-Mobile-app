@@ -38,6 +38,9 @@ class _LibraryState extends State<Library> {
         ),
         Row(
           children: [
+            const SizedBox(
+              width: 20,
+            ),
             _buildTabs(0),
             _buildTabs(1),
             _buildTabs(2),
