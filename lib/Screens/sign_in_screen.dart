@@ -166,7 +166,7 @@ class _SignInState extends State<SignIn> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(context, '/forgotpassword');
+                              Navigator.pushNamed(context, forgetPassword);
                             },
                             child: const Text(
                               'Forgot Password?',
@@ -181,7 +181,7 @@ class _SignInState extends State<SignIn> {
                           const Text('Don\'t have an account Yet?'),
                           TextButton(
                             onPressed: () =>
-                                Navigator.pushNamed(context, '/signup'),
+                                Navigator.pushNamed(context, signUp),
                             child: const Text(
                               'Sign Up',
                               style: TextStyle(

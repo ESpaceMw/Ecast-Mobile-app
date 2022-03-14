@@ -41,3 +41,11 @@ BoxDecoration boxColor = BoxDecoration(
 );
 
 List<String> genders = ["M", "F"];
+
+const splash = "/";
+const wrapper = "/wrapper";
+const signUp = "/signup";
+const signIn = "/signin";
+const home = "/home";
+const note = "/notes";
+const forgetPassword = "/forgotpassword";

@@ -5,13 +5,11 @@ import 'package:ecast/Screens/premium.dart';
 import 'package:ecast/Screens/sign_in_screen.dart';
 import 'package:ecast/Screens/sign_up_screen.dart';
 import 'package:ecast/Screens/splash_screen.dart';
-import 'package:ecast/Screens/view_channel.dart';
 import 'package:ecast/Screens/wrapper.dart';
+import 'package:ecast/Services/router.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +17,7 @@ Future main() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
+    onGenerateRoute: AppRouter().generateRoute,
     theme: ThemeData(
       brightness: Brightness.dark,
       scaffoldBackgroundColor: kBackgroundColor,
@@ -30,17 +29,17 @@ Future main() async {
         ),
       ),
     ),
-    routes: {
-      '/': (context) => const SplashScreen(),
-      '/wrapper': (context) => prefs.getBool("loggedin") == true
-          ? const HomeScreen()
-          : const Wrapper(),
-      '/signin': (context) => const SignIn(),
-      '/signup': (context) => const SignUp(),
-      '/home': (context) => const HomeScreen(),
-      '/notes': (context) => const Notes(),
-      '/premium': (context) => const Premium(),
-      '/forgotpassword': (context) => const ForgotPassword(),
-    },
+    // routes: {
+    //   '/': (context) => const SplashScreen(),
+    //   '/wrapper': (context) => prefs.getBool("loggedin") == true
+    //       ? const HomeScreen()
+    //       : const Wrapper(),
+    //   '/signin': (context) => const SignIn(),
+    //   '/signup': (context) => const SignUp(),
+    //   '/home': (context) => const HomeScreen(),
+    //   '/notes': (context) => const Notes(),
+    //   '/premium': (context) => const Premium(),
+    //   '/forgotpassword': (context) => const ForgotPassword(),
+    // },
   ));
 }
