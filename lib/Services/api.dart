@@ -2,8 +2,11 @@ import 'package:ecast/Utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class NetworkService {
-  get baseUrl => null;
+  // get baseUrl => null;
+  final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 
   // login method
   Future<dynamic> login() async {
@@ -21,9 +24,18 @@ class NetworkService {
         return "error";
       } else {
         var res = convert.jsonDecode(data.body);
-        state().then((prefs) => prefs.setBool("loggedin", true));
-        state().then(
-            (prefs) => prefs.setString("accessToken", res['access_token']));
+        // ignore: non_constant_identifier_names
+        Map decode_options = convert.jsonDecode(data.body);
+        String? user = convert.jsonEncode(decode_options['user']);
+        prefs.then((SharedPreferences prefs) {
+          return prefs.setString("user", user);
+        });
+        prefs.then((SharedPreferences prefs) {
+          return prefs.setBool("loggedin", true);
+        });
+        prefs.then((SharedPreferences prefs) {
+          return prefs.setString("accessToken", res['access_token']);
+        });
         return "Login Successfully";
       }
     } catch (e) {

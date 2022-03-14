@@ -23,7 +23,9 @@ class AppRouter {
   }
 
   Route? generateRoute(RouteSettings settings) {
-    final prefs = state().then((value) => value.getBool("loggedin"));
+    // final prefs = state().then((value) => value.getBool("loggedin"));
+    // ignore: unused_local_variable
+
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(
@@ -32,7 +34,7 @@ class AppRouter {
       case wrapper:
         return MaterialPageRoute(
           // ignore: unrelated_type_equality_checks
-          builder: (_) => prefs == true ? const HomeScreen() : const Wrapper(),
+          builder: (_) => const Wrapper(),
         );
       case signUp:
         return MaterialPageRoute(

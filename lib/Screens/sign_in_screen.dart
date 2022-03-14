@@ -16,12 +16,15 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  // final TextEditingController _email = TextEditingController();
-  // final TextEditingController _password = TextEditingController();
-  var url = 'http://10.0.2.2:8000/api/v1/auth/login';
   final GlobalKey<State> keyLoader = GlobalKey<State>();
   final _formkey = GlobalKey<FormState>();
-  final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  @override
+  void initState() {
+    super.initState();
+    final prefs = state();
+    print(prefs);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +53,7 @@ class _SignInState extends State<SignIn> {
                     if (state is LoginDone) {
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Login Successfully")));
-                      Navigator.pushReplacementNamed(context, wrapper);
+                      Navigator.pushReplacementNamed(context, home);
                     }
                   },
                   builder: (context, state) {
@@ -169,7 +172,9 @@ class _SignInState extends State<SignIn> {
                             GestureDetector(
                               onTap: () {
                                 final form = _formkey.currentState;
-                                if (form != null && form.validate()) {}
+                                if (form != null && form.validate()) {
+                                  BlocProvider.of<UserCubit>(context).login();
+                                }
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.8,

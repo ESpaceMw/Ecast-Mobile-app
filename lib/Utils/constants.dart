@@ -13,8 +13,10 @@ var baseUrl = 'http://10.0.2.2:8000';
 final TextEditingController email = TextEditingController();
 final TextEditingController password = TextEditingController();
 
-Future<SharedPreferences> state() {
-  return SharedPreferences.getInstance();
+Future<bool?> state() async {
+  final SharedPreferences item = await SharedPreferences.getInstance();
+  // return item.getBool("loggedin");
+  return item.getBool("loggedin");
 }
 
 const textStyle = TextStyle(
