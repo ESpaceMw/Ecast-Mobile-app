@@ -1,11 +1,8 @@
-import 'dart:io';
+import 'dart:developer';
 import 'package:ecast/Utils/constants.dart';
-import 'package:ecast/Utils/loader.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
@@ -18,11 +15,22 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final GlobalKey<State> keyLoader = GlobalKey<State>();
   final _formkey = GlobalKey<FormState>();
+
+  // Future _prefs() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   print(prefs.getBool("loggedin"));
+  //   return prefs.getBool("loggedin");
+  // }
+
+  // late SharedPreferences prefs;
+
   @override
   void initState() {
     super.initState();
-    final prefs = state();
-    print(prefs);
+    final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+    var data =
+        prefs.then((SharedPreferences prefs) => prefs.getBool("loggedin"));
+    print(data);
   }
 
   @override

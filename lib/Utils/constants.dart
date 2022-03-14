@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-const kBackgroundColor = Color(0xFF202020);
+const kBackgroundColor = Color(0xFF101010);
 const kPrimaryColor = Color(0xFFFFBD73);
 const btnColor = Color(0xFF337d78);
 const whiteColor = Colors.white;
 const errorColor = Colors.red;
+const selectedIten = Color(0xFF5ED0FB);
 const codeColor = Color(0xFF37474F);
 final GlobalKey<State> keyLoader = GlobalKey<State>();
 var baseUrl = 'http://10.0.2.2:8000';
@@ -52,6 +53,7 @@ BoxDecoration boxColor = BoxDecoration(
 
 List<String> genders = ["M", "F"];
 
+// routes
 const splash = "/";
 const wrapper = "/wrapper";
 const signUp = "/signup";

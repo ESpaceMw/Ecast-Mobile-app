@@ -1,8 +1,28 @@
 import 'package:ecast/Utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Wrapper extends StatelessWidget {
+class Wrapper extends StatefulWidget {
   const Wrapper({Key? key}) : super(key: key);
+
+  @override
+  State<Wrapper> createState() => _WrapperState();
+}
+
+class _WrapperState extends State<Wrapper> {
+  void _log() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    var log = prefs.getBool("loggedin");
+    if (log == true) {
+      Navigator.pushReplacementNamed(context, home);
+    }
+  }
+
+  @override
+  void initState() {
+    _log();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
