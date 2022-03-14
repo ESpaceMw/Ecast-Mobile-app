@@ -5,17 +5,25 @@ import 'package:ecast/Screens/sign_in_screen.dart';
 import 'package:ecast/Screens/sign_up_screen.dart';
 import 'package:ecast/Screens/splash_screen.dart';
 import 'package:ecast/Screens/wrapper.dart';
+import 'package:ecast/Services/api.dart';
+import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<SharedPreferences> _State() {
-  return SharedPreferences.getInstance();
-}
-
 class AppRouter {
+  late Repository repository;
+
+  AppRouter() {
+    repository = Repository(
+      networkService: NetworkService(),
+    );
+  }
+
   Route? generateRoute(RouteSettings settings) {
-    final prefs = _State().then((value) => value.getBool("loggedin"));
+    final prefs = state().then((value) => value.getBool("loggedin"));
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(
@@ -32,7 +40,10 @@ class AppRouter {
         );
       case signIn:
         return MaterialPageRoute(
-          builder: (_) => const SignIn(),
+          builder: (_) => BlocProvider(
+            create: (BuildContext context) => UserCubit(repository: repository),
+            child: const SignIn(),
+          ),
         );
       case home:
         return MaterialPageRoute(

@@ -1,19 +1,16 @@
 class User {
-  final String firstname;
-  final String lastname;
+  final String email;
+  final String password;
 
   const User({
-    required this.firstname,
-    required this.lastname,
+    required this.email,
+    required this.password,
   });
 
   factory User.fromJson(Map<String, dynamic> parsedJson) {
     return User(
-      firstname: parsedJson['first_name'] ?? "",
-      lastname: parsedJson['last_name'] ?? "",
+      email: parsedJson['first_name'] ?? "",
+      password: parsedJson['last_name'] ?? "",
     );
-  }
-  Map<String, dynamic> toJson() {
-    return {"first_name": this.firstname, "last_name": this.lastname};
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const kBackgroundColor = Color(0xFF202020);
 const kPrimaryColor = Color(0xFFFFBD73);
@@ -7,7 +8,14 @@ const whiteColor = Colors.white;
 const errorColor = Colors.red;
 const codeColor = Color(0xFF37474F);
 final GlobalKey<State> keyLoader = GlobalKey<State>();
-var url = 'http://10.0.2.2:8000';
+var baseUrl = 'http://10.0.2.2:8000';
+
+final TextEditingController email = TextEditingController();
+final TextEditingController password = TextEditingController();
+
+Future<SharedPreferences> state() {
+  return SharedPreferences.getInstance();
+}
 
 const textStyle = TextStyle(
   fontSize: 18,

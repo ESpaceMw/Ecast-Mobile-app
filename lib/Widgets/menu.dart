@@ -230,7 +230,7 @@ class _MenuState extends State<Menu> {
             prefs.setBool("loggedin", false);
             prefs.setString("user", "");
             prefs.setString("token", "");
-            Navigator.pushReplacementNamed(context, '/wrapper');
+            Navigator.pushReplacementNamed(context, wrapper);
           },
           child: ListTile(
             leading: Container(

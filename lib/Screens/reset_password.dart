@@ -176,7 +176,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       var response = await http.post(
-        Uri.parse("$url/api/v1/auth/password-reset"),
+        Uri.parse("$baseUrl/api/v1/auth/password-reset"),
         body: {
           'token': prefs.getString("reset_token"),
           "email": email,

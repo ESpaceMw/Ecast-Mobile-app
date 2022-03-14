@@ -1,28 +1,34 @@
+import 'package:ecast/Utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-var url = 'http://10.0.2.2:8000';
+class NetworkService {
+  get baseUrl => null;
 
-class ApiCalls {
-  signup(firstname, lastname, email, country, phonenumber, gender, city,
-      password) async {
+  // login method
+  Future<dynamic> login() async {
     try {
-      var response =
-          await http.post(Uri.parse('$url/api/v1/auth/register'), body: {
-        "first_name": firstname,
-        'last_name': lastname,
-        "email": email,
-        "country": country,
-        "phone_number": phonenumber,
-        "password": password,
-        "gender": gender,
-        "date_of_birth": "2001-01-31",
-        "city": city,
-      });
-      var jsonData = convert.jsonDecode(response.body);
-      return jsonData;
+      final data = await http.post(
+          Uri.parse(
+            "$baseUrl/api/v1/auth/login",
+          ),
+          body: {
+            'email': email.text,
+            'password': password.text,
+          });
+
+      if (data.statusCode != 200) {
+        return "error";
+      } else {
+        var res = convert.jsonDecode(data.body);
+        state().then((prefs) => prefs.setBool("loggedin", true));
+        state().then(
+            (prefs) => prefs.setString("accessToken", res['access_token']));
+        return "Login Successfully";
+      }
     } catch (e) {
-      print(e);
+      return "error";
+      // return [];
     }
   }
 }

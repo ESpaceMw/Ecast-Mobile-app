@@ -502,14 +502,14 @@ class _SignUpState extends State<SignUp> {
         city = _city.text;
     Dialogs.showLoadingDialog(context, keyLoader);
     try {
-      ApiCalls()
-          .signup(firstname, lastname, email, country, phonenumber, gender,
-              city, password)
-          .then(
-            (user) => {
-              Navigator.pushReplacementNamed(context, '/signin'),
-            },
-          );
+      // ApiCalls()
+      //     .signup(firstname, lastname, email, country, phonenumber, gender,
+      //         city, password)
+      //     .then(
+      //       (user) => {
+      //         Navigator.pushReplacementNamed(context, '/signin'),
+      //       },
+      //     );
       // validate/sanitize data
       // Register logic
     } catch (e) {
