@@ -8,6 +8,7 @@ const whiteColor = Colors.white;
 const errorColor = Colors.red;
 const selectedIten = Color(0xFF5ED0FB);
 const codeColor = Color(0xFF37474F);
+const recColor = Color(0xFF1A1A1A);
 final GlobalKey<State> keyLoader = GlobalKey<State>();
 var baseUrl = 'http://10.0.2.2:8000';
 

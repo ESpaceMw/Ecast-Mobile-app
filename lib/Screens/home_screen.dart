@@ -1,7 +1,9 @@
 import 'package:ecast/Screens/screen_options.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/bottom_nav_options.dart';
+import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

@@ -18,21 +18,21 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final ScrollController _scrollController = ScrollController();
 
-  List<Charts> ParseCharts(String res) {
-    final parsed = convert.jsonDecode(res).cast<Map<String, dynamic>>();
-    return parsed.map<Charts>((json) => Charts.fromJson(json)).toList();
-  }
+  // List<Charts> ParseCharts(String res) {
+  //   final parsed = convert.jsonDecode(res).cast<Map<String, dynamic>>();
+  //   return parsed.map<Charts>((json) => Charts.fromJson(json)).toList();
+  // }
 
-  Future<List<Charts>> _getCharts() async {
-    var response = await http.get(
-        Uri.parse("https://jsonplaceholder.typicode.com/photos/?_limit=10"));
-    return ParseCharts(response.body);
-  }
+  // Future<List<Charts>> _getCharts() async {
+  //   var response = await http.get(
+  //       Uri.parse("https://jsonplaceholder.typicode.com/photos/?_limit=10"));
+  //   return ParseCharts(response.body);
+  // }
 
   @override
   void initState() {
     super.initState();
-    _getCharts();
+    // _getCharts();
   }
 
   @override

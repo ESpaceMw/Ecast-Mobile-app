@@ -10,7 +10,9 @@ class Wrapper extends StatefulWidget {
 }
 
 class _WrapperState extends State<Wrapper> {
-  void _log() async {
+  // ignore: todo
+  // TODO: look for an alternative , clean way
+  _log() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var log = prefs.getBool("loggedin");
     if (log == true) {

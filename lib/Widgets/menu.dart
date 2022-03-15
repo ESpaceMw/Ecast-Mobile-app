@@ -2,9 +2,7 @@ import 'package:ecast/Models/user_model.dart';
 import 'package:ecast/Screens/charts_screen.dart';
 import 'package:ecast/Screens/profile.dart';
 import 'package:ecast/Utils/constants.dart';
-import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -78,33 +76,6 @@ class _MenuState extends State<Menu> {
                 ],
               )
             ],
-          ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Container(),
-        GestureDetector(
-          onTap: () {
-            Navigator.pushNamed(context, '/premium');
-          },
-          child: ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(15.0),
-              decoration: boxColor,
-              child: const Icon(
-                Icons.wallet_travel,
-                color: whiteColor,
-                size: 30,
-              ),
-            ),
-            title: const Text(
-              "Premium",
-              style: textStyle,
-            ),
-            trailing: const Icon(
-              Icons.arrow_forward_rounded,
-            ),
           ),
         ),
         const SizedBox(

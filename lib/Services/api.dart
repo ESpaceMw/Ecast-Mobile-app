@@ -1,3 +1,4 @@
+import 'package:ecast/Models/channels.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -7,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class NetworkService {
   // get baseUrl => null;
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
 
   // login method
   Future<dynamic> login() async {
@@ -42,5 +44,11 @@ class NetworkService {
       return "error";
       // return [];
     }
+  }
+
+  Future<String> fetchSubscriptions() async {
+    final data = await http.get(Uri.parse(url));
+    // var res = convert.jsonDecode(data.body);
+    return data.body;
   }
 }

@@ -4,7 +4,7 @@
    <application
         android:label="ecast"
         android:usesCleartextTraffic="true"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ecast">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

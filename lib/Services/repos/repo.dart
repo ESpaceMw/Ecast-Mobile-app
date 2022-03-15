@@ -1,5 +1,7 @@
+import 'package:ecast/Models/channels.dart';
 import 'package:ecast/Models/user_model.dart';
 import 'package:ecast/Services/api.dart';
+import 'dart:convert' as convert;
 
 class Repository {
   final NetworkService networkService;
@@ -8,5 +10,16 @@ class Repository {
 
   Future signin() async {
     return networkService.login();
+  }
+
+  List<Channels> parsePhotos(String responseBody) {
+    final parsed =
+        convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
+    return parsed.map<Channels>((json) => Channels.fromJson(json)).toList();
+  }
+
+  Future<List<Channels>> fetchSubscription() async {
+    final data = await networkService.fetchSubscriptions();
+    return parsePhotos(data);
   }
 }

@@ -11,7 +11,6 @@ import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AppRouter {
   late Repository repository;
@@ -23,9 +22,6 @@ class AppRouter {
   }
 
   Route? generateRoute(RouteSettings settings) {
-    // final prefs = state().then((value) => value.getBool("loggedin"));
-    // ignore: unused_local_variable
-
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(

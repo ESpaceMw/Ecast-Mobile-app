@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:ecast/Models/channels.dart';
 import 'package:ecast/Screens/view_channel.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -16,71 +18,52 @@ class Subscriptions extends StatefulWidget {
 }
 
 class _SubscriptionsState extends State<Subscriptions> {
-  List<Channels> parsePhotos(String responseBody) {
-    final parsed =
-        convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
-    return parsed.map<Channels>((json) => Channels.fromJson(json)).toList();
-  }
+  // List<Channels> parsePhotos(String responseBody) {
+  //   final parsed =
+  //       convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  //   return parsed.map<Channels>((json) => Channels.fromJson(json)).toList();
+  // }
 
-  Future<List<Channels>> _getChannels() async {
-    var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
-    var response = await http.get(Uri.parse(url));
-    var jsonData = convert.jsonDecode(response.body);
-    return parsePhotos(response.body);
-  }
+  // Future<List<Channels>> _getChannels() async {
+  //   var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
+  //   var response = await http.get(Uri.parse(url));
+  //   var jsonData = convert.jsonDecode(response.body);
+  //   return parsePhotos(response.body);
+  // }
 
   @override
   void initState() {
-    _getChannels();
+    // _getChannels();
     super.initState();
   }
 
-  final ScrollController _scrollController = ScrollController();
+  // final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Channels>>(
-      future: _getChannels(),
-      builder: (context, snapshot) {
-        // ignore: unused_local_variable
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return const Center(
-              child: Text("Fetch somethin"),
-            );
+    BlocProvider.of<PodcastsCubit>(context).subScription();
 
-          case ConnectionState.active:
-          case ConnectionState.waiting:
-            return Container(
-              height: MediaQuery.of(context).size.height * 0.8,
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-
-          case ConnectionState.done:
-            try {
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text("Ooops, something went wrong"),
-                );
-              } else {
-                if (snapshot.data != []) {
-                  return ChannelsList(photos: snapshot.data!);
-                } else {
-                  return const Center(
-                    child: Text("No subscriptions"),
-                  );
-                }
-              }
-            } on SocketException {
-              return const Center(
-                child: Text("Ooops, something went wrong"),
-              );
-            } on HttpException {
-              return const Center(
-                child: Text("Ooops, something went wrong"),
-              );
-            }
+    return BlocConsumer<PodcastsCubit, PodcastsState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        if (state is PodcastsLoaded) {
+          return ChannelsList(photos: state.subs);
+        } else {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                CircularProgressIndicator(
+                  color: btnColor,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text("Fetching Your Subscriptions"),
+              ],
+            ),
+          );
         }
       },
     );
@@ -111,7 +94,7 @@ class ChannelsList extends StatelessWidget {
           child: Card(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.0)),
-            color: Colors.blueGrey[900],
+            color: recColor,
             child: Container(
               alignment: Alignment.center,
               child: Column(

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +14,6 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final GlobalKey<State> keyLoader = GlobalKey<State>();
   final _formkey = GlobalKey<FormState>();
-
-  // Future _prefs() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   print(prefs.getBool("loggedin"));
-  //   return prefs.getBool("loggedin");
-  // }
-
-  // late SharedPreferences prefs;
 
   @override
   void initState() {
@@ -54,13 +45,19 @@ class _SignInState extends State<SignIn> {
                 BlocConsumer<UserCubit, UserState>(
                   listener: (context, state) {
                     if (state is LoginError) {
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(content: Text("Error")));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.error),
+                        ),
+                      );
                     }
 
                     if (state is LoginDone) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Login Successfully")));
+                        SnackBar(
+                          content: Text(state.msg),
+                        ),
+                      );
                       Navigator.pushReplacementNamed(context, home);
                     }
                   },
@@ -69,7 +66,9 @@ class _SignInState extends State<SignIn> {
                       return Center(
                           child: Column(
                         children: const [
-                          CircularProgressIndicator(),
+                          CircularProgressIndicator(
+                            color: btnColor,
+                          ),
                           Text("Signing in into Your Account")
                         ],
                       ));

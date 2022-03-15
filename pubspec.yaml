@@ -32,7 +32,7 @@ dependencies:
   shared_preferences: ^2.0.8
   flutter_bloc: ^8.0.1
   http: ^0.13.4
-  google_fonts: ^2.1.0
+  google_fonts: ^2.0.0
   flutter_local_notifications: ^9.0.3
   date_format: ^2.0.4
   intl: ^0.17.0
