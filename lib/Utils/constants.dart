@@ -62,3 +62,4 @@ const signIn = "/signin";
 const home = "/home";
 const note = "/notes";
 const forgetPassword = "/forgotpassword";
+const charts = '/charts';

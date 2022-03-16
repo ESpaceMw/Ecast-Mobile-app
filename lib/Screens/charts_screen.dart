@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Models/charts.dart';
 import 'package:ecast/Screens/view_chart.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
@@ -16,21 +18,22 @@ class ChartsScreen extends StatefulWidget {
 class _ChartsScreenState extends State<ChartsScreen> {
   final ScrollController _scrollController = ScrollController();
 
-  List<Charts> parsePhotos(String responseBody) {
-    final parsed =
-        convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
-    return parsed.map<Charts>((json) => Charts.fromJson(json)).toList();
-  }
+  // List<Charts> parsePhotos(String responseBody) {
+  //   final parsed =
+  //       convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  //   return parsed.map<Charts>((json) => Charts.fromJson(json)).toList();
+  // }
 
-  Future<List<Charts>> _getChannels() async {
-    var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
-    var response = await http.get(Uri.parse(url));
-    var jsonData = convert.jsonDecode(response.body);
-    return parsePhotos(response.body);
-  }
+  // Future<List<Charts>> _getChannels() async {
+  //   var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
+  //   var response = await http.get(Uri.parse(url));
+  //   var jsonData = convert.jsonDecode(response.body);
+  //   return parsePhotos(response.body);
+  // }
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<ChartsCubit>(context).charts();
     return Scaffold(
       body: ListView(
         shrinkWrap: true,
@@ -61,39 +64,22 @@ class _ChartsScreenState extends State<ChartsScreen> {
           const SizedBox(
             height: 10,
           ),
-          FutureBuilder<List<Charts>>(
-            future: _getChannels(),
-            builder: (context, snapshot) {
-              // ignore: unused_local_variable
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return const Center(
-                    child: Text("Fetch somethin"),
-                  );
-
-                case ConnectionState.active:
-                case ConnectionState.waiting:
-                  return Container(
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+          BlocConsumer<ChartsCubit, ChartsState>(
+            listener: (context, state) {
+              // TODO: implement listener
+            },
+            builder: (context, state) {
+              if (state is ChartsLoaded) {
+                return ChartsList(photos: state.charts);
+              } else {
+                return Container(
+                  height: MediaQuery.of(context).size.height * 0.76,
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      color: btnColor,
                     ),
-                  );
-
-                case ConnectionState.done:
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: Text("Ooops, something went wrong"),
-                    );
-                  } else {
-                    if (snapshot.data != []) {
-                      return ChartsList(photos: snapshot.data!);
-                    } else {
-                      return const Center(
-                        child: Text("No subscriptions"),
-                      );
-                    }
-                  }
+                  ),
+                );
               }
             },
           ),
@@ -125,28 +111,25 @@ class ChartsList extends StatelessWidget {
               ),
             );
           },
-          child: Card(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            color: Colors.blueGrey[900],
-            child: Container(
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  Flexible(
-                      child: Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 9),
+          child: Container(
+            width: 16,
+            margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: recColor,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Column(
+              children: [
+                Flexible(
                     child: CachedNetworkImage(
-                      imageUrl: photos[index].thumbnail,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(
-                        color: btnColor,
-                      ),
-                    ),
-                  )),
-                  const Text('Title')
-                ],
-              ),
+                  imageUrl: photos[index].thumbnail,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(
+                    color: btnColor,
+                  ),
+                )),
+                const Text('Title')
+              ],
             ),
           ),
         );

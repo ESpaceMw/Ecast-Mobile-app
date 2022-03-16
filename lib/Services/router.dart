@@ -1,3 +1,4 @@
+import 'package:ecast/Screens/charts_screen.dart';
 import 'package:ecast/Screens/forgotpassword.dart';
 import 'package:ecast/Screens/home_screen.dart';
 import 'package:ecast/Screens/notes.dart';
@@ -8,6 +9,7 @@ import 'package:ecast/Screens/wrapper.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +31,6 @@ class AppRouter {
         );
       case wrapper:
         return MaterialPageRoute(
-          // ignore: unrelated_type_equality_checks
           builder: (_) => const Wrapper(),
         );
       case signUp:
@@ -54,6 +55,13 @@ class AppRouter {
       case forgetPassword:
         return MaterialPageRoute(
           builder: (_) => const ForgotPassword(),
+        );
+      case charts:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => ChartsCubit(repository: repository),
+            child: const ChartsScreen(),
+          ),
         );
       default:
         return null;

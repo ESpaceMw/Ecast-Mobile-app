@@ -1,4 +1,3 @@
-import 'package:ecast/Models/channels.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -49,6 +48,11 @@ class NetworkService {
   Future<String> fetchSubscriptions() async {
     final data = await http.get(Uri.parse(url));
     // var res = convert.jsonDecode(data.body);
+    return data.body;
+  }
+
+  Future<String> fetchCharts() async {
+    final data = await http.get(Uri.parse(url));
     return data.body;
   }
 }

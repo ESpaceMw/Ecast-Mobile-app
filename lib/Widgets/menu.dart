@@ -83,8 +83,7 @@ class _MenuState extends State<Menu> {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const ChartsScreen()));
+            Navigator.pushNamed(context, charts);
           },
           child: ListTile(
             leading: Container(

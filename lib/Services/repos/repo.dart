@@ -1,4 +1,5 @@
 import 'package:ecast/Models/channels.dart';
+import 'package:ecast/Models/charts.dart';
 import 'package:ecast/Models/user_model.dart';
 import 'package:ecast/Services/api.dart';
 import 'dart:convert' as convert;
@@ -21,5 +22,16 @@ class Repository {
   Future<List<Channels>> fetchSubscription() async {
     final data = await networkService.fetchSubscriptions();
     return parsePhotos(data);
+  }
+
+  List<Charts> parseCharts(String responseBody) {
+    final parsed =
+        convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
+    return parsed.map<Charts>((json) => Charts.fromJson(json)).toList();
+  }
+
+  Future<List<Charts>> fetchCharts() async {
+    final data = await networkService.fetchCharts();
+    return parseCharts(data);
   }
 }

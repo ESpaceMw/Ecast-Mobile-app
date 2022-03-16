@@ -51,6 +51,9 @@ class _LibraryState extends State<Library> {
             _buildTabs(2),
           ],
         ),
+        const SizedBox(
+          height: 15,
+        ),
         Container(
           child: _currentBuild == 0
               ? BlocProvider(
@@ -77,7 +80,12 @@ class _LibraryState extends State<Library> {
       child: Container(
         padding: const EdgeInsets.all(8.0),
         margin: const EdgeInsets.only(left: 5),
-        color: _currentBuild == index ? codeColor.withGreen(100) : null,
+        decoration: BoxDecoration(
+          color: _currentBuild == index ? btnColor : null,
+          borderRadius: BorderRadius.circular(
+            6,
+          ),
+        ),
         child: tabs[index],
       ),
     );
