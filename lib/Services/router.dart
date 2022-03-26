@@ -35,7 +35,10 @@ class AppRouter {
         );
       case signUp:
         return MaterialPageRoute(
-          builder: (_) => const SignUp(),
+          builder: (_) => BlocProvider(
+            create: (BuildContext context) => UserCubit(repository: repository),
+            child: const SignUp(),
+          ),
         );
       case signIn:
         return MaterialPageRoute(

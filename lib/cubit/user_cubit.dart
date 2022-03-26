@@ -23,4 +23,11 @@ class UserCubit extends Cubit<UserState> {
       ));
     });
   }
+
+  void register() {
+    emit(RegisteringUser());
+    repository.SignUp().then((value) {
+      emit(RegistrationDone());
+    });
+  }
 }

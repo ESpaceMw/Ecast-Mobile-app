@@ -9,12 +9,30 @@ class NetworkService {
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
   var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
 
+  Future signup() async {
+    try {
+      var data =
+          await http.post(Uri.parse('$baseUrl/rest-auth/registration'), body: {
+        'username': username.text,
+        'password1': password.text,
+        'password2': confirmed.text,
+        'email': email.text,
+      });
+
+      var res = convert.jsonDecode(data.body);
+      print(res);
+      return 'User successfully registered';
+    } catch (e) {
+      print(e);
+    }
+  }
+
   // login method
   Future<dynamic> login() async {
     try {
       final data = await http.post(
           Uri.parse(
-            "$baseUrl/api/v1/auth/login",
+            "$baseUrl/rest-auth/login",
           ),
           body: {
             'email': email.text,
@@ -26,20 +44,22 @@ class NetworkService {
       } else {
         var res = convert.jsonDecode(data.body);
         // ignore: non_constant_identifier_names
-        Map decode_options = convert.jsonDecode(data.body);
-        String? user = convert.jsonEncode(decode_options['user']);
-        prefs.then((SharedPreferences prefs) {
-          return prefs.setString("user", user);
-        });
-        prefs.then((SharedPreferences prefs) {
-          return prefs.setBool("loggedin", true);
-        });
-        prefs.then((SharedPreferences prefs) {
-          return prefs.setString("accessToken", res['access_token']);
-        });
+        print(res);
+        // Map decode_options = convert.jsonDecode(data.body);
+        // String? user = convert.jsonEncode(decode_options['user']);
+        // prefs.then((SharedPreferences prefs) {
+        //   return prefs.setString("user", user);
+        // });
+        // prefs.then((SharedPreferences prefs) {
+        //   return prefs.setBool("loggedin", true);
+        // });
+        // prefs.then((SharedPreferences prefs) {
+        //   return prefs.setString("accessToken", res['access_token']);
+        // });
         return "Login Successfully";
       }
     } catch (e) {
+      print(e);
       return "error";
       // return [];
     }

@@ -18,3 +18,7 @@ class LoginError extends UserState {
 
   LoginError({required this.error});
 }
+
+class RegisteringUser extends UserState {}
+
+class RegistrationDone extends UserState {}
