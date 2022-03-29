@@ -147,7 +147,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   onTap: () {
                     final form = _formkey.currentState;
                     if (form != null && form.validate()) {
-                      resetPassword();
+                      // resetPassword();
                     }
                   },
                   child: Container(
@@ -169,68 +169,68 @@ class _ResetPasswordState extends State<ResetPassword> {
     );
   }
 
-  Future resetPassword() async {
-    Dialogs.showLoadingDialog(context, keyLoader);
-    final email = ModalRoute.of(context)!.settings.arguments as String;
+  // Future resetPassword() async {
+  //   Dialogs.showLoadingDialog(context, keyLoader);
+  //   final email = ModalRoute.of(context)!.settings.arguments as String;
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    try {
-      var response = await http.post(
-        Uri.parse("$baseUrl/api/v1/auth/password-reset"),
-        body: {
-          'token': prefs.getString("reset_token"),
-          "email": email,
-          "password": _password.text,
-        },
-      );
-      if (response.statusCode != 400 && response.statusCode == 200) {
-        var jsonData = convert.jsonDecode(response.body);
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   try {
+  //     var response = await http.post(
+  //       Uri.parse("$baseUrl/api/v1/auth/password-reset"),
+  //       body: {
+  //         'token': prefs.getString("reset_token"),
+  //         "email": email,
+  //         "password": _password.text,
+  //       },
+  //     );
+  //     if (response.statusCode != 400 && response.statusCode == 200) {
+  //       var jsonData = convert.jsonDecode(response.body);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Password changed successfully changed",
-            ),
-          ),
-        );
-        Navigator.pushReplacementNamed(context, '/signin');
-      } else {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Invalid Token",
-            ),
-          ),
-        );
-      }
-    } on HttpException {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Internal server error.Contact the system Administrator",
-          ),
-        ),
-      );
-    } on SocketException {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Please, Check your Internet connection",
-          ),
-        ),
-      );
-    } catch (e) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Oops! something went wrong",
-          ),
-        ),
-      );
-    }
-  }
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(
+  //           content: Text(
+  //             "Password changed successfully changed",
+  //           ),
+  //         ),
+  //       );
+  //       Navigator.pushReplacementNamed(context, '/signin');
+  //     } else {
+  //       Navigator.pop(context);
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(
+  //           content: Text(
+  //             "Invalid Token",
+  //           ),
+  //         ),
+  //       );
+  //     }
+  //   } on HttpException {
+  //     Navigator.pop(context);
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text(
+  //           "Internal server error.Contact the system Administrator",
+  //         ),
+  //       ),
+  //     );
+  //   } on SocketException {
+  //     Navigator.pop(context);
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text(
+  //           "Please, Check your Internet connection",
+  //         ),
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     Navigator.pop(context);
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text(
+  //           "Oops! something went wrong",
+  //         ),
+  //       ),
+  //     );
+  //   }
+  // }
 }

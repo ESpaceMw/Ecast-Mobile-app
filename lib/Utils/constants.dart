@@ -10,7 +10,7 @@ const selectedIten = Color(0xFF5ED0FB);
 const codeColor = Color(0xFF37474F);
 const recColor = Color(0xFF1A1A1A);
 final GlobalKey<State> keyLoader = GlobalKey<State>();
-var baseUrl = 'http://159.223.234.130';
+
 
 final TextEditingController email = TextEditingController();
 final TextEditingController password = TextEditingController();

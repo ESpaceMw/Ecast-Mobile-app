@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     onGenerateRoute: AppRouter().generateRoute,

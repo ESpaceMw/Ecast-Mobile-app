@@ -21,4 +21,8 @@ class LoginError extends UserState {
 
 class RegisteringUser extends UserState {}
 
-class RegistrationDone extends UserState {}
+class RegistrationDone extends UserState {
+  final String msg;
+
+  RegistrationDone({required this.msg});
+}

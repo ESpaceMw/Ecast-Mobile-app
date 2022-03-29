@@ -27,7 +27,13 @@ class UserCubit extends Cubit<UserState> {
   void register() {
     emit(RegisteringUser());
     repository.SignUp().then((value) {
-      emit(RegistrationDone());
+      // final bool err? = value['err'];
+      bool exists = value.containsKey('err');
+      if (value['err']) {
+        emit(LoginError(error: value['msg']));
+      } else {
+        emit(RegistrationDone(msg: value['msg']));
+      }
     });
   }
 }

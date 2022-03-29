@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ecast/Utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -7,21 +9,37 @@ import 'package:shared_preferences/shared_preferences.dart';
 class NetworkService {
   // get baseUrl => null;
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  var baseUrl = 'http://159.223.234.130';
   var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
 
   Future signup() async {
     try {
-      var data =
-          await http.post(Uri.parse('$baseUrl/rest-auth/registration'), body: {
-        'username': username.text,
-        'password1': password.text,
-        'password2': confirmed.text,
+      var req =
+          await http.post(Uri.parse('$baseUrl/rest-auth/registration/'), body: {
+        'username': username.text.trim(),
+        'password1': password.text.trim(),
+        'password2': confirmed.text.trim(),
         'email': email.text,
       });
 
-      var res = convert.jsonDecode(data.body);
+      if (req.statusCode == 400) {
+        var errinfo = convert.jsonDecode(req.body);
+        bool keyExists = errinfo.containsKey('email');
+        // print(keyExists);
+        if (keyExists) {
+          return {'err': true, 'msg': "User with that account already exists"};
+        } else {
+          return {'err': true, 'msg': "Your Password is weak"};
+        }
+      }
+      var res = convert.jsonDecode(req.body);
       print(res);
-      return 'User successfully registered';
+      return {'err': false, 'msg': "Account created Successfully"};
+    } on HttpException {
+      return {
+        'err': true,
+        'msg': "Oops! something went wrong, contact system administrator"
+      };
     } catch (e) {
       print(e);
     }

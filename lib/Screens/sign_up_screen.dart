@@ -32,7 +32,22 @@ class _SignUpState extends State<SignUp> {
                 ),
                 BlocConsumer<UserCubit, UserState>(
                   listener: (context, state) {
-                    // TODO: implement listener
+                    if (state is LoginError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.error),
+                        ),
+                      );
+                    }
+
+                    if (state is RegistrationDone) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.msg),
+                        ),
+                      );
+                      Navigator.pushReplacementNamed(context, signIn);
+                    }
                   },
                   builder: (context, state) {
                     if (state is RegisteringUser) {
