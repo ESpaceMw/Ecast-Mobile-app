@@ -19,8 +19,9 @@ final List<BottomNavigationBarItem> bottomTabs = [
     label: "library",
   ),
   const BottomNavigationBarItem(
-      icon: Icon(
-        Icons.menu,
-      ),
-      label: "Menu")
+    icon: Icon(
+      Icons.menu,
+    ),
+    label: "Menu",
+  )
 ];

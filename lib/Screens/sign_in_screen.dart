@@ -21,7 +21,7 @@ class _SignInState extends State<SignIn> {
     final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
     var data =
         prefs.then((SharedPreferences prefs) => prefs.getBool("loggedin"));
-    print(data);
+    // print(data);
   }
 
   @override
@@ -179,9 +179,10 @@ class _SignInState extends State<SignIn> {
                             GestureDetector(
                               onTap: () {
                                 final form = _formkey.currentState;
-                                if (form != null && form.validate()) {
-                                  BlocProvider.of<UserCubit>(context).login();
-                                }
+                                Navigator.pushNamed(context, home);
+                                // if (form != null && form.validate()) {
+                                //   BlocProvider.of<UserCubit>(context).login();
+                                // }
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.8,
@@ -241,97 +242,3 @@ class _SignInState extends State<SignIn> {
     );
   }
 }
-
-//   Future submitData() async {
-//     Dialogs.showLoadingDialog(context, keyLoader);
-
-//     try {
-//       var response = await http.post(Uri.parse(url), body: {
-//         "email": _email.text,
-//         "password": _password.text,
-//       });
-
-//       var token = convert.jsonDecode(response.body);
-//       if (token['message'] != 'These credentials do not match our records' &&
-//           response.statusCode == 200) {
-//         // ignore: non_constant_identifier_names
-//         Map decode_options = convert.jsonDecode(response.body);
-//         String? user = convert.jsonEncode(decode_options['user']);
-//         prefs.then((SharedPreferences prefs) {
-//           return prefs.setString("user", user);
-//         });
-//         prefs.then((SharedPreferences prefs) {
-//           return prefs.setBool("loggedin", true);
-//         });
-
-//         prefs.then((SharedPreferences prefs) {
-//           return prefs.setString("token", token['access_token']);
-//         });
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           const SnackBar(
-//             content: Text(
-//               "Login Successfull!",
-//               textAlign: TextAlign.center,
-//               style: snackBarText,
-//             ),
-//             backgroundColor: btnColor,
-//             elevation: 17,
-//           ),
-//         );
-//         Navigator.pushReplacementNamed(context, '/home');
-//       } else {
-//         Navigator.pop(context);
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           const SnackBar(
-//             content: Text(
-//               "User does not exists",
-//               textAlign: TextAlign.center,
-//               style: snackBarText,
-//             ),
-//             backgroundColor: btnColor,
-//             elevation: 17,
-//           ),
-//         );
-//       }
-//     } on HttpException {
-//       Navigator.pop(context);
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(
-//           content: Text(
-//             "Server error, contact system admistartor",
-//             textAlign: TextAlign.center,
-//             style: snackBarText,
-//           ),
-//           backgroundColor: btnColor,
-//           elevation: 17,
-//         ),
-//       );
-//     } on SocketException {
-//       Navigator.pop(context);
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(
-//           content: Text(
-//             "Check your internet connection",
-//             textAlign: TextAlign.center,
-//             style: snackBarText,
-//           ),
-//           backgroundColor: btnColor,
-//           elevation: 17,
-//         ),
-//       );
-//     } catch (e) {
-//       Navigator.pop(context);
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(
-//           content: Text(
-//             "Oops! something went wrong",
-//             textAlign: TextAlign.center,
-//             style: snackBarText,
-//           ),
-//           backgroundColor: btnColor,
-//           elevation: 17,
-//         ),
-//       );
-//     }
-//   }
-// }

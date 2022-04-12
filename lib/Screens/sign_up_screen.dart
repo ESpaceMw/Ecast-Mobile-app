@@ -72,7 +72,7 @@ class _SignUpState extends State<SignUp> {
                             TextFormField(
                               validator: (value) {
                                 if (value == '') {
-                                  return 'Please Enter yout first name';
+                                  return 'Please Enter your Username';
                                 }
                                 return null;
                               },
@@ -82,8 +82,8 @@ class _SignUpState extends State<SignUp> {
                                   Icons.person,
                                   color: whiteColor,
                                 ),
-                                hintText: "First Name",
-                                labelText: "First Name",
+                                hintText: "Username",
+                                labelText: "Username",
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: whiteColor,
@@ -257,7 +257,6 @@ class _SignUpState extends State<SignUp> {
                               onTap: () {
                                 final form = _formkey.currentState;
                                 if (form != null && form.validate()) {
-                                  // registerUser();
                                   BlocProvider.of<UserCubit>(context)
                                       .register();
                                 }
@@ -306,30 +305,3 @@ class _SignUpState extends State<SignUp> {
     );
   }
 }
-
-//   Future registerUser() async {
-//     var firstname = _firstname.text,
-//         lastname = _lastname.text,
-//         email = _email.text,
-//         country = _country.text,
-//         phonenumber = _phonenumber.text,
-//         password = _password.text,
-//         city = _city.text;
-//     Dialogs.showLoadingDialog(context, keyLoader);
-//     try {
-//       // ApiCalls()
-//       //     .signup(firstname, lastname, email, country, phonenumber, gender,
-//       //         city, password)
-//       //     .then(
-//       //       (user) => {
-//       //         Navigator.pushReplacementNamed(context, '/signin'),
-//       //       },
-//       //     );
-//       // validate/sanitize data
-//       // Register logic
-//     } catch (e) {
-//       // Handle error
-//       print(e);
-//     }
-//   }
-// }

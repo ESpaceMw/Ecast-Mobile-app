@@ -7,7 +7,6 @@ import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NetworkService {
-  // get baseUrl => null;
   final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
   var baseUrl = 'http://159.223.234.130';
   var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
@@ -58,7 +57,7 @@ class NetworkService {
           });
 
       if (data.statusCode != 200) {
-        return "error";
+        return {'err': true, 'msg': "Error"};
       } else {
         var res = convert.jsonDecode(data.body);
         // ignore: non_constant_identifier_names

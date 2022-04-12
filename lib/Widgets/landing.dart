@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Models/charts.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/logic.dart';
+import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:scroll_snap_list/scroll_snap_list.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
+import 'package:carousel_slider/carousel_slider.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -17,18 +17,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final ScrollController _scrollController = ScrollController();
-
-  // List<Charts> ParseCharts(String res) {
-  //   final parsed = convert.jsonDecode(res).cast<Map<String, dynamic>>();
-  //   return parsed.map<Charts>((json) => Charts.fromJson(json)).toList();
-  // }
-
-  // Future<List<Charts>> _getCharts() async {
-  //   var response = await http.get(
-  //       Uri.parse("https://jsonplaceholder.typicode.com/photos/?_limit=10"));
-  //   return ParseCharts(response.body);
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -37,6 +25,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<ChartsCubit>(context).charts();
     DateTime now = DateTime.now();
     var timenow = int.parse(DateFormat('kk').format(now));
     String message = timeChecker(timenow);
@@ -98,65 +87,87 @@ class _HomeState extends State<Home> {
                 ],
               ),
             ),
-            // FutureBuilder<List<Charts>>(
-            //   future: _getCharts(),
-            //   builder: (context, snapshot) {
-            //     switch (snapshot.connectionState) {
-            //       case ConnectionState.none:
-            //         return const Center(
-            //           child: Text("Fetch somethin"),
-            //         );
-            //       case ConnectionState.active:
-            //       case ConnectionState.waiting:
-            //         return Container(
-            //           height: MediaQuery.of(context).size.height * 0.8,
-            //           child: const Center(
-            //             child: CircularProgressIndicator(),
-            //           ),
-            //         );
-            //       case ConnectionState.done:
-            //         if (snapshot.hasError) {
-            //           return const Center(
-            //             child: Text("Ooops, something went wrong"),
-            //           );
-            //         } else {
-            //           return SnapChartList(charts: snapshot.data!);
-            //         }
-            //     }
-            //   },
-            // )
+            BlocConsumer<ChartsCubit, ChartsState>(
+              listener: (context, state) {
+                // TODO: implement listener
+              },
+              builder: (context, state) {
+                if (state is ChartsLoaded) {
+                  final List<Widget> imageSliders = state.charts
+                      .map((item) => Container(
+                            margin: const EdgeInsets.all(5.0),
+                            child: ClipRRect(
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(5.0)),
+                                child: Stack(
+                                  children: <Widget>[
+                                    Image.network(
+                                      item.thumbnail,
+                                      fit: BoxFit.cover,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.8,
+                                    ),
+                                    Positioned(
+                                      bottom: 0.0,
+                                      left: 0.0,
+                                      right: 0.0,
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Color.fromARGB(200, 0, 0, 0),
+                                              Color.fromARGB(0, 0, 0, 0)
+                                            ],
+                                            begin: Alignment.bottomCenter,
+                                            end: Alignment.topCenter,
+                                          ),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 20.0),
+                                        child: const Text(
+                                          'Title',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ))
+                      .toList();
+                  return Container(
+                    margin: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.2,
+                    ),
+                    child: CarouselSlider(
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        aspectRatio: 2.0,
+                        enlargeCenterPage: true,
+                      ),
+                      items: imageSliders,
+                    ),
+                  );
+                } else {
+                  return Container(
+                    margin: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.3,
+                    ),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: btnColor,
+                      ),
+                    ),
+                  );
+                }
+              },
+            )
           ],
         ),
       ],
     );
-  }
-}
-
-class SnapChartList extends StatelessWidget {
-  const SnapChartList({Key? key, required this.charts}) : super(key: key);
-
-  final List<Charts> charts;
-  // int _focusedIndex = 4;
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      itemBuilder: (BuildContext context, index) {
-        return CachedNetworkImage(
-          imageUrl: charts[index].thumbnail,
-          placeholder: (context, url) => const CircularProgressIndicator(
-            color: btnColor,
-          ),
-        );
-      },
-      itemCount: charts.length,
-    );
-  }
-
-  void ItemFocus(int p1) {
-    print("Focused");
   }
 }

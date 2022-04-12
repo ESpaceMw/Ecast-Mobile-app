@@ -1,7 +1,6 @@
 import 'package:ecast/Services/router.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();

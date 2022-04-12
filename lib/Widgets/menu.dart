@@ -1,5 +1,4 @@
 import 'package:ecast/Models/user_model.dart';
-import 'package:ecast/Screens/charts_screen.dart';
 import 'package:ecast/Screens/profile.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:flutter/material.dart';
