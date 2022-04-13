@@ -15,12 +15,13 @@ class UserCubit extends Cubit<UserState> {
   void login() {
     emit(LoginLoading());
     repository.signin().then((res) {
-      if (res.toString() == "error") {
-        emit(LoginError(error: "error"));
+      if (res['err']) {
+        emit(LoginError(error: res['msg']));
+      } else {
+        emit(LoginDone(
+          msg: res,
+        ));
       }
-      emit(LoginDone(
-        msg: res,
-      ));
     });
   }
 

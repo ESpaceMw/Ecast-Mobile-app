@@ -5,6 +5,10 @@ abstract class NetworkState {}
 
 class NetworkInitial extends NetworkState {}
 
-class NewtworkConnected extends NetworkState {}
+class NetworkConnected extends NetworkState {}
 
-class NetworkDisconnected extends NetworkState {}
+class NetworkDisconnected extends NetworkState {
+  final String msg;
+
+  NetworkDisconnected({required this.msg});
+}

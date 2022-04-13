@@ -12,3 +12,9 @@ class ChartsLoaded extends ChartsState {
 
   ChartsLoaded({required this.charts});
 }
+
+class NetError extends ChartsState {
+  final String msg;
+
+  NetError({required this.msg});
+}

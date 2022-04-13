@@ -24,7 +24,6 @@ class NetworkService {
       if (req.statusCode == 400) {
         var errinfo = convert.jsonDecode(req.body);
         bool keyExists = errinfo.containsKey('email');
-        // print(keyExists);
         if (keyExists) {
           return {'err': true, 'msg': "User with that account already exists"};
         } else {
@@ -39,6 +38,11 @@ class NetworkService {
         'err': true,
         'msg': "Oops! something went wrong, contact system administrator"
       };
+    } on SocketException {
+      return {
+        'err': true,
+        'msg': "Error, check your internet connection",
+      };
     } catch (e) {
       print(e);
     }
@@ -47,6 +51,7 @@ class NetworkService {
   // login method
   Future<dynamic> login() async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       final data = await http.post(
           Uri.parse(
             "$baseUrl/rest-auth/login",
@@ -73,12 +78,17 @@ class NetworkService {
         // prefs.then((SharedPreferences prefs) {
         //   return prefs.setString("accessToken", res['access_token']);
         // });
-        return "Login Successfully";
+        return {'err': false, 'msg': "Login Successfully"};
       }
+    } on SocketException {
+      return {
+        'err': true,
+        'msg': 'The internet and i are not talking at the moment'
+      };
+    } on HttpException {
+      return {'err': true, 'msg': 'Server error, Contact system admin'};
     } catch (e) {
-      print(e);
-      return "error";
-      // return [];
+      return {'err': true, 'msg': "Error, Contact system admin"};
     }
   }
 
