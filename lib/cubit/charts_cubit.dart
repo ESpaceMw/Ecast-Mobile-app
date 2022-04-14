@@ -23,26 +23,19 @@ class ChartsCubit extends Cubit<ChartsState> {
 
   void charts() async {
     emit(ChartsLoading());
-    connectivitySub = connectivity.onConnectivityChanged.listen((result) async {
-      if (result == ConnectivityResult.none) {
-        emit(NetError(msg: "The internet and i are not talking at the moment"));
-      } else {
-        try {
-          var data = await http.get(Uri.parse('https://www.google.com'));
-          if (data.statusCode == 200) {
-            repository.fetchCharts().then((value) {
-              emit(ChartsLoaded(charts: value));
-            });
-          }
-        } on SocketException {
-          emit(NetError(
-              msg: "The internet and i are not talking at the moment"));
-        } catch (e) {
-          emit(NetError(
-              msg: "The internet and i are not talking at the moment"));
-        }
+
+    try {
+      var data = await http.get(Uri.parse('https://www.google.com'));
+      if (data.statusCode == 200) {
+        repository.fetchCharts().then((value) {
+          emit(ChartsLoaded(charts: value));
+        });
       }
-    });
+    } on SocketException {
+      emit(NetError(msg: "The internet and i are not talking at the moment"));
+    } catch (e) {
+      emit(NetError(msg: "The internet and i are not talking at the moment"));
+    }
   }
 
   @override

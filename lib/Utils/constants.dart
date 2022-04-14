@@ -11,17 +11,19 @@ const codeColor = Color(0xFF37474F);
 const recColor = Color(0xFF1A1A1A);
 final GlobalKey<State> keyLoader = GlobalKey<State>();
 
-
 final TextEditingController email = TextEditingController();
 final TextEditingController password = TextEditingController();
 final TextEditingController username = TextEditingController();
 final TextEditingController confirmed = TextEditingController();
-
-Future<bool?> state() async {
-  final SharedPreferences item = await SharedPreferences.getInstance();
-  // return item.getBool("loggedin");
-  return item.getBool("loggedin");
-}
+final TextEditingController firstname = TextEditingController();
+final TextEditingController lastname = TextEditingController();
+final TextEditingController country = TextEditingController();
+final TextEditingController city = TextEditingController();
+final TextEditingController phone = TextEditingController();
+final TextEditingController birthdate = TextEditingController();
+// final TextEditingController gender = TextEditingController();
+String gender = 'Male';
+List<String> gvals = ['Male', 'Female', 'None'];
 
 const textStyle = TextStyle(
   fontSize: 18,

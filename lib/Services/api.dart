@@ -13,9 +13,17 @@ class NetworkService {
 
   Future signup() async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       var req =
           await http.post(Uri.parse('$baseUrl/rest-auth/registration/'), body: {
         'username': username.text.trim(),
+        'first_name': firstname.text.trim(),
+        'last_name': lastname.text.trim(),
+        'country': country.text.trim(),
+        'city': city.text.trim(),
+        'birth_date': birthdate.text,
+        'gender': gender,
+        'phone_number': phone.text.trim(),
         'password1': password.text.trim(),
         'password2': confirmed.text.trim(),
         'email': email.text,
@@ -23,15 +31,23 @@ class NetworkService {
 
       if (req.statusCode == 400) {
         var errinfo = convert.jsonDecode(req.body);
+        print(errinfo);
         bool keyExists = errinfo.containsKey('email');
+        bool userNameExists = errinfo.containsKey('username');
+        bool birth = errinfo.containsKey('birth_date');
         if (keyExists) {
           return {'err': true, 'msg': "User with that account already exists"};
+        } else if (userNameExists) {
+          return {'err': true, 'msg': "User with that username already Exists"};
+        } else if (birth) {
+          return {'err': true, 'msg': "Date format is wrong"};
         } else {
           return {'err': true, 'msg': "Your Password is weak"};
         }
       }
       var res = convert.jsonDecode(req.body);
-      print(res);
+      prefs.setBool("loggedin", true);
+      prefs.setString("token", res['key']);
       return {'err': false, 'msg': "Account created Successfully"};
     } on HttpException {
       return {
