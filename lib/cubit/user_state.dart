@@ -26,3 +26,11 @@ class RegistrationDone extends UserState {
 
   RegistrationDone({required this.msg});
 }
+
+class Loading extends UserState {}
+
+class FetchedUser extends UserState {
+  final Map user;
+
+  FetchedUser({required this.user});
+}

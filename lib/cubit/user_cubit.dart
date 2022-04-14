@@ -37,4 +37,15 @@ class UserCubit extends Cubit<UserState> {
       }
     });
   }
+
+  void userProfile() {
+    emit(Loading());
+    repository.fetchUser().then((value) {
+      if (value['err']) {
+        emit(LoginError(error: value['msg']));
+      } else {
+        emit(FetchedUser(user: value['msg']));
+      }
+    });
+  }
 }

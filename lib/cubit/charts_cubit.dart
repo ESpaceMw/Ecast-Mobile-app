@@ -13,10 +13,6 @@ part 'charts_state.dart';
 class ChartsCubit extends Cubit<ChartsState> {
   final Repository repository;
 
-  late final Connectivity connectivity;
-
-  late StreamSubscription<ConnectivityResult> connectivitySub;
-
   ChartsCubit({required this.repository}) : super(ChartsInitial()) {
     // netStreamSub =  netCubit.
   }
@@ -36,11 +32,5 @@ class ChartsCubit extends Cubit<ChartsState> {
     } catch (e) {
       emit(NetError(msg: "The internet and i are not talking at the moment"));
     }
-  }
-
-  @override
-  Future<void> close() {
-    connectivitySub.cancel();
-    return super.close();
   }
 }

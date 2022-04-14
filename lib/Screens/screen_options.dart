@@ -5,6 +5,7 @@ import 'package:ecast/Widgets/menu.dart';
 import 'package:ecast/Widgets/library.dart';
 import 'package:ecast/Widgets/search.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 Repository repository = Repository(networkService: NetworkService());
@@ -16,5 +17,8 @@ final List tabBodies = [
   ),
   const Search(),
   const Library(),
-  const Menu(),
+  BlocProvider(
+    create: (context) => UserCubit(repository: repository),
+    child: const Menu(),
+  ),
 ];

@@ -17,6 +17,10 @@ class Repository {
     return networkService.signup();
   }
 
+  Future fetchUser() async {
+    return networkService.fetchUser();
+  }
+
   List<Channels> parsePhotos(String responseBody) {
     final parsed =
         convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();

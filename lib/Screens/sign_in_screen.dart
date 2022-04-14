@@ -15,13 +15,16 @@ class _SignInState extends State<SignIn> {
   final GlobalKey<State> keyLoader = GlobalKey<State>();
   final _formkey = GlobalKey<FormState>();
 
+  _getdata() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getBool("loggedin"));
+    print(prefs.getString("token"));
+  }
+
   @override
   void initState() {
     super.initState();
-    final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-    var data =
-        prefs.then((SharedPreferences prefs) => prefs.getBool("loggedin"));
-    // print(data);
+    _getdata();
   }
 
   @override

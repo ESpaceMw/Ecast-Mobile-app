@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Models/user_model.dart';
 import 'package:ecast/Screens/profile.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,68 +17,82 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   // var url = 'http://10.0.2.2:8000/api/user';
-  List<User> parseUser(String responseBody) {
-    final parsed =
-        convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
-    return parsed.map<User>((json) => User.fromJson(json)).toList();
-  }
+  // List<User> parseUser(String responseBody) {
+  //   final parsed =
+  //       convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
+  //   return parsed.map<User>((json) => User.fromJson(json)).toList();
+  // }
 
-  var user = 'user';
-  _getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map userMap = convert.jsonDecode(prefs.getString("user").toString());
-    setState(() {
-      user = userMap['first_name'] + " " + userMap['last_name'];
-    });
-  }
+  // var user = 'user';
+  // _getUserData() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   Map userMap = convert.jsonDecode(prefs.getString("user").toString());
+  //   setState(() {
+  //     user = userMap['first_name'] + " " + userMap['last_name'];
+  //   });
+  // }
 
   @override
   void initState() {
-    _getUserData();
+    // _getUserData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<UserCubit>(context).userProfile();
     return ListView(
       children: [
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => const Profile()));
+        BlocConsumer<UserCubit, UserState>(
+          listener: (context, state) {
+            // TODO: implement listener
           },
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                  "assets/logos/user.png",
-                  width: MediaQuery.of(context).size.width * 0.2,
+          builder: (context, state) {
+            if (state is FetchedUser) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => const Profile()));
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        "assets/logos/user.png",
+                        width: MediaQuery.of(context).size.width * 0.2,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      children: [
+                        Text(
+                          state.user['username'],
+                          style: textStyle,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5),
+                          child: Text(state.user['email']),
+                        )
+                      ],
+                    )
+                  ],
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Column(
-                children: [
-                  Text(
-                    user,
-                    style: textStyle,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 5),
-                    child: Text('Dude'),
-                  )
-                ],
-              )
-            ],
-          ),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
         ),
         const SizedBox(
           height: 20,

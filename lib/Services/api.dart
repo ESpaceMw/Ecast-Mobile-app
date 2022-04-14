@@ -46,6 +46,7 @@ class NetworkService {
         }
       }
       var res = convert.jsonDecode(req.body);
+      print(res);
       prefs.setBool("loggedin", true);
       prefs.setString("token", res['key']);
       return {'err': false, 'msg': "Account created Successfully"};
@@ -117,5 +118,28 @@ class NetworkService {
   Future<String> fetchCharts() async {
     final data = await http.get(Uri.parse(url));
     return data.body;
+  }
+
+  Future fetchUser() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var request = await http.get(Uri.parse("$baseUrl/rest-auth/user"),
+          headers: {'Authorization': 'Token $token'});
+      var response = convert.jsonDecode(request.body);
+      return {'err': false, 'msg': response};
+    } on SocketException {
+      return {'err': true, 'msg': "The internet and i are not talking"};
+    } on HttpException {
+      return {"err": true, 'msg': "Server error, contact system admin"};
+    } catch (e) {
+      return {"err": true, 'msg': "Server error, contact system admin"};
+    }
+  }
+
+  Future logout() async {
+    try {} on SocketException {
+    } on HttpException {
+    } catch (e) {}
   }
 }

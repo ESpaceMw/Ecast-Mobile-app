@@ -6,6 +6,7 @@ import 'package:ecast/Utils/logic.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -89,9 +90,16 @@ class _GenresState extends State<Genres> {
     return parsePhotos(response.body);
   }
 
+  _getDate() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getBool("loggedin"));
+    print(prefs.getString("token"));
+  }
+
   @override
   void initState() {
     super.initState();
+    _getDate();
     _getChannels();
   }
 
