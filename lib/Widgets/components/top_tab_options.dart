@@ -21,6 +21,27 @@ final List<Widget> tabs = [
   )
 ];
 
+const gen = [
+  Text(
+    "Arts",
+    style: TextStyle(
+      fontSize: 17,
+    ),
+  ),
+  Text(
+    "Business",
+    style: TextStyle(
+      fontSize: 17,
+    ),
+  ),
+  Text(
+    'Education',
+    style: TextStyle(
+      fontSize: 17,
+    ),
+  ),
+];
+
 final List<Widget> profileTabs = [
   const Text(
     "Profile",

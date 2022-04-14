@@ -16,4 +16,6 @@ class PodcastsCubit extends Cubit<PodcastsState> {
       emit(PodcastsLoaded(subs: value));
     });
   }
+
+  void filtered(String cat) {}
 }

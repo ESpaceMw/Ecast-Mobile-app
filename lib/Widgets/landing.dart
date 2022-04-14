@@ -1,7 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ecast/Models/charts.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/logic.dart';
+import 'package:ecast/Widgets/components/arts.dart';
+import 'package:ecast/Widgets/components/business.dart';
+import 'package:ecast/Widgets/components/education.dart';
+import 'package:ecast/Widgets/components/top_tab_options.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +20,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final ScrollController _scrollController = ScrollController();
+  int _currentBuilds = 0;
   @override
   void initState() {
     super.initState();
@@ -140,17 +144,19 @@ class _HomeState extends State<Home> {
                       .toList();
                   return Container(
                     margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.2,
+                      top: MediaQuery.of(context).size.height * 0.14,
                     ),
                     child: CarouselSlider(
                       options: CarouselOptions(
-                        autoPlay: true,
+                        autoPlay: false,
                         aspectRatio: 2.0,
                         enlargeCenterPage: true,
                       ),
                       items: imageSliders,
                     ),
                   );
+                } else if (state is NetError) {
+                  return Text("Hello");
                 } else {
                   return Container(
                     margin: EdgeInsets.only(
@@ -164,10 +170,61 @@ class _HomeState extends State<Home> {
                   );
                 }
               },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.46,
+              left: 20,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildTabs(0),
+                  _buildTabs(1),
+                  _buildTabs(2),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Positioned(
+              height: MediaQuery.of(context).size.height * 1.1,
+              left: 20,
+              child: _currentBuilds == 0
+                  ? const Arts()
+                  : _currentBuilds == 1
+                      ? const Business()
+                      : const Education(),
             )
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildTabs(int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _currentBuilds = index;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+        margin: const EdgeInsets.only(
+          left: 5,
+          // top:
+        ),
+        decoration: BoxDecoration(
+          color: _currentBuilds == index ? btnColor : null,
+          borderRadius: BorderRadius.circular(
+            6,
+          ),
+        ),
+        child: gen[index],
+      ),
     );
   }
 }
