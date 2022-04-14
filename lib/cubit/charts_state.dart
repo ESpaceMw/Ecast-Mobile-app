@@ -8,7 +8,7 @@ class ChartsInitial extends ChartsState {}
 class ChartsLoading extends ChartsState {}
 
 class ChartsLoaded extends ChartsState {
-  final List<Charts> charts;
+  final List charts;
 
   ChartsLoaded({required this.charts});
 }

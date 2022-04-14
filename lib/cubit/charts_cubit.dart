@@ -13,10 +13,7 @@ part 'charts_state.dart';
 class ChartsCubit extends Cubit<ChartsState> {
   final Repository repository;
 
-  ChartsCubit({required this.repository}) : super(ChartsInitial()) {
-    // netStreamSub =  netCubit.
-  }
-
+  ChartsCubit({required this.repository}) : super(ChartsInitial());
   void charts() async {
     emit(ChartsLoading());
 
@@ -24,7 +21,7 @@ class ChartsCubit extends Cubit<ChartsState> {
       var data = await http.get(Uri.parse('https://www.google.com'));
       if (data.statusCode == 200) {
         repository.fetchCharts().then((value) {
-          emit(ChartsLoaded(charts: value));
+          emit(ChartsLoaded(charts: value['msg']));
         });
       }
     } on SocketException {

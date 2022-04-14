@@ -16,19 +16,6 @@ class ChartsScreen extends StatefulWidget {
 class _ChartsScreenState extends State<ChartsScreen> {
   final ScrollController _scrollController = ScrollController();
 
-  // List<Charts> parsePhotos(String responseBody) {
-  //   final parsed =
-  //       convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
-  //   return parsed.map<Charts>((json) => Charts.fromJson(json)).toList();
-  // }
-
-  // Future<List<Charts>> _getChannels() async {
-  //   var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
-  //   var response = await http.get(Uri.parse(url));
-  //   var jsonData = convert.jsonDecode(response.body);
-  //   return parsePhotos(response.body);
-  // }
-
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<ChartsCubit>(context).charts();
@@ -68,7 +55,64 @@ class _ChartsScreenState extends State<ChartsScreen> {
             },
             builder: (context, state) {
               if (state is ChartsLoaded) {
-                return ChartsList(photos: state.charts);
+                return GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 4.0,
+                  ),
+                  itemCount: state.charts.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ViewChart(
+                              chartDetails: state.charts[index],
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 16,
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: recColor,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Column(
+                          children: [
+                            Flexible(
+                                child: Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5),
+                                child: CachedNetworkImage(
+                                  imageUrl: state.charts[index]['header_image'],
+                                  placeholder: (context, url) =>
+                                      const CircularProgressIndicator(
+                                    color: btnColor,
+                                  ),
+                                ),
+                              ),
+                            )),
+                            const SizedBox(height: 5),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Text(
+                                state.charts[index]['name'],
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  // fontSize: 16,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
               } else {
                 return Container(
                   height: MediaQuery.of(context).size.height * 0.76,

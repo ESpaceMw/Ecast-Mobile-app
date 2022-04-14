@@ -42,8 +42,9 @@ class Repository {
     return parsed.map<Charts>((json) => Charts.fromJson(json)).toList();
   }
 
-  Future<List<Charts>> fetchCharts() async {
+  Future fetchCharts() async {
     final data = await networkService.fetchCharts();
-    return parseCharts(data);
+    // return parseCharts(data);
+    return data;
   }
 }

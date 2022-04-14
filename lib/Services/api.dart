@@ -115,9 +115,22 @@ class NetworkService {
     return data.body;
   }
 
-  Future<String> fetchCharts() async {
-    final data = await http.get(Uri.parse(url));
-    return data.body;
+  Future fetchCharts() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      final request = await http.get(
+          Uri.parse("$baseUrl/podcast/api/v1/podcast/chats/"),
+          headers: {'Authorization': "Token $token"});
+      var response = convert.jsonDecode(request.body);
+      return {"err": false, 'msg': response};
+    } on SocketException {
+      return {'err': true, 'msg': "No internet connection"};
+    } on HttpException {
+      return {'err': true, 'msg': 'Server error, contact system admin'};
+    } catch (e) {
+      return {'err': true, 'msg': 'Server error, contact system admin'};
+    }
   }
 
   Future fetchUser() async {

@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
                                 child: Stack(
                                   children: <Widget>[
                                     Image.network(
-                                      item.thumbnail,
+                                      item['header_image'],
                                       fit: BoxFit.cover,
                                       width: MediaQuery.of(context).size.width *
                                           0.8,
@@ -120,7 +120,7 @@ class _HomeState extends State<Home> {
                                           gradient: LinearGradient(
                                             colors: [
                                               Color.fromARGB(200, 0, 0, 0),
-                                              Color.fromARGB(0, 0, 0, 0)
+                                              Color.fromARGB(200, 0, 0, 0)
                                             ],
                                             begin: Alignment.bottomCenter,
                                             end: Alignment.topCenter,
@@ -128,9 +128,9 @@ class _HomeState extends State<Home> {
                                         ),
                                         padding: const EdgeInsets.symmetric(
                                             vertical: 10.0, horizontal: 20.0),
-                                        child: const Text(
-                                          'Title',
-                                          style: TextStyle(
+                                        child: Text(
+                                          item['name'],
+                                          style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20.0,
                                             fontWeight: FontWeight.bold,
