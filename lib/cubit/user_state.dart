@@ -34,3 +34,11 @@ class FetchedUser extends UserState {
 
   FetchedUser({required this.user});
 }
+
+class logginout extends UserState {}
+
+class Logout extends UserState {
+  final String msg;
+
+  Logout({required this.msg});
+}

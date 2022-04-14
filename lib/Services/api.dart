@@ -138,8 +138,24 @@ class NetworkService {
   }
 
   Future logout() async {
-    try {} on SocketException {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var request = await http.post(Uri.parse("$baseUrl/rest-auth/logout"),
+          headers: {'Authorization': "Token $token"});
+      if (request.statusCode == 200) {
+        var response = convert.jsonDecode(request.body);
+        print(response);
+        prefs.setBool("loggedin", false);
+        prefs.setString("token", "");
+        return {'err': false, 'msg': "Logout successfully"};
+      }
+    } on SocketException {
+      return {'err': true, 'msg': 'Network Error'};
     } on HttpException {
-    } catch (e) {}
+      return {'err': true, 'msg': "Server error, contact system admin"};
+    } catch (e) {
+      return {'err': true, 'msg': "Server error, contact system admin"};
+    }
   }
 }

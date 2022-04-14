@@ -1,11 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ecast/Models/user_model.dart';
 import 'package:ecast/Screens/profile.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Menu extends StatefulWidget {
@@ -16,25 +13,14 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  // var url = 'http://10.0.2.2:8000/api/user';
-  // List<User> parseUser(String responseBody) {
-  //   final parsed =
-  //       convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
-  //   return parsed.map<User>((json) => User.fromJson(json)).toList();
-  // }
-
-  // var user = 'user';
-  // _getUserData() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   Map userMap = convert.jsonDecode(prefs.getString("user").toString());
-  //   setState(() {
-  //     user = userMap['first_name'] + " " + userMap['last_name'];
-  //   });
-  // }
+  _gettk() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString("token"));
+  }
 
   @override
   void initState() {
-    // _getUserData();
+    _gettk();
     super.initState();
   }
 
@@ -210,26 +196,44 @@ class _MenuState extends State<Menu> {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () async {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            prefs.setBool("loggedin", false);
-            prefs.setString("user", "");
-            prefs.setString("token", "");
-            Navigator.pushReplacementNamed(context, wrapper);
+        BlocListener<UserCubit, UserState>(
+          listener: (context, state) {
+            if (state is logginout) {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Row(
+                      children: const [
+                        CircularProgressIndicator(
+                          color: btnColor,
+                        ),
+                        Text("Signing Out")
+                      ],
+                    );
+                  });
+            }
+
+            if (state is Logout) {
+              Navigator.pushReplacementNamed(context, wrapper);
+            }
           },
-          child: ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(15.0),
-              decoration: boxColor,
-              child: const Icon(
-                Icons.logout_outlined,
-                size: 30,
+          child: GestureDetector(
+            onTap: () async {
+              BlocProvider.of<UserCubit>(context).signout();
+            },
+            child: ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(15.0),
+                decoration: boxColor,
+                child: const Icon(
+                  Icons.logout_outlined,
+                  size: 30,
+                ),
               ),
-            ),
-            title: const Text(
-              "Logout",
-              style: textStyle,
+              title: const Text(
+                "Logout",
+                style: textStyle,
+              ),
             ),
           ),
         )

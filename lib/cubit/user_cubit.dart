@@ -48,4 +48,15 @@ class UserCubit extends Cubit<UserState> {
       }
     });
   }
+
+  void signout() {
+    emit(logginout());
+    repository.logout().then((value) {
+      if (value['err']) {
+        emit(LoginError(error: value['msg']));
+      } else {
+        emit(Logout(msg: value['msg']));
+      }
+    });
+  }
 }
