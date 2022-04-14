@@ -17,5 +17,14 @@ class PodcastsCubit extends Cubit<PodcastsState> {
     });
   }
 
-  void filtered(String cat) {}
+  void arts() {
+    emit(PodCastsLoading());
+    repository.arts().then((value) {
+      if (value['err']) {
+        emit(PodcastsError(msg: value['msg']));
+      } else {
+        emit(Pod(arts: value['msg']));
+      }
+    });
+  }
 }

@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecast/Services/api.dart';
+import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/logic.dart';
 import 'package:ecast/Widgets/components/arts.dart';
@@ -6,6 +8,7 @@ import 'package:ecast/Widgets/components/business.dart';
 import 'package:ecast/Widgets/components/education.dart';
 import 'package:ecast/Widgets/components/top_tab_options.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
+import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -29,6 +32,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    Repository repository = Repository(networkService: NetworkService());
     BlocProvider.of<ChartsCubit>(context).charts();
     DateTime now = DateTime.now();
     var timenow = int.parse(DateFormat('kk').format(now));
@@ -189,14 +193,23 @@ class _HomeState extends State<Home> {
             const SizedBox(
               height: 20,
             ),
-            Positioned(
-              height: MediaQuery.of(context).size.height * 1.1,
-              left: 20,
-              child: _currentBuilds == 0
-                  ? const Arts()
-                  : _currentBuilds == 1
-                      ? const Business()
-                      : const Education(),
+            Expanded(
+              child: SizedBox(
+                height: 200,
+                child: Positioned(
+                  height: MediaQuery.of(context).size.height * 1.1,
+                  left: 20,
+                  child: _currentBuilds == 0
+                      ? BlocProvider(
+                          create: (context) =>
+                              PodcastsCubit(repository: repository),
+                          child: const Arts(),
+                        )
+                      : _currentBuilds == 1
+                          ? const Business()
+                          : const Education(),
+                ),
+              ),
             )
           ],
         ),

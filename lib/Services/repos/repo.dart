@@ -47,4 +47,9 @@ class Repository {
     // return parseCharts(data);
     return data;
   }
+
+  Future arts() async {
+    final data = await networkService.fetcharts();
+    return data;
+  }
 }

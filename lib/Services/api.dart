@@ -171,4 +171,23 @@ class NetworkService {
       return {'err': true, 'msg': "Server error, contact system admin"};
     }
   }
+
+  Future fetcharts() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var request = await http.get(
+          Uri.parse("$baseUrl/podcast/api/v1/podcast/filter/?categoty=Arts"),
+          headers: {'Authorization': "Token $token"});
+      var response = convert.jsonDecode(request.body);
+      print(response);
+      return {'err': false, 'msg': response};
+    } on SocketException {
+      return {'err': true, 'msg': "Sorry the internet and i are not speaking"};
+    } on HttpException {
+      return {'err': true, 'msg': "Server error, contact system admin"};
+    } catch (e) {
+      return {'err': true, 'msg': "Server error, contact system admin"};
+    }
+  }
 }
