@@ -53,7 +53,8 @@ class Podcasts extends StatelessWidget {
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  mainAxisSpacing: 4.0,
+                  mainAxisSpacing: 2.0,
+                  crossAxisSpacing: 0,
                 ),
                 itemCount: state.arts.length,
                 itemBuilder: (context, index) {
@@ -66,20 +67,23 @@ class Podcasts extends StatelessWidget {
                               )));
                     },
                     child: Container(
-                      width: 16,
+                      // width: 30,
+                      height: 2000,
                       margin: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: recColor,
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(18),
                       ),
                       child: Column(
                         children: [
-                          Flexible(
-                              child: Padding(
-                            padding: const EdgeInsets.only(top: 10),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(18),
                               child: CachedNetworkImage(
+                                width: MediaQuery.of(context).size.width * 0.37,
+                                height:
+                                    MediaQuery.of(context).size.width * 0.37,
                                 imageUrl: state.arts[index]['cover_art'],
                                 placeholder: (context, url) =>
                                     const CircularProgressIndicator(
@@ -87,10 +91,10 @@ class Podcasts extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          )),
+                          ),
                           const SizedBox(height: 5),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
+                            padding: const EdgeInsets.only(bottom: 5),
                             child: Text(
                               state.arts[index]['title'],
                               style: const TextStyle(

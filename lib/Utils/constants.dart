@@ -83,6 +83,7 @@ const note = "/notes";
 const forgetPassword = "/forgotpassword";
 const charts = '/charts';
 const podcats = '/podcasts';
+const ep = '/ep';
 
 List<String> options = [
   'Note',

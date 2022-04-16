@@ -1,10 +1,6 @@
-import 'dart:async';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:ecast/Models/charts.dart';
 import 'package:ecast/Services/repos/repo.dart';
-import 'package:ecast/cubit/network_cubit.dart';
 import 'package:meta/meta.dart';
 import 'package:http/http.dart' as http;
 

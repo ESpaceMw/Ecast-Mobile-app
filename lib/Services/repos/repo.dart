@@ -62,4 +62,6 @@ class Repository {
     final data = await networkService.fetcharts();
     return data;
   }
+
+  Future singleEp() async {}
 }

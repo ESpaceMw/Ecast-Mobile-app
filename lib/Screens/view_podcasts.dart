@@ -1,9 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecast/Screens/view_ep.dart';
+import 'package:ecast/Services/api.dart';
+import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+
+final Repository repository = Repository(networkService: NetworkService());
 
 class ViewPodcast extends StatelessWidget {
   final dynamic details;
@@ -208,61 +213,74 @@ class ViewPodcast extends StatelessWidget {
                         .toString();
                     return Column(
                       children: [
-                        ListTile(
-                          leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(
-                              6.5,
-                            ),
-                            child: CachedNetworkImage(
-                              width: MediaQuery.of(context).size.width * 0.1,
-                              imageUrl: details['cover_art'],
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(
-                                color: btnColor,
-                              ),
-                            ),
-                          ),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Column(
-                                children: [
-                                  Text(
-                                    state.episodes[index]['name'],
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 2,
-                                  ),
-                                  Text(
-                                    'Published on $date',
-                                    style: const TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              const Icon(Icons.download),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                state.episodes[index]['runtime'],
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  color: Colors.grey,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => BlocProvider.value(
+                                value: PodcastsCubit(repository: repository),
+                                child: ViewEp(
+                                  ep: state.episodes[index],
+                                  cover: details['cover_art'],
                                 ),
-                              )
-                            ],
+                              ),
+                            ));
+                          },
+                          child: ListTile(
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                6.5,
+                              ),
+                              child: CachedNetworkImage(
+                                width: MediaQuery.of(context).size.width * 0.1,
+                                imageUrl: details['cover_art'],
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(
+                                  color: btnColor,
+                                ),
+                              ),
+                            ),
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text(
+                                      state.episodes[index]['name'],
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 2,
+                                    ),
+                                    Text(
+                                      'Published on $date',
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                const Icon(Icons.download),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  state.episodes[index]['runtime'],
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.grey,
+                                  ),
+                                )
+                              ],
+                            ),
+                            trailing: GestureDetector(
+                                child: const Icon(Icons.play_circle)),
                           ),
-                          trailing: GestureDetector(
-                              child: const Icon(Icons.play_circle)),
                         ),
                         const Padding(
                           padding: EdgeInsets.only(

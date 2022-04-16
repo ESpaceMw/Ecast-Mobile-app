@@ -49,4 +49,8 @@ class PodcastsCubit extends Cubit<PodcastsState> {
       }
     });
   }
+
+  void fetchSingleEpisode() {
+    emit(FetchingEpisodes());
+  }
 }

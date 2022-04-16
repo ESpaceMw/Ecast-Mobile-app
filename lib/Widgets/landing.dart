@@ -38,8 +38,8 @@ class _HomeState extends State<Home> {
     var timenow = int.parse(DateFormat('kk').format(now));
     String message = timeChecker(timenow);
     return ListView(
-      controller: _scrollController,
-      shrinkWrap: true,
+      // controller: _scrollController,
+      // shrinkWrap: true,
       children: [
         Stack(
           children: [
