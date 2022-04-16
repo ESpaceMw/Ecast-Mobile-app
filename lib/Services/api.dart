@@ -211,4 +211,25 @@ class NetworkService {
       return {'err': true, 'msg': 'Server Error, Contact system admin'};
     }
   }
+
+  Future fetchEpisodes(var id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var request = await http.get(
+          Uri.parse("$baseUrl/podcast/api/v1/podcast/$id"),
+          headers: {'Authorization': "Token $token"});
+
+      // check status code
+      var response = convert.jsonDecode(request.body);
+      // print(response['podcast_episodes']);
+      return {'err': false, 'msg': response['podcast_episodes']};
+    } on SocketException {
+      return {'err': true, 'msg': "No internet connection"};
+    } on HttpException {
+      return {"err": true, 'msg': 'Server Error, contact system admin'};
+    } catch (e) {
+      return {"err": true, 'msg': 'Server Error, contact system admin'};
+    }
+  }
 }

@@ -35,6 +35,12 @@ const titleStyles = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+const extreStyles = TextStyle(
+  color: Colors.grey,
+  fontWeight: FontWeight.bold,
+  fontSize: 17,
+);
+
 const infostyle = TextStyle(
   fontSize: 16,
 );
@@ -77,3 +83,9 @@ const note = "/notes";
 const forgetPassword = "/forgotpassword";
 const charts = '/charts';
 const podcats = '/podcasts';
+
+List<String> options = [
+  'Note',
+  'Download'
+      'Details'
+];

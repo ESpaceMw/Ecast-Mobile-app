@@ -24,3 +24,11 @@ class PodcastsError extends PodcastsState {
 
   PodcastsError({required this.msg});
 }
+
+class FetchedEpisodes extends PodcastsState {
+  final List episodes;
+
+  FetchedEpisodes({required this.episodes});
+}
+
+class FetchingEpisodes extends PodcastsState {}

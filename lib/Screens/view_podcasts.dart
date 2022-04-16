@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class ViewPodcast extends StatelessWidget {
   final dynamic details;
@@ -8,6 +11,7 @@ class ViewPodcast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(details['id']);
     return Scaffold(
       backgroundColor: Colors.black87,
       body: ListView(
@@ -59,15 +63,15 @@ class ViewPodcast extends StatelessWidget {
                         child: const Icon(Icons.arrow_back),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 10,
-                      ),
-                      child: const Icon(
-                        Icons.menu_book_sharp,
-                        size: 30,
-                      ),
-                    )
+                    // Container(
+                    //   margin: const EdgeInsets.only(
+                    //     top: 10,
+                    //   ),
+                    //   child: const Icon(
+                    //     Icons.menu_book_sharp,
+                    //     size: 30,
+                    //   ),
+                    // )
                   ],
                 ),
               ),
@@ -153,22 +157,23 @@ class ViewPodcast extends StatelessWidget {
               GestureDetector(
                 onTap: () {},
                 child: Container(
-                    padding: const EdgeInsets.only(
-                        left: 35, right: 35, top: 8, bottom: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.circular(
-                        20.8,
-                      ),
+                  padding: const EdgeInsets.only(
+                      left: 35, right: 35, top: 8, bottom: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.circular(
+                      20.8,
                     ),
-                    child: const Text(
-                      "Subscribe",
-                      style: TextStyle(
-                        color: whiteColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    )),
+                  ),
+                  child: const Text(
+                    "Subscribe",
+                    style: TextStyle(
+                      color: whiteColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(
                 width: 20,
@@ -183,12 +188,108 @@ class ViewPodcast extends StatelessWidget {
             padding: EdgeInsets.fromLTRB(18, 8, 10, 10),
             child: Text(
               'All episodes',
-              style: TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.bold,
-                fontSize: 17,
-              ),
+              style: extreStyles,
             ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          BlocBuilder<PodcastsCubit, PodcastsState>(
+            builder: (context, state) {
+              if (state is FetchedEpisodes) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const ScrollPhysics(),
+                  itemCount: state.episodes.length,
+                  itemBuilder: (context, index) {
+                    var date = DateFormat.yMMMd()
+                        .format(DateTime.parse(
+                            state.episodes[index]['uploaded_date']))
+                        .toString();
+                    return Column(
+                      children: [
+                        ListTile(
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                              6.5,
+                            ),
+                            child: CachedNetworkImage(
+                              width: MediaQuery.of(context).size.width * 0.1,
+                              imageUrl: details['cover_art'],
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(
+                                color: btnColor,
+                              ),
+                            ),
+                          ),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(
+                                    state.episodes[index]['name'],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 2,
+                                  ),
+                                  Text(
+                                    'Published on $date',
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              const Icon(Icons.download),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                state.episodes[index]['runtime'],
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.grey,
+                                ),
+                              )
+                            ],
+                          ),
+                          trailing: GestureDetector(
+                              child: const Icon(Icons.play_circle)),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            left: 8,
+                            right: 8,
+                          ),
+                          child: Divider(
+                            height: 1,
+                            thickness: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    );
+                  },
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: btnColor,
+                  ),
+                );
+              }
+            },
           )
         ],
       ),

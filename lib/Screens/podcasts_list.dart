@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Screens/view_podcasts.dart';
+import 'package:ecast/Services/api.dart';
+import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+final Repository repository = Repository(networkService: NetworkService());
 
 class Podcasts extends StatelessWidget {
   const Podcasts({Key? key}) : super(key: key);
@@ -56,15 +60,10 @@ class Podcasts extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              ViewPodcast(details: state.arts[index])));
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => ViewChart(
-                      //       chartDetails: state.charts[index],
-                      //     ),
-                      //   ),
-                      // );
+                          builder: (context) => BlocProvider.value(
+                                value: PodcastsCubit(repository: repository),
+                                child: ViewPodcast(details: state.arts[index]),
+                              )));
                     },
                     child: Container(
                       width: 16,

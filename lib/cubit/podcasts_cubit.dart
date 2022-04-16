@@ -38,4 +38,15 @@ class PodcastsCubit extends Cubit<PodcastsState> {
       }
     });
   }
+
+  void fetchEpisodes(var id) {
+    emit(FetchingEpisodes());
+    repository.episodes(id).then((value) {
+      if (value['err']) {
+        emit(PodcastsError(msg: value['msg']));
+      } else {
+        emit(FetchedEpisodes(episodes: value['msg']));
+      }
+    });
+  }
 }
