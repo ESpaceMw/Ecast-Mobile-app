@@ -7,7 +7,7 @@ import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NetworkService {
-  final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+  // final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
   var baseUrl = 'http://159.223.234.130';
   var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
 
@@ -188,6 +188,27 @@ class NetworkService {
       return {'err': true, 'msg': "Server error, contact system admin"};
     } catch (e) {
       return {'err': true, 'msg': "Server error, contact system admin"};
+    }
+  }
+
+  Future fetchPodcastList() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var request = await http.get(
+          Uri.parse("$baseUrl/podcast/api/v1/listpodcasts/"),
+          headers: {'Authorization': "Token $token"});
+      var response = convert.jsonDecode(request.body);
+      return {'err': false, 'msg': response};
+    } on SocketException {
+      return {
+        'err': true,
+        'msg': "The internet and i are not talking at the moment"
+      };
+    } on HttpException {
+      return {'err': true, 'msg': 'Server Error, Contact system admin'};
+    } catch (e) {
+      return {'err': true, 'msg': 'Server Error, Contact system admin'};
     }
   }
 }

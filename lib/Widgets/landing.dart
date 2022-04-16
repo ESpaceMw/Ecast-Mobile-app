@@ -193,24 +193,24 @@ class _HomeState extends State<Home> {
             const SizedBox(
               height: 20,
             ),
-            Expanded(
-              child: SizedBox(
-                height: 200,
-                child: Positioned(
-                  height: MediaQuery.of(context).size.height * 1.1,
-                  left: 20,
-                  child: _currentBuilds == 0
-                      ? BlocProvider(
-                          create: (context) =>
-                              PodcastsCubit(repository: repository),
-                          child: const Arts(),
-                        )
-                      : _currentBuilds == 1
-                          ? const Business()
-                          : const Education(),
-                ),
-              ),
-            )
+            // Expanded(
+            //   child: SizedBox(
+            //     height: 200,
+            //     child: Positioned(
+            //       height: MediaQuery.of(context).size.height * 1.1,
+            //       left: 20,
+            //       child: _currentBuilds == 0
+            //           ? BlocProvider(
+            //               create: (context) =>
+            //                   PodcastsCubit(repository: repository),
+            //               child: const Arts(),
+            //             )
+            //           : _currentBuilds == 1
+            //               ? const Business()
+            //               : const Education(),
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ],

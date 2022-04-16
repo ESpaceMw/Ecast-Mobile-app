@@ -30,6 +30,15 @@ const textStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+const titleStyles = TextStyle(
+  fontSize: 25,
+  fontWeight: FontWeight.bold,
+);
+
+const infostyle = TextStyle(
+  fontSize: 16,
+);
+
 const info = TextStyle(
   fontSize: 15,
   fontWeight: FontWeight.bold,
@@ -67,3 +76,4 @@ const home = "/home";
 const note = "/notes";
 const forgetPassword = "/forgotpassword";
 const charts = '/charts';
+const podcats = '/podcasts';

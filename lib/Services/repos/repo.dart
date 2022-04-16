@@ -48,6 +48,11 @@ class Repository {
     return data;
   }
 
+  Future podcasts() async {
+    final data = await networkService.fetchPodcastList();
+    return data;
+  }
+
   Future arts() async {
     final data = await networkService.fetcharts();
     return data;

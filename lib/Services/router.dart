@@ -2,6 +2,7 @@ import 'package:ecast/Screens/charts_screen.dart';
 import 'package:ecast/Screens/forgotpassword.dart';
 import 'package:ecast/Screens/home_screen.dart';
 import 'package:ecast/Screens/notes.dart';
+import 'package:ecast/Screens/podcasts_list.dart';
 import 'package:ecast/Screens/sign_in_screen.dart';
 import 'package:ecast/Screens/sign_up_screen.dart';
 import 'package:ecast/Screens/splash_screen.dart';
@@ -10,6 +11,7 @@ import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
+import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,6 +66,13 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (context) => ChartsCubit(repository: repository),
             child: const ChartsScreen(),
+          ),
+        );
+      case podcats:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: PodcastsCubit(repository: repository),
+            child: const Podcasts(),
           ),
         );
       default:

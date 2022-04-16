@@ -13,17 +13,6 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  _gettk() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getString("token"));
-  }
-
-  @override
-  void initState() {
-    _gettk();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<UserCubit>(context).userProfile();
@@ -79,6 +68,32 @@ class _MenuState extends State<Menu> {
               );
             }
           },
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        GestureDetector(
+          onTap: () {
+            Navigator.pushNamed(context, podcats);
+          },
+          child: ListTile(
+            leading: Container(
+              padding: const EdgeInsets.all(15.0),
+              decoration: boxColor,
+              child: const Icon(
+                Icons.podcasts,
+                color: whiteColor,
+                size: 30,
+              ),
+            ),
+            title: const Text(
+              "Podcasts",
+              style: textStyle,
+            ),
+            trailing: const Icon(
+              Icons.arrow_forward_rounded,
+            ),
+          ),
         ),
         const SizedBox(
           height: 20,
