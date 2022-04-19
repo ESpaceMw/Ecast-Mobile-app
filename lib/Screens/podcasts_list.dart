@@ -51,10 +51,12 @@ class Podcasts extends StatelessWidget {
             if (state is Pod) {
               return GridView.builder(
                 shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 2.0,
                   crossAxisSpacing: 0,
+                  childAspectRatio: MediaQuery.of(context).size.width /
+                      (MediaQuery.of(context).size.height / 1.5),
                 ),
                 itemCount: state.arts.length,
                 itemBuilder: (context, index) {
@@ -78,7 +80,7 @@ class Podcasts extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Padding(
-                              padding: const EdgeInsets.only(top: 5),
+                              padding: const EdgeInsets.only(top: 13),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(18),
                                 child: CachedNetworkImage(
@@ -95,15 +97,15 @@ class Podcasts extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 5),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
+                            padding: const EdgeInsets.all(10.0),
                             child: Text(
                               state.arts[index]['title'],
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
-                                // fontSize: 16,
+                                fontSize: 16,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           )
                         ],

@@ -18,7 +18,7 @@ class ChartsCubit extends Cubit<ChartsState> {
           emit(HttpError(msg: value['msg']));
         }
       } else {
-        emit(ChartsLoaded(charts: value['msg']));
+        emit(ChartsLoaded(charts: value['msg'], podcasts: value['pod']));
       }
     });
   }

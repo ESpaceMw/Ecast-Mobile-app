@@ -9,8 +9,9 @@ class ChartsLoading extends ChartsState {}
 
 class ChartsLoaded extends ChartsState {
   final List charts;
+  final List podcasts;
 
-  ChartsLoaded({required this.charts});
+  ChartsLoaded({required this.charts, required this.podcasts});
 }
 
 class NetError extends ChartsState {

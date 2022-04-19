@@ -122,14 +122,26 @@ class NetworkService {
       final request = await http.get(
           Uri.parse("$baseUrl/podcast/api/v1/podcast/chats/"),
           headers: {'Authorization': "Token $token"});
+      var req2 = await http.get(
+          Uri.parse("$baseUrl/podcast/api/v1/listpodcasts/"),
+          headers: {'Authorization': "Token $token"});
       var response = convert.jsonDecode(request.body);
-      return {"err": false, 'msg': response};
+      var res2 = convert.jsonDecode(req2.body);
+      return {"err": false, 'msg': response, 'pod': res2};
     } on SocketException {
-      return {'err': true, 'msg': "No internet connection"};
+      return {'err': true, 'type': 'net', 'msg': "No internet connection"};
     } on HttpException {
-      return {'err': true, 'msg': 'Server error, contact system admin'};
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server error, contact system admin'
+      };
     } catch (e) {
-      return {'err': true, 'msg': 'Server error, contact system admin'};
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server error, contact system admin'
+      };
     }
   }
 
@@ -180,7 +192,6 @@ class NetworkService {
           Uri.parse("$baseUrl/podcast/api/v1/podcast/filter/?categoty=Arts"),
           headers: {'Authorization': "Token $token"});
       var response = convert.jsonDecode(request.body);
-      // var req2 = await http.get
       print(response);
       return {'err': false, 'msg': response};
     } on SocketException {

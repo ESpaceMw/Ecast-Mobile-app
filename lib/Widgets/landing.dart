@@ -1,13 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Screens/view_chart.dart';
+import 'package:ecast/Screens/view_podcasts.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/logic.dart';
-import 'package:ecast/Widgets/components/arts.dart';
-import 'package:ecast/Widgets/components/business.dart';
-import 'package:ecast/Widgets/components/education.dart';
-import 'package:ecast/Widgets/components/top_tab_options.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +19,10 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+Repository repos = Repository(networkService: NetworkService());
+
 class _HomeState extends State<Home> {
   final ScrollController _scrollController = ScrollController();
-  int _currentBuilds = 0;
-  @override
-  void initState() {
-    super.initState();
-    // _getCharts();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +32,6 @@ class _HomeState extends State<Home> {
     var timenow = int.parse(DateFormat('kk').format(now));
     String message = timeChecker(timenow);
     return ListView(
-      // controller: _scrollController,
-      // shrinkWrap: true,
       children: [
         Stack(
           children: [
@@ -177,6 +168,79 @@ class _HomeState extends State<Home> {
                       const Padding(
                         padding: EdgeInsets.all(10.0),
                         child: Text("Recommended Podcasts", style: textStyle),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: const ScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 4.0,
+                          childAspectRatio: MediaQuery.of(context).size.width /
+                              (MediaQuery.of(context).size.height / 1.5),
+                        ),
+                        itemCount: state.podcasts.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => BlocProvider.value(
+                                          value:
+                                              PodcastsCubit(repository: repos),
+                                          child: ViewPodcast(
+                                              details: state.podcasts[index]),
+                                        )),
+                              );
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: recColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 13),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(18),
+                                        child: CachedNetworkImage(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.37,
+                                          imageUrl: state.podcasts[index]
+                                              ['cover_art'],
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(
+                                            color: btnColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  // const SizedBox(height: 5),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Text(
+                                      state.podcasts[index]['title'],
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                       )
                     ],
                   );
