@@ -1,10 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Models/charts.dart';
 import 'package:ecast/Screens/view_podcasts.dart';
+import 'package:ecast/Services/api.dart';
+import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/components/popmenu.dart';
+import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+Repository repo = Repository(networkService: NetworkService());
 
 class ViewChart extends StatelessWidget {
   final dynamic chartDetails;
@@ -44,9 +50,10 @@ class ViewChart extends StatelessWidget {
                     child: CachedNetworkImage(
                       width: MediaQuery.of(context).size.width * 0.5,
                       imageUrl: chartDetails['header_image'],
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(
-                        color: btnColor,
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(
+                          color: btnColor,
+                        ),
                       ),
                     ),
                   ),
@@ -87,8 +94,11 @@ class ViewChart extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) => ViewPodcast(
-                                details: chartDetails['podcasts'][index],
+                              builder: (_) => BlocProvider.value(
+                                value: PodcastsCubit(repository: repo),
+                                child: ViewPodcast(
+                                  details: chartDetails['podcasts'][index],
+                                ),
                               ),
                             ),
                           );

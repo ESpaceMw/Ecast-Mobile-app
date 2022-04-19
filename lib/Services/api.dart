@@ -180,6 +180,7 @@ class NetworkService {
           Uri.parse("$baseUrl/podcast/api/v1/podcast/filter/?categoty=Arts"),
           headers: {'Authorization': "Token $token"});
       var response = convert.jsonDecode(request.body);
+      // var req2 = await http.get
       print(response);
       return {'err': false, 'msg': response};
     } on SocketException {

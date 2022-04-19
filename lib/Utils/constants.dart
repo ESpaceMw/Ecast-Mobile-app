@@ -1,3 +1,5 @@
+import 'package:ecast/Services/api.dart';
+import 'package:ecast/Services/repos/repo.dart';
 import 'package:flutter/material.dart';
 
 const kBackgroundColor = Color(0xFF101010);
@@ -89,3 +91,5 @@ List<String> options = [
   'Download'
       'Details'
 ];
+
+Repository repository = Repository(networkService: NetworkService());

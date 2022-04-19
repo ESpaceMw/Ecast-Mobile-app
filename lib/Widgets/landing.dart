@@ -155,18 +155,30 @@ class _HomeState extends State<Home> {
                             ),
                           ))
                       .toList();
-                  return Container(
-                    margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.14,
-                    ),
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        autoPlay: false,
-                        aspectRatio: 2.0,
-                        enlargeCenterPage: true,
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.14,
+                        ),
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                            autoPlay: false,
+                            aspectRatio: 2.0,
+                            enlargeCenterPage: true,
+                          ),
+                          items: imageSliders,
+                        ),
                       ),
-                      items: imageSliders,
-                    ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Text("Recommended Podcasts", style: textStyle),
+                      )
+                    ],
                   );
                 } else if (state is NetError) {
                   return Text("Hello");
@@ -187,66 +199,9 @@ class _HomeState extends State<Home> {
             const SizedBox(
               height: 20,
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.46,
-              left: 20,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  _buildTabs(0),
-                  _buildTabs(1),
-                  _buildTabs(2),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            // Expanded(
-            //   child: SizedBox(
-            //     height: 200,
-            //     child: Positioned(
-            //       height: MediaQuery.of(context).size.height * 1.1,
-            //       left: 20,
-            //       child: _currentBuilds == 0
-            //           ? BlocProvider(
-            //               create: (context) =>
-            //                   PodcastsCubit(repository: repository),
-            //               child: const Arts(),
-            //             )
-            //           : _currentBuilds == 1
-            //               ? const Business()
-            //               : const Education(),
-            //     ),
-            //   ),
-            // )
           ],
         ),
       ],
-    );
-  }
-
-  Widget _buildTabs(int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentBuilds = index;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-        margin: const EdgeInsets.only(
-          left: 5,
-          // top:
-        ),
-        decoration: BoxDecoration(
-          color: _currentBuilds == index ? btnColor : null,
-          borderRadius: BorderRadius.circular(
-            6,
-          ),
-        ),
-        child: gen[index],
-      ),
     );
   }
 }

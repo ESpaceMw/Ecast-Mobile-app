@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Models/charts.dart';
 import 'package:ecast/Screens/view_chart.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Widgets/Errors/httpex.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -116,22 +117,8 @@ class _ChartsScreenState extends State<ChartsScreen> {
                 );
               } else if (state is HttpError) {
                 // ignore: sized_box_for_whitespace
-                return Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/images/server_down.svg',
-                        width: MediaQuery.of(context).size.width * 0.5,
-                      ),
-                      const SizedBox(height: 10),
-                      Text(state.msg),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                    ],
-                  ),
+                return HttpExc(
+                  msg: state.msg,
                 );
               } else {
                 // ignore: sized_box_for_whitespace
@@ -148,55 +135,6 @@ class _ChartsScreenState extends State<ChartsScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ChartsList extends StatelessWidget {
-  const ChartsList({Key? key, required this.photos}) : super(key: key);
-  final List<Charts> photos;
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 4.0,
-      ),
-      itemCount: photos.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ViewChart(chartDetails: photos[index]),
-              ),
-            );
-          },
-          child: Container(
-            width: 16,
-            margin: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: recColor,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Column(
-              children: [
-                Flexible(
-                    child: CachedNetworkImage(
-                  imageUrl: photos[index].thumbnail,
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(
-                    color: btnColor,
-                  ),
-                )),
-                const Text('Title')
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }
