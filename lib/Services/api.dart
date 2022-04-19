@@ -183,11 +183,23 @@ class NetworkService {
       print(response);
       return {'err': false, 'msg': response};
     } on SocketException {
-      return {'err': true, 'msg': "Sorry the internet and i are not speaking"};
+      return {
+        'err': true,
+        'type': 'net',
+        'msg': "Sorry the internet and i are not speaking"
+      };
     } on HttpException {
-      return {'err': true, 'msg': "Server error, contact system admin"};
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': "Server error, contact system admin"
+      };
     } catch (e) {
-      return {'err': true, 'msg': "Server error, contact system admin"};
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': "Server error, contact system admin"
+      };
     }
   }
 

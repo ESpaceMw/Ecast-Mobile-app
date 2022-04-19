@@ -1,3 +1,4 @@
+import 'package:coolicons/coolicons.dart';
 import 'package:ecast/Screens/profile.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/user_cubit.dart';
@@ -131,7 +132,7 @@ class _MenuState extends State<Menu> {
               padding: const EdgeInsets.all(15.0),
               decoration: boxColor,
               child: const Icon(
-                Icons.notes_outlined,
+                Coolicons.note,
                 color: whiteColor,
                 size: 30,
               ),

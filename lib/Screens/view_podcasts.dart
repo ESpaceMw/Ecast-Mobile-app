@@ -41,14 +41,14 @@ class ViewPodcast extends StatelessWidget {
                   ).createShader(rect),
                   blendMode: BlendMode.overlay,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.47,
+                    height: MediaQuery.of(context).size.height * 0.4,
                     width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage('assets/images/img_7.jpg'),
                         fit: BoxFit.cover,
                         colorFilter:
-                            ColorFilter.mode(Colors.black45, BlendMode.lighten),
+                            ColorFilter.mode(Colors.black45, BlendMode.darken),
                       ),
                     ),
                   ),
@@ -95,26 +95,19 @@ class ViewPodcast extends StatelessWidget {
                   ),
                 ),
               ),
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.4,
-                left: MediaQuery.of(context).size.width * 0.18,
-                child: Text(
-                  details['title'],
-                  style: titleStyles,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.445,
-                left: MediaQuery.of(context).size.width * 0.334,
-                child: Text(
-                  details['author'],
-                  style: const TextStyle(
-                    color: Colors.blue,
-                  ),
-                ),
-              ),
             ],
+          ),
+          Text(
+            details['title'],
+            style: titleStyles,
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            details['author'],
+            style: const TextStyle(
+              color: Colors.blue,
+            ),
+            textAlign: TextAlign.center,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -240,9 +233,10 @@ class ViewPodcast extends StatelessWidget {
                               ),
                             ),
                             title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       state.episodes[index]['name'],

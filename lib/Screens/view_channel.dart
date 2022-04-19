@@ -1,15 +1,13 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ecast/Models/channels.dart';
 import 'package:ecast/Utils/constants.dart';
-import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ViewChannel extends StatefulWidget {
-  final Channels channelDetails;
+  final dynamic channelDetails;
   const ViewChannel({Key? key, required this.channelDetails}) : super(key: key);
 
   @override
@@ -80,16 +78,16 @@ class _ViewChannelState extends State<ViewChannel> {
                 ],
               ),
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.1,
-              left: MediaQuery.of(context).size.width * 0.3,
-              child: CachedNetworkImage(
-                imageUrl: widget.channelDetails.thumbnail,
-                placeholder: (context, url) => const CircularProgressIndicator(
-                  color: btnColor,
-                ),
-              ),
-            ),
+            // Positioned(
+            //   top: MediaQuery.of(context).size.height * 0.1,
+            //   left: MediaQuery.of(context).size.width * 0.3,
+            //   child: CachedNetworkImage(
+            //     imageUrl: channelDetails['header_image'],
+            //     placeholder: (context, url) => const CircularProgressIndicator(
+            //       color: btnColor,
+            //     ),
+            //   ),
+            // ),
             Positioned(
               top: MediaQuery.of(context).size.height * 0.35,
               left: MediaQuery.of(context).size.width * 0.27,
@@ -109,14 +107,14 @@ class _ViewChannelState extends State<ViewChannel> {
                 ),
               ),
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.43,
-              left: MediaQuery.of(context).size.width * 0.08,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text(widget.channelDetails.title),
-              ),
-            ),
+            // Positioned(
+            //   top: MediaQuery.of(context).size.height * 0.43,
+            //   left: MediaQuery.of(context).size.width * 0.08,
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(15.0),
+            //     child: Text(widget.channelDetails.title),
+            //   ),
+            // ),
             Positioned(
               top: MediaQuery.of(context).size.height * 0.5,
               left: MediaQuery.of(context).size.width * 0.3,

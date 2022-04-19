@@ -5,6 +5,7 @@ import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class ChartsScreen extends StatefulWidget {
   const ChartsScreen({Key? key}) : super(key: key);
@@ -74,37 +75,37 @@ class _ChartsScreenState extends State<ChartsScreen> {
                         );
                       },
                       child: Container(
-                        width: 16,
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: recColor,
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Flexible(
-                                child: Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: CachedNetworkImage(
-                                  imageUrl: state.charts[index]['header_image'],
-                                  placeholder: (context, url) =>
-                                      const CircularProgressIndicator(
-                                    color: btnColor,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    // width: MediaQuery.of(context).size.width,
+                                    imageUrl: state.charts[index]
+                                        ['header_image'],
+                                    placeholder: (context, url) =>
+                                        const CircularProgressIndicator(
+                                      color: btnColor,
+                                    ),
                                   ),
                                 ),
                               ),
-                            )),
-                            const SizedBox(height: 5),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 10),
-                              child: Text(
-                                state.charts[index]['name'],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  // fontSize: 16,
-                                ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              state.charts[index]['name'],
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
                               ),
                             )
                           ],
@@ -113,7 +114,27 @@ class _ChartsScreenState extends State<ChartsScreen> {
                     );
                   },
                 );
+              } else if (state is HttpError) {
+                // ignore: sized_box_for_whitespace
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/images/server_down.svg',
+                        width: MediaQuery.of(context).size.width * 0.5,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(state.msg),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                    ],
+                  ),
+                );
               } else {
+                // ignore: sized_box_for_whitespace
                 return Container(
                   height: MediaQuery.of(context).size.height * 0.76,
                   child: const Center(

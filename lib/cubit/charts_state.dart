@@ -18,3 +18,9 @@ class NetError extends ChartsState {
 
   NetError({required this.msg});
 }
+
+class HttpError extends ChartsState {
+  final String msg;
+
+  HttpError({required this.msg});
+}

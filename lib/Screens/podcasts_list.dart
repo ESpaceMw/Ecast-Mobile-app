@@ -76,18 +76,21 @@ class Podcasts extends StatelessWidget {
                       ),
                       child: Column(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 5),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(18),
-                              child: CachedNetworkImage(
-                                width: MediaQuery.of(context).size.width * 0.37,
-                                height:
-                                    MediaQuery.of(context).size.width * 0.37,
-                                imageUrl: state.arts[index]['cover_art'],
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator(
-                                  color: btnColor,
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(18),
+                                child: CachedNetworkImage(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.37,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.37,
+                                  imageUrl: state.arts[index]['cover_art'],
+                                  placeholder: (context, url) =>
+                                      const CircularProgressIndicator(
+                                    color: btnColor,
+                                  ),
                                 ),
                               ),
                             ),

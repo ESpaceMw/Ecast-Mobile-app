@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:meta/meta.dart';
-import 'package:http/http.dart' as http;
 
 part 'charts_state.dart';
 
@@ -12,18 +10,16 @@ class ChartsCubit extends Cubit<ChartsState> {
   ChartsCubit({required this.repository}) : super(ChartsInitial());
   void charts() async {
     emit(ChartsLoading());
-
-    try {
-      var data = await http.get(Uri.parse('https://www.google.com'));
-      if (data.statusCode == 200) {
-        repository.fetchCharts().then((value) {
-          emit(ChartsLoaded(charts: value['msg']));
-        });
+    repository.fetchCharts().then((value) {
+      if (value['err']) {
+        if (value['type'] == 'net') {
+          emit(NetError(msg: value['msg']));
+        } else {
+          emit(HttpError(msg: value['msg']));
+        }
+      } else {
+        emit(ChartsLoaded(charts: value['msg']));
       }
-    } on SocketException {
-      emit(NetError(msg: "The internet and i are not talking at the moment"));
-    } catch (e) {
-      emit(NetError(msg: "The internet and i are not talking at the moment"));
-    }
+    });
   }
 }

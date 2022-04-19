@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 const kBackgroundColor = Color(0xFF101010);
 const kPrimaryColor = Color(0xFFFFBD73);
