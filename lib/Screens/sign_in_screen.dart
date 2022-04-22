@@ -53,9 +53,7 @@ class _SignInState extends State<SignIn> {
                           content: Text(state.error),
                         ),
                       );
-                    }
-
-                    if (state is LoginDone) {
+                    } else if (state is LoginDone) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(state.msg),
@@ -84,20 +82,20 @@ class _SignInState extends State<SignIn> {
                             TextFormField(
                               validator: (value) {
                                 if (value == '') {
-                                  return 'Please enter your email';
+                                  return 'Please enter your username';
                                 }
                                 return null;
                               },
-                              controller: email,
+                              controller: username,
                               keyboardType: TextInputType.emailAddress,
                               enableSuggestions: true,
                               decoration: const InputDecoration(
                                 prefixIcon: Icon(
-                                  Icons.email_outlined,
+                                  Icons.person,
                                   color: whiteColor,
                                 ),
-                                hintText: "Email",
-                                labelText: "Email",
+                                hintText: "Username",
+                                labelText: "Username",
                                 fillColor: whiteColor,
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -182,10 +180,10 @@ class _SignInState extends State<SignIn> {
                             GestureDetector(
                               onTap: () {
                                 final form = _formkey.currentState;
-                                Navigator.pushNamed(context, home);
-                                // if (form != null && form.validate()) {
-                                //   BlocProvider.of<UserCubit>(context).login();
-                                // }
+                                // Navigator.pushNamed(context, home);
+                                if (form != null && form.validate()) {
+                                  BlocProvider.of<UserCubit>(context).login();
+                                }
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.8,

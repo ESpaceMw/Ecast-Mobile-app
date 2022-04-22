@@ -1,10 +1,5 @@
-import 'dart:io';
-
 import 'package:ecast/Utils/constants.dart';
-import 'package:ecast/Utils/loader.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -87,7 +82,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   onTap: () {
                     final form = _formkey.currentState;
                     if (form != null && form.validate()) {
-                      SendCode();
+                      // SendCode();
                     }
                   },
                   child: Container(
@@ -107,59 +102,5 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         ),
       ),
     );
-  }
-
-  // ignore: non_constant_identifier_names
-  Future SendCode() async {
-    Dialogs.showLoadingDialog(context, keyLoader);
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var url = 'http://10.0.2.2:8000/api/v1/auth/forgot-password';
-      var response =
-          await http.post(Uri.parse(url), body: {'email': _email.text});
-
-      if (response.statusCode != 400 && response.statusCode == 200) {
-        var jsonData = convert.jsonDecode(response.body);
-        var token = jsonData['token'];
-        prefs.setString("reset_token", token);
-        Navigator.pushNamed(
-          context,
-          '/reset',
-          arguments: {
-            "email": _email.text,
-          },
-        );
-      } else {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-            "User does not exists",
-          ),
-        ));
-      }
-    } on HttpException {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Internal server error.Contact the system Administrator",
-          ),
-        ),
-      );
-    } on SocketException {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Please, check your internet connection"),
-        ),
-      );
-    } catch (e) {
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Oop! Something went wrong"),
-        ),
-      );
-    }
   }
 }

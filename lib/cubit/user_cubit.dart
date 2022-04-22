@@ -19,7 +19,7 @@ class UserCubit extends Cubit<UserState> {
         emit(LoginError(error: res['msg']));
       } else {
         emit(LoginDone(
-          msg: res,
+          msg: res['msg'],
         ));
       }
     });
@@ -50,10 +50,14 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void signout() {
-    emit(logginout());
+    emit(logginout(msg: "Logging Out"));
     repository.logout().then((value) {
       if (value['err']) {
-        emit(LoginError(error: value['msg']));
+        if (value['type'] == 'net') {
+          NetError(msg: value['msg']);
+        } else {
+          HttpError(msg: value['msg']);
+        }
       } else {
         emit(Logout(msg: value['msg']));
       }

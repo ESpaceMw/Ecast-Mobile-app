@@ -1,6 +1,7 @@
 import 'package:coolicons/coolicons.dart';
 import 'package:ecast/Screens/profile.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Utils/loader.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,6 +47,7 @@ class _MenuState extends State<Menu> {
                       width: 10,
                     ),
                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           state.user['username'],
@@ -215,21 +217,13 @@ class _MenuState extends State<Menu> {
         BlocListener<UserCubit, UserState>(
           listener: (context, state) {
             if (state is logginout) {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Row(
-                      children: const [
-                        CircularProgressIndicator(
-                          color: btnColor,
-                        ),
-                        Text("Signing Out")
-                      ],
-                    );
-                  });
-            }
-
-            if (state is Logout) {
+              Dialogs.showLoadingDialog(context, keyLoader, state.msg);
+            } else if (state is Logout) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.msg),
+                ),
+              );
               Navigator.pushReplacementNamed(context, wrapper);
             }
           },

@@ -46,7 +46,6 @@ class NetworkService {
         }
       }
       var res = convert.jsonDecode(req.body);
-      print(res);
       prefs.setBool("loggedin", true);
       prefs.setString("token", res['key']);
       return {'err': false, 'msg': "Account created Successfully"};
@@ -69,32 +68,24 @@ class NetworkService {
   Future<dynamic> login() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      final data = await http.post(
+      var data = await http.post(
           Uri.parse(
-            "$baseUrl/rest-auth/login",
+            "$baseUrl/rest-auth/login/",
           ),
           body: {
-            'email': email.text,
+            'username': username.text,
             'password': password.text,
           });
-
+      // print(data);
       if (data.statusCode != 200) {
+        print(data.body);
         return {'err': true, 'msg': "Error"};
       } else {
         var res = convert.jsonDecode(data.body);
         // ignore: non_constant_identifier_names
+        prefs.setBool("loggedin", true);
+        prefs.setString("token", res['key']);
         print(res);
-        // Map decode_options = convert.jsonDecode(data.body);
-        // String? user = convert.jsonEncode(decode_options['user']);
-        // prefs.then((SharedPreferences prefs) {
-        //   return prefs.setString("user", user);
-        // });
-        // prefs.then((SharedPreferences prefs) {
-        //   return prefs.setBool("loggedin", true);
-        // });
-        // prefs.then((SharedPreferences prefs) {
-        //   return prefs.setString("accessToken", res['access_token']);
-        // });
         return {'err': false, 'msg': "Login Successfully"};
       }
     } on SocketException {
@@ -106,6 +97,29 @@ class NetworkService {
       return {'err': true, 'msg': 'Server error, Contact system admin'};
     } catch (e) {
       return {'err': true, 'msg': "Error, Contact system admin"};
+    }
+  }
+
+  Future logout() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var request = await http.post(Uri.parse("$baseUrl/rest-auth/logout/"),
+          headers: {'Authorization': "Token $token"});
+      prefs.setBool("loggedin", false);
+      prefs.setString("token", "");
+      var res = convert.jsonDecode(request.body);
+      print(res);
+      return {'err': false, 'msg': "Logged out successfully"};
+    } on SocketException {
+      return {"err": true, 'type': "net", 'msg': 'Network Error'};
+    } on HttpException {
+    } catch (e) {
+      return {
+        "err": true,
+        'type': "http",
+        "msg": "Server error, contact system admin"
+      };
     }
   }
 
@@ -159,28 +173,6 @@ class NetworkService {
       return {"err": true, 'msg': "Server error, contact system admin"};
     } catch (e) {
       return {"err": true, 'msg': "Server error, contact system admin"};
-    }
-  }
-
-  Future logout() async {
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var token = prefs.getString("token");
-      var request = await http.post(Uri.parse("$baseUrl/rest-auth/logout"),
-          headers: {'Authorization': "Token $token"});
-      if (request.statusCode == 200) {
-        var response = convert.jsonDecode(request.body);
-        print(response);
-        prefs.setBool("loggedin", false);
-        prefs.setString("token", "");
-        return {'err': false, 'msg': "Logout successfully"};
-      }
-    } on SocketException {
-      return {'err': true, 'msg': 'Network Error'};
-    } on HttpException {
-      return {'err': true, 'msg': "Server error, contact system admin"};
-    } catch (e) {
-      return {'err': true, 'msg': "Server error, contact system admin"};
     }
   }
 

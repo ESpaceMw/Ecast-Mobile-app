@@ -35,10 +35,26 @@ class FetchedUser extends UserState {
   FetchedUser({required this.user});
 }
 
-class logginout extends UserState {}
+class logginout extends UserState {
+  final String msg;
+
+  logginout({required this.msg});
+}
 
 class Logout extends UserState {
   final String msg;
 
   Logout({required this.msg});
+}
+
+class NetError extends UserState {
+  final String msg;
+
+  NetError({required this.msg});
+}
+
+class HttpError extends UserState {
+  final String msg;
+
+  HttpError({required this.msg});
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class Dialogs {
   static Future<void> showLoadingDialog(
-      BuildContext context, GlobalKey key) async {
+      BuildContext context, GlobalKey key, String text) async {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -16,14 +16,14 @@ class Dialogs {
                   children: <Widget>[
                     Center(
                       child: Column(
-                        children: const [
-                          CircularProgressIndicator(),
-                          SizedBox(
+                        children: [
+                          const CircularProgressIndicator(),
+                          const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "Please Wait....",
-                            style: TextStyle(
+                            text,
+                            style: const TextStyle(
                               color: whiteColor,
                             ),
                           )

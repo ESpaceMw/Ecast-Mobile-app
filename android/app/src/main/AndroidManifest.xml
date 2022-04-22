@@ -36,7 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <!-- <service android:name="com.ryanheise.audioservice.AudioService">
+        <!-- <service android:name="com.example.ecast.audioservice.AudioService">
            <intent-filter>
            <action android:name="android.media.browse.MediaBrowserService" />
            </intent-filter>
