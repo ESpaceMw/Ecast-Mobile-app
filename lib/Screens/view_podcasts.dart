@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecast/Screens/player/music_player.dart';
 import 'package:ecast/Screens/view_ep.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
@@ -68,15 +69,6 @@ class ViewPodcast extends StatelessWidget {
                         child: const Icon(Icons.arrow_back),
                       ),
                     ),
-                    // Container(
-                    //   margin: const EdgeInsets.only(
-                    //     top: 10,
-                    //   ),
-                    //   child: const Icon(
-                    //     Icons.menu_book_sharp,
-                    //     size: 30,
-                    //   ),
-                    // )
                   ],
                 ),
               ),
@@ -195,6 +187,7 @@ class ViewPodcast extends StatelessWidget {
           BlocBuilder<PodcastsCubit, PodcastsState>(
             builder: (context, state) {
               if (state is FetchedEpisodes) {
+                print(state.episodes);
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const ScrollPhysics(),
@@ -273,7 +266,19 @@ class ViewPodcast extends StatelessWidget {
                               ],
                             ),
                             trailing: GestureDetector(
-                                child: const Icon(Icons.play_circle)),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => MusicPlayer(
+                                      episode: state.episodes[index],
+                                      img: details['cover_art'],
+                                      pd: state.episodes,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: const Icon(Icons.play_circle),
+                            ),
                           ),
                         ),
                         const Padding(

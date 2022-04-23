@@ -26,6 +26,8 @@ final TextEditingController birthdate = TextEditingController();
 String gender = 'Male';
 List<String> gvals = ['Male', 'Female', 'None'];
 
+bool playAll = false;
+
 const textStyle = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.bold,
