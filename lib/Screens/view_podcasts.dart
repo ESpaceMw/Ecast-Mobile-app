@@ -187,7 +187,6 @@ class ViewPodcast extends StatelessWidget {
           BlocBuilder<PodcastsCubit, PodcastsState>(
             builder: (context, state) {
               if (state is FetchedEpisodes) {
-                print(state.episodes);
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const ScrollPhysics(),

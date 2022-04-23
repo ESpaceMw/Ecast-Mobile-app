@@ -16,6 +16,7 @@ class ProgressBarState {
 enum ButtonState { playing, paused, loading }
 
 class AudioManager {
+  // ignore: non_constant_identifier_names
   final CurrentSongTitle = ValueNotifier<String>("");
   final isFirstSongNotifier = ValueNotifier<bool>(true);
   final isLastSongNotifier = ValueNotifier<bool>(true);
@@ -27,12 +28,12 @@ class AudioManager {
 
   void _init(source) async {
     _audioPlayer = AudioPlayer();
-    // await _audioPlayer.setUrl(source);
     _setupPodcastPlalylist(source);
     _listenPlayerState();
     _changeInPlayerPosition();
     _changeInBufferPosition();
     _changeInDurationPosition();
+    _sequenceChangelistener();
   }
 
   AudioManager(source) {
@@ -53,8 +54,8 @@ class AudioManager {
 
   void _setupPodcastPlalylist(source) async {
     _playlist = ConcatenatingAudioSource(
-      children: source.map<AudioSource>((index, data) {
-        AudioSource.uri(
+      children: source.map<AudioSource>((data) {
+        return AudioSource.uri(
           Uri.parse(
             data['audio'],
           ),
@@ -65,15 +66,22 @@ class AudioManager {
     await _audioPlayer.setAudioSource(_playlist);
   }
 
-  // void _changeDetails(){
-
-  // }
-
   void _sequenceChangelistener() {
     _audioPlayer.sequenceStateStream.listen((sequence) {
       if (sequence == null) return;
 
       final currentItem = sequence.currentSource;
+      final title = currentItem?.tag as String;
+      CurrentSongTitle.value = title;
+      final playlist = sequence.effectiveSequence;
+
+      if (playlist.isEmpty || currentItem == null) {
+        isFirstSongNotifier.value = true;
+        isLastSongNotifier.value = true;
+      } else {
+        isFirstSongNotifier.value = playlist.first == currentItem;
+        isLastSongNotifier.value = playlist.last == currentItem;
+      }
     });
   }
 
@@ -126,6 +134,14 @@ class AudioManager {
         total: position ?? Duration.zero,
       );
     });
+  }
+
+  void onPreviousBtn() {
+    _audioPlayer.seekToPrevious();
+  }
+
+  void onNextBtn() {
+    _audioPlayer.seekToNext();
   }
 
   void dispose() {

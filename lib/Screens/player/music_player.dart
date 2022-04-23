@@ -27,7 +27,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
   @override
   void initState() {
     super.initState();
-    // print(widget.pd);
     _audioManager = AudioManager(widget.pd);
     _audioManager.play();
   }
@@ -81,14 +80,18 @@ class _MusicPlayerState extends State<MusicPlayer> {
               ),
               Column(
                 children: [
-                  Text(
-                    widget.episode['name'],
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  ValueListenableBuilder<String>(
+                      valueListenable: _audioManager.CurrentSongTitle,
+                      builder: (_, title, __) {
+                        return Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        );
+                      }),
                 ],
               ),
               const SizedBox(
@@ -115,12 +118,20 @@ class _MusicPlayerState extends State<MusicPlayer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
-                    onPressed: () {},
-                    iconSize: 32,
-                    icon: const Icon(
-                      Icons.skip_previous,
-                    ),
+                  ValueListenableBuilder<bool>(
+                      valueListenable: _audioManager.isFirstSongNotifier,
+                      builder: (_, isfirst, __) {
+                        return IconButton(
+                          onPressed:
+                              (isfirst) ? null : _audioManager.onPreviousBtn,
+                          iconSize: 42,
+                          icon: const Icon(
+                            Icons.skip_previous,
+                          ),
+                        );
+                      }),
+                  const SizedBox(
+                    width: 10,
                   ),
                   ValueListenableBuilder<ButtonState>(
                     valueListenable: _audioManager.btnNotifier,
@@ -155,13 +166,20 @@ class _MusicPlayerState extends State<MusicPlayer> {
                       }
                     },
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    iconSize: 32,
-                    icon: const Icon(
-                      Icons.skip_next,
-                    ),
-                  )
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  ValueListenableBuilder<bool>(
+                      valueListenable: _audioManager.isLastSongNotifier,
+                      builder: (_, isLast, __) {
+                        return IconButton(
+                          onPressed: (isLast) ? null : _audioManager.onNextBtn,
+                          iconSize: 42,
+                          icon: const Icon(
+                            Icons.skip_next,
+                          ),
+                        );
+                      })
                 ],
               )
             ],

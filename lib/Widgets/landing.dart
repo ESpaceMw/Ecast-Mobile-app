@@ -217,14 +217,15 @@ class _HomeState extends State<Home> {
                                           imageUrl: state.podcasts[index]
                                               ['cover_art'],
                                           placeholder: (context, url) =>
-                                              const CircularProgressIndicator(
-                                            color: btnColor,
+                                              const Center(
+                                            child: CircularProgressIndicator(
+                                              color: btnColor,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  // const SizedBox(height: 5),
                                   Padding(
                                     padding: const EdgeInsets.all(10.0),
                                     child: Text(
