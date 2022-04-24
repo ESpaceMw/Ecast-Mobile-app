@@ -31,242 +31,250 @@ class _HomeState extends State<Home> {
     DateTime now = DateTime.now();
     var timenow = int.parse(DateFormat('kk').format(now));
     String message = timeChecker(timenow);
-    return ListView(
-      children: [
-        Stack(
-          children: [
-            ShaderMask(
-              shaderCallback: (rect) => const LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.topCenter,
-                colors: [
-                  Colors.black87,
-                  kBackgroundColor,
-                ],
-              ).createShader(rect),
-              blendMode: BlendMode.darken,
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/img_7.jpg'),
-                    fit: BoxFit.cover,
-                    colorFilter:
-                        ColorFilter.mode(Colors.black45, BlendMode.darken),
+    return Container(
+      color: Colors.black87,
+      child: ListView(
+        children: [
+          Stack(
+            children: [
+              ShaderMask(
+                shaderCallback: (rect) => const LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.black87,
+                    kBackgroundColor,
+                  ],
+                ).createShader(rect),
+                blendMode: BlendMode.darken,
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/img_7.jpg'),
+                      fit: BoxFit.cover,
+                      colorFilter:
+                          ColorFilter.mode(Colors.black45, BlendMode.darken),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 10,
-                    ),
-                    child: Text(
-                      message,
-                      style: const TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: 10,
+                      ),
+                      child: Text(
+                        message,
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 10,
-                    ),
-                    child: const Icon(
-                      Icons.notification_important,
-                      size: 30,
-                    ),
-                  )
-                ],
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: 10,
+                      ),
+                      child: const Icon(
+                        Icons.notification_important,
+                        size: 30,
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            BlocConsumer<ChartsCubit, ChartsState>(
-              listener: (context, state) {
-                // TODO: implement listener
-              },
-              builder: (context, state) {
-                if (state is ChartsLoaded) {
-                  final List<Widget> imageSliders = state.charts
-                      .map((item) => GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (_) =>
-                                      ViewChart(chartDetails: item)));
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.all(5.0),
-                              child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(5.0)),
-                                  child: Stack(
-                                    children: <Widget>[
-                                      Image.network(
-                                        item['header_image'],
-                                        fit: BoxFit.cover,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.8,
-                                      ),
-                                      Positioned(
-                                        bottom: 0.0,
-                                        left: 0.0,
-                                        right: 0.0,
-                                        child: Container(
-                                          decoration: const BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Color.fromARGB(200, 0, 0, 0),
-                                                Color.fromARGB(200, 0, 0, 0)
-                                              ],
-                                              begin: Alignment.bottomCenter,
-                                              end: Alignment.topCenter,
-                                            ),
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 10.0, horizontal: 20.0),
-                                          child: Text(
-                                            item['name'],
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20.0,
-                                                fontWeight: FontWeight.bold,
-                                                fontFamily: 'OpenSans'),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            ),
-                          ))
-                      .toList();
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * 0.14,
-                        ),
-                        child: CarouselSlider(
-                          options: CarouselOptions(
-                            autoPlay: false,
-                            aspectRatio: 2.0,
-                            enlargeCenterPage: true,
-                          ),
-                          items: imageSliders,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text("Recommended Podcasts", style: textStyle),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const ScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 4.0,
-                          childAspectRatio: MediaQuery.of(context).size.width /
-                              (MediaQuery.of(context).size.height / 1.5),
-                        ),
-                        itemCount: state.podcasts.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                    builder: (context) => BlocProvider.value(
-                                          value:
-                                              PodcastsCubit(repository: repos),
-                                          child: ViewPodcast(
-                                              details: state.podcasts[index]),
-                                        )),
-                              );
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: recColor,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Flexible(
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(top: 13),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(18),
-                                        child: CachedNetworkImage(
+              BlocConsumer<ChartsCubit, ChartsState>(
+                listener: (context, state) {
+                  // TODO: implement listener
+                },
+                builder: (context, state) {
+                  if (state is ChartsLoaded) {
+                    final List<Widget> imageSliders = state.charts
+                        .map((item) => GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (_) =>
+                                        ViewChart(chartDetails: item)));
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.all(5.0),
+                                child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(5.0)),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        Image.network(
+                                          item['header_image'],
+                                          fit: BoxFit.cover,
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              0.37,
-                                          imageUrl: state.podcasts[index]
-                                              ['cover_art'],
-                                          placeholder: (context, url) =>
-                                              const Center(
-                                            child: CircularProgressIndicator(
-                                              color: btnColor,
+                                              0.8,
+                                        ),
+                                        Positioned(
+                                          bottom: 0.0,
+                                          left: 0.0,
+                                          right: 0.0,
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  Color.fromARGB(200, 0, 0, 0),
+                                                  Color.fromARGB(200, 0, 0, 0)
+                                                ],
+                                                begin: Alignment.bottomCenter,
+                                                end: Alignment.topCenter,
+                                              ),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 10.0,
+                                                horizontal: 20.0),
+                                            child: Text(
+                                              item['name'],
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'OpenSans'),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ))
+                        .toList();
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.14,
+                          ),
+                          child: CarouselSlider(
+                            options: CarouselOptions(
+                              autoPlay: false,
+                              aspectRatio: 2.0,
+                              enlargeCenterPage: true,
+                            ),
+                            items: imageSliders,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text("Recommended Podcasts", style: textStyle),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: const ScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 4.0,
+                            childAspectRatio:
+                                MediaQuery.of(context).size.width /
+                                    (MediaQuery.of(context).size.height / 1.5),
+                          ),
+                          itemCount: state.podcasts.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) => BlocProvider.value(
+                                            value: PodcastsCubit(
+                                                repository: repos),
+                                            child: ViewPodcast(
+                                                details: state.podcasts[index]),
+                                          )),
+                                );
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: recColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Flexible(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 13),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                          child: CachedNetworkImage(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.37,
+                                            imageUrl: state.podcasts[index]
+                                                ['cover_art'],
+                                            placeholder: (context, url) =>
+                                                const Center(
+                                              child: CircularProgressIndicator(
+                                                color: btnColor,
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Text(
-                                      state.podcasts[index]['title'],
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text(
+                                        state.podcasts[index]['title'],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      )
-                    ],
-                  );
-                } else if (state is NetError) {
-                  return Text("Hello");
-                } else {
-                  return Container(
-                    margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.3,
-                    ),
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        color: btnColor,
+                            );
+                          },
+                        )
+                      ],
+                    );
+                  } else if (state is NetError) {
+                    return Text("Hello");
+                  } else {
+                    return Container(
+                      margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.3,
                       ),
-                    ),
-                  );
-                }
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-          ],
-        ),
-      ],
+                      child: const Center(
+                        child: CircularProgressIndicator(
+                          color: btnColor,
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

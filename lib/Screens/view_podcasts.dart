@@ -8,6 +8,7 @@ import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 final Repository repository = Repository(networkService: NetworkService());
 
@@ -266,15 +267,24 @@ class ViewPodcast extends StatelessWidget {
                             ),
                             trailing: GestureDetector(
                               onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => MusicPlayer(
-                                      episode: state.episodes[index],
-                                      img: details['cover_art'],
-                                      pd: state.episodes,
-                                    ),
+                                pushNewScreen(
+                                  context,
+                                  screen: MusicPlayer(
+                                    episode: state.episodes[index],
+                                    img: details['cover_art'],
+                                    pd: state.episodes,
                                   ),
+                                  withNavBar: false,
                                 );
+                                // Navigator.of(context).push(
+                                //   MaterialPageRoute(
+                                //     builder: (context) => MusicPlayer(
+                                //       episode: state.episodes[index],
+                                //       img: details['cover_art'],
+                                //       pd: state.episodes,
+                                //     ),
+                                //   ),
+                                // );
                               },
                               child: const Icon(Icons.play_circle),
                             ),

@@ -59,9 +59,11 @@ class _ChartsScreenState extends State<ChartsScreen> {
               if (state is ChartsLoaded) {
                 return GridView.builder(
                   shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 4.0,
+                    childAspectRatio: MediaQuery.of(context).size.width /
+                        (MediaQuery.of(context).size.height / 1.5),
                   ),
                   itemCount: state.charts.length,
                   itemBuilder: (context, index) {
@@ -86,11 +88,12 @@ class _ChartsScreenState extends State<ChartsScreen> {
                           children: [
                             Flexible(
                               child: Padding(
-                                padding: const EdgeInsets.only(top: 10),
+                                padding: const EdgeInsets.only(top: 13),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: BorderRadius.circular(18),
                                   child: CachedNetworkImage(
-                                    // width: MediaQuery.of(context).size.width,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.37,
                                     imageUrl: state.charts[index]
                                         ['header_image'],
                                     placeholder: (context, url) =>
@@ -102,13 +105,17 @@ class _ChartsScreenState extends State<ChartsScreen> {
                               ),
                             ),
                             const SizedBox(height: 2),
-                            Text(
-                              state.charts[index]['name'],
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text(
+                                state.charts[index]['name'],
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
