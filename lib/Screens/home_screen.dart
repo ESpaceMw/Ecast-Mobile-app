@@ -31,6 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: PersistentTabView(
         context,
         controller: _controller,
+        navBarStyle: NavBarStyle.style10,
+        navBarHeight: 60,
         items: [
           PersistentBottomNavBarItem(
             icon: const Icon(Coolicons.home_alt_fill),
@@ -38,6 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
             activeColorPrimary: btnColor,
             activeColorSecondary: whiteColor,
             inactiveColorPrimary: Colors.white,
+            textStyle: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           PersistentBottomNavBarItem(
             icon: const FaIcon(FontAwesomeIcons.searchengin),
@@ -46,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
             activeColorSecondary: whiteColor,
             inactiveColorPrimary: Colors.white,
             textStyle: const TextStyle(
+              fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -57,6 +64,10 @@ class _HomeScreenState extends State<HomeScreen> {
             activeColorPrimary: btnColor,
             activeColorSecondary: whiteColor,
             inactiveColorPrimary: Colors.white,
+            textStyle: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           PersistentBottomNavBarItem(
             icon: const FaIcon(FontAwesomeIcons.bars),
@@ -64,6 +75,10 @@ class _HomeScreenState extends State<HomeScreen> {
             activeColorPrimary: btnColor,
             activeColorSecondary: whiteColor,
             inactiveColorPrimary: Colors.white,
+            textStyle: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
           )
         ],
         screens: tabBodies,

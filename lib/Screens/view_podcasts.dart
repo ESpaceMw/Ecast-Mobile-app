@@ -276,15 +276,6 @@ class ViewPodcast extends StatelessWidget {
                                   ),
                                   withNavBar: false,
                                 );
-                                // Navigator.of(context).push(
-                                //   MaterialPageRoute(
-                                //     builder: (context) => MusicPlayer(
-                                //       episode: state.episodes[index],
-                                //       img: details['cover_art'],
-                                //       pd: state.episodes,
-                                //     ),
-                                //   ),
-                                // );
                               },
                               child: const Icon(Icons.play_circle),
                             ),

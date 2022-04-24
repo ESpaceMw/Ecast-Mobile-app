@@ -2,6 +2,7 @@ import 'package:coolicons/coolicons.dart';
 import 'package:ecast/Screens/charts_screen.dart';
 import 'package:ecast/Screens/podcasts_list.dart';
 import 'package:ecast/Screens/profile.dart';
+import 'package:ecast/Screens/wrapper.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
@@ -11,6 +12,7 @@ import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 Repository repository = Repository(networkService: NetworkService());
 
@@ -246,7 +248,11 @@ class _MenuState extends State<Menu> {
                     content: Text(state.msg),
                   ),
                 );
-                Navigator.pushReplacementNamed(context, wrapper);
+                pushNewScreen(
+                  context,
+                  screen: const Wrapper(),
+                  withNavBar: false,
+                );
               }
             },
             child: GestureDetector(

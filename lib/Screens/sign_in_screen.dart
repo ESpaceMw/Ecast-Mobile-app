@@ -14,18 +14,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final GlobalKey<State> keyLoader = GlobalKey<State>();
   final _formkey = GlobalKey<FormState>();
-
-  _getdata() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getBool("loggedin"));
-    print(prefs.getString("token"));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getdata();
-  }
+  bool _visible = true;
 
   @override
   Widget build(BuildContext context) {
@@ -134,39 +123,58 @@ class _SignInState extends State<SignIn> {
                                 return null;
                               },
                               controller: password,
-                              obscureText: true,
+                              obscureText: _visible,
                               keyboardType: TextInputType.emailAddress,
                               enableSuggestions: true,
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(
                                   Icons.lock,
                                   color: whiteColor,
                                 ),
-                                suffixIcon: Icon(
-                                  Icons.visibility,
-                                  color: whiteColor,
-                                ),
+                                suffixIcon: _visible == true
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _visible = false;
+                                          });
+                                        },
+                                        child: const Icon(
+                                          Icons.visibility_off,
+                                          color: whiteColor,
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _visible = true;
+                                          });
+                                        },
+                                        child: const Icon(
+                                          Icons.visibility,
+                                          color: whiteColor,
+                                        ),
+                                      ),
                                 hintText: "Password",
                                 labelText: "Password",
-                                enabledBorder: OutlineInputBorder(
+                                enabledBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Colors.white,
                                     width: 1.0,
                                   ),
                                 ),
-                                focusedErrorBorder: OutlineInputBorder(
+                                focusedErrorBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: errorColor,
                                     width: 2,
                                   ),
                                 ),
-                                errorBorder: OutlineInputBorder(
+                                errorBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: errorColor,
                                     width: 2,
                                   ),
                                 ),
-                                focusedBorder: OutlineInputBorder(
+                                focusedBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(
                                     color: Colors.white,
                                     width: 1.0,
