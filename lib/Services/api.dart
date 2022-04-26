@@ -136,12 +136,22 @@ class NetworkService {
       final request = await http.get(
           Uri.parse("$baseUrl/podcast/api/v1/podcast/chats/"),
           headers: {'Authorization': "Token $token"});
-      var req2 = await http.get(
-          Uri.parse("$baseUrl/podcast/api/v1/listpodcasts/"),
-          headers: {'Authorization': "Token $token"});
-      var response = convert.jsonDecode(request.body);
-      var res2 = convert.jsonDecode(req2.body);
-      return {"err": false, 'msg': response, 'pod': res2};
+      if (request.statusCode == 400 || request.statusCode == 403) {
+        prefs.setBool("loggedin", false);
+        prefs.setString("token", "");
+        return {
+          "err": true,
+          'type': 'tkError',
+          'msg': 'Your session has expired'
+        };
+      } else {
+        var req2 = await http.get(
+            Uri.parse("$baseUrl/podcast/api/v1/listpodcasts/"),
+            headers: {'Authorization': "Token $token"});
+        var response = convert.jsonDecode(request.body);
+        var res2 = convert.jsonDecode(req2.body);
+        return {"err": false, 'msg': response, 'pod': res2};
+      }
     } on SocketException {
       return {'err': true, 'type': 'net', 'msg': "No internet connection"};
     } on HttpException {

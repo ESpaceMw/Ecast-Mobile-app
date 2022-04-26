@@ -1,3 +1,4 @@
+import 'package:ecast/Utils/Notifiers/repeat_Btn_Notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
@@ -20,15 +21,17 @@ class AudioManager {
   final CurrentSongTitle = ValueNotifier<String>("");
   final isFirstSongNotifier = ValueNotifier<bool>(true);
   final isLastSongNotifier = ValueNotifier<bool>(true);
+  final repeatNotifier = RepeatBtnNotifier();
+
   static const url =
       "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3";
   late AudioPlayer _audioPlayer;
 
   late ConcatenatingAudioSource _playlist;
 
-  void _init(source) async {
+  void _init(source, index) async {
     _audioPlayer = AudioPlayer();
-    _setupPodcastPlalylist(source);
+    _setupPodcastPlalylist(source, index);
     _listenPlayerState();
     _changeInPlayerPosition();
     _changeInBufferPosition();
@@ -36,8 +39,8 @@ class AudioManager {
     _sequenceChangelistener();
   }
 
-  AudioManager(source) {
-    _init(source);
+  AudioManager(source, index) {
+    _init(source, index);
   }
 
   void play() {
@@ -52,7 +55,8 @@ class AudioManager {
     _audioPlayer.seek(position);
   }
 
-  void _setupPodcastPlalylist(source) async {
+  void _setupPodcastPlalylist(source, index) async {
+    print(source);
     _playlist = ConcatenatingAudioSource(
       children: source.map<AudioSource>((data) {
         return AudioSource.uri(
@@ -63,7 +67,7 @@ class AudioManager {
         );
       }).toList(),
     );
-    await _audioPlayer.setAudioSource(_playlist);
+    await _audioPlayer.setAudioSource(_playlist, initialIndex: index);
   }
 
   void _sequenceChangelistener() {
@@ -134,6 +138,21 @@ class AudioManager {
         total: position ?? Duration.zero,
       );
     });
+  }
+
+  void onRepeatlistener() {
+    repeatNotifier.nextState();
+    switch (repeatNotifier.value) {
+      case RepeatState.off:
+        _audioPlayer.setLoopMode(LoopMode.off);
+        break;
+      case RepeatState.repeatSong:
+        _audioPlayer.setLoopMode(LoopMode.one);
+        break;
+      case RepeatState.repeatPlaylist:
+        _audioPlayer.setLoopMode(LoopMode.all);
+        break;
+    }
   }
 
   void onPreviousBtn() {

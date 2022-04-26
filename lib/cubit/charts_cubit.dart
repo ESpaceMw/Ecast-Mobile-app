@@ -14,6 +14,8 @@ class ChartsCubit extends Cubit<ChartsState> {
       if (value['err']) {
         if (value['type'] == 'net') {
           emit(NetError(msg: value['msg']));
+        } else if (value['type'] == 'tkError') {
+          emit(Exception(msg: value['msg']));
         } else {
           emit(HttpError(msg: value['msg']));
         }

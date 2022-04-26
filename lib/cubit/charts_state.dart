@@ -25,3 +25,9 @@ class HttpError extends ChartsState {
 
   HttpError({required this.msg});
 }
+
+class Exception extends ChartsState {
+  final String msg;
+
+  Exception({required this.msg});
+}

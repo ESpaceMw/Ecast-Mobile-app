@@ -1,9 +1,11 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecast/Utils/Notifiers/repeat_Btn_Notifier.dart';
 import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/components/popmenu.dart';
 import 'package:flutter/material.dart';
+import 'package:palette_generator/palette_generator.dart';
 
 class MusicPlayer extends StatefulWidget {
   final dynamic episode;
@@ -22,12 +24,17 @@ class _MusicPlayerState extends State<MusicPlayer> {
   Color bg = Colors.black87;
 
   _getColor() async {
-    // var cc = await Palle
+    var cc = await PaletteGenerator.fromImageProvider(NetworkImage(widget.img));
+    setState(() {
+      bg = cc.dominantColor!.color;
+    });
   }
+
   @override
   void initState() {
     super.initState();
-    _audioManager = AudioManager(widget.pd);
+    // _getColor();
+    _audioManager = AudioManager(widget.pd, widget.episode);
     _audioManager.play();
   }
 
@@ -118,6 +125,27 @@ class _MusicPlayerState extends State<MusicPlayer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  ValueListenableBuilder(
+                      valueListenable: _audioManager.repeatNotifier,
+                      builder: (context, state, child) {
+                        Icon icon =
+                            const Icon(Icons.repeat, color: Colors.grey);
+                        switch (state) {
+                          case RepeatState.off:
+                            icon = const Icon(Icons.repeat, color: Colors.grey);
+                            break;
+                          case RepeatState.repeatSong:
+                            icon = const Icon(Icons.repeat_one);
+                            break;
+                          case RepeatState.repeatPlaylist:
+                            icon = const Icon(Icons.repeat);
+                            break;
+                        }
+                        return IconButton(
+                          icon: icon,
+                          onPressed: _audioManager.onRepeatlistener,
+                        );
+                      }),
                   ValueListenableBuilder<bool>(
                       valueListenable: _audioManager.isFirstSongNotifier,
                       builder: (_, isfirst, __) {

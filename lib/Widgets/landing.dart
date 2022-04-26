@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Screens/view_chart.dart';
 import 'package:ecast/Screens/view_podcasts.dart';
+import 'package:ecast/Screens/wrapper.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/logic.dart';
+import 'package:ecast/Widgets/Errors/socketerr.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +93,12 @@ class _HomeState extends State<Home> {
               ),
               BlocConsumer<ChartsCubit, ChartsState>(
                 listener: (context, state) {
-                  // TODO: implement listener
+                  if (state is Exception) {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const Wrapper()),
+                        (route) => false);
+                  }
                 },
                 builder: (context, state) {
                   if (state is ChartsLoaded) {
@@ -253,7 +260,7 @@ class _HomeState extends State<Home> {
                       ],
                     );
                   } else if (state is NetError) {
-                    return Text("Hello");
+                    return SocketErr(msg: state.msg);
                   } else {
                     return Container(
                       margin: EdgeInsets.only(

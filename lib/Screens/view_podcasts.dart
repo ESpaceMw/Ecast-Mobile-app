@@ -270,7 +270,7 @@ class ViewPodcast extends StatelessWidget {
                                 pushNewScreen(
                                   context,
                                   screen: MusicPlayer(
-                                    episode: state.episodes[index],
+                                    episode: index,
                                     img: details['cover_art'],
                                     pd: state.episodes,
                                   ),
