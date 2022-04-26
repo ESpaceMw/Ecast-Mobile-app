@@ -102,77 +102,75 @@ class _HomeState extends State<Home> {
                 },
                 builder: (context, state) {
                   if (state is ChartsLoaded) {
-                    final List<Widget> imageSliders = state.charts
-                        .map((item) => GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (_) =>
-                                        ViewChart(chartDetails: item)));
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.all(5.0),
-                                child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(5.0)),
-                                    child: Stack(
-                                      children: <Widget>[
-                                        Image.network(
-                                          item['header_image'],
-                                          fit: BoxFit.cover,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.8,
-                                        ),
-                                        Positioned(
-                                          bottom: 0.0,
-                                          left: 0.0,
-                                          right: 0.0,
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  Color.fromARGB(200, 0, 0, 0),
-                                                  Color.fromARGB(200, 0, 0, 0)
-                                                ],
-                                                begin: Alignment.bottomCenter,
-                                                end: Alignment.topCenter,
-                                              ),
-                                            ),
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10.0,
-                                                horizontal: 20.0),
-                                            child: Text(
-                                              item['name'],
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20.0,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontFamily: 'OpenSans'),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                              ),
-                            ))
-                        .toList();
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.14,
-                          ),
-                          child: CarouselSlider(
-                            options: CarouselOptions(
-                              autoPlay: false,
-                              aspectRatio: 2.0,
-                              enlargeCenterPage: true,
+                            margin: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.14,
                             ),
-                            items: imageSliders,
-                          ),
-                        ),
+                            child: CarouselSlider.builder(
+                              itemCount: state.charts.length,
+                              itemBuilder: (context, index, data) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => ViewChart(
+                                          chartDetails: state.charts[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: ClipRRect(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(5.0)),
+                                      child: Stack(
+                                        children: <Widget>[
+                                          Image.network(
+                                              state.charts[index]
+                                                  ['header_image'],
+                                              fit: BoxFit.cover,
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width),
+                                          Positioned(
+                                            bottom: 0.0,
+                                            left: 0.0,
+                                            right: 0.0,
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Color.fromARGB(
+                                                        200, 0, 0, 0),
+                                                    Color.fromARGB(200, 0, 0, 0)
+                                                  ],
+                                                  begin: Alignment.bottomCenter,
+                                                  end: Alignment.topCenter,
+                                                ),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10.0,
+                                                      horizontal: 20.0),
+                                              child: Text(
+                                                state.charts[index]['name'],
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'OpenSans'),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )),
+                                );
+                              },
+                              options: CarouselOptions(
+                                  aspectRatio: 2.0, enlargeCenterPage: true),
+                            )),
                         const SizedBox(
                           height: 10,
                         ),
