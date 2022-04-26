@@ -10,6 +10,12 @@ class Plan extends StatefulWidget {
 class _PlanState extends State<Plan> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(),
+        )
+      ],
+    );
   }
 }

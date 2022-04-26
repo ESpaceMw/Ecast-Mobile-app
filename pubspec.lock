@@ -9,7 +9,7 @@ packages:
     source: hosted
     version: "2.8.1"
   audio_service:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: audio_service
       url: "https://pub.dartlang.org"
@@ -233,6 +233,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "10.1.0"
+  get_it:
+    dependency: "direct main"
+    description:
+      name: get_it
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.2.0"
   http:
     dependency: "direct main"
     description:

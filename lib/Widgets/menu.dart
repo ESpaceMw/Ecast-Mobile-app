@@ -43,7 +43,9 @@ class _MenuState extends State<Menu> {
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const Profile()));
+                        builder: (context) => Profile(
+                              details: state.user,
+                            )));
                   },
                   child: Row(
                     children: [

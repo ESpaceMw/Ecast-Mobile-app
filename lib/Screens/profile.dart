@@ -6,7 +6,9 @@ import 'package:ecast/Widgets/components/top_tab_options.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  final dynamic details;
+
+  const Profile({Key? key, required this.details}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -47,7 +49,11 @@ class _ProfileState extends State<Profile> {
             height: 10,
           ),
           Container(
-            child: _currentTab == 0 ? const Info() : const Plan(),
+            child: _currentTab == 0
+                ? Info(
+                    userDetail: widget.details,
+                  )
+                : const Plan(),
           )
         ],
       ),
