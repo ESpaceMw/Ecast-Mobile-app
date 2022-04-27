@@ -11,41 +11,36 @@ class AudioManager {
   final _audioHandler = getIt<AudioHandler>();
   // ignore: non_constant_identifier_names
   final CurrentSongTitle = ValueNotifier<String>("");
+  final CurrentArtist = ValueNotifier<String>("");
   final isFirstSongNotifier = ValueNotifier<bool>(true);
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final repeatNotifier = RepeatBtnNotifier();
   final progressNotifier = ProgressNotifier();
-  static const url =
-      "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3";
-  late AudioPlayer _audioPlayer;
+  final artWork = ValueNotifier<String>("");
 
-  late ConcatenatingAudioSource _playlist;
-
-  void _init(source, index) async {
-    // _audioPlayer = AudioPlayer();
-    await _loadInitialPlaylist(source, index);
+  void _init(source, index, cover, author) async {
+    await _loadInitialPlaylist(source, index, cover, author);
     _listenPlaybackState();
     _listenToTotalDuration();
     _listenToBufferedPosition();
     _listenToCurrentPosition();
     _listenToSongChange();
-    // _setupPodcastPlalylist(source, index);
-    // _listenPlayerState();
-    // _changeInPlayerPosition();
-    // _changeInBufferPosition();
-    // _changeInDurationPosition();
-    // _sequenceChangelistener();
+    _listenToArtistChange();
+    _listenToArtChange();
   }
 
   void init(source, index) {}
 
-  Future<void> _loadInitialPlaylist(source, index) async {
+  Future<void> _loadInitialPlaylist(source, index, cover, author) async {
     final mediaItems = source.map<MediaItem>((podcast) {
       return MediaItem(
           id: podcast['id'].toString(),
           title: podcast['name'],
+          artUri: Uri.parse(cover),
+          artist: author ?? '',
           extras: {
             'url': podcast['audio'],
+            'art': cover,
           });
     }).toList();
 
@@ -112,6 +107,18 @@ class AudioManager {
     });
   }
 
+  void _listenToArtistChange() {
+    _audioHandler.mediaItem.listen((event) {
+      CurrentArtist.value = event?.artist ?? '';
+    });
+  }
+
+  void _listenToArtChange() {
+    _audioHandler.mediaItem.listen((event) {
+      artWork.value = event?.extras!['art'];
+    });
+  }
+
   void _updateSkipButtons() {
     final mediItem = _audioHandler.mediaItem.value;
     final playlist = _audioHandler.queue.value;
@@ -140,8 +147,8 @@ class AudioManager {
     }
   }
 
-  AudioManager(source, index) {
-    _init(source, index);
+  AudioManager(source, index, cover, author) {
+    _init(source, index, cover, author);
   }
 
   void play() => _audioHandler.play();
@@ -150,130 +157,6 @@ class AudioManager {
   void onPreviousBtn() => _audioHandler.skipToPrevious();
 
   void onNextBtn() => _audioHandler.skipToNext();
-
-  // void play() {
-  //   _audioPlayer.play();
-  // }
-
-  // void pause() {
-  //   _audioPlayer.pause();
-  // }
-
-  // void seek(Duration position) {
-  //   _audioPlayer.seek(position);
-  // }
-
-  // void _setupPodcastPlalylist(source, index) async {
-  //   print(source);
-  //   _playlist = ConcatenatingAudioSource(
-  //     children: source.map<AudioSource>((data) {
-  //       return AudioSource.uri(
-  //         Uri.parse(
-  //           data['audio'],
-  //         ),
-  //         tag: data['name'],
-  //       );
-  //     }).toList(),
-  //   );
-  //   await _audioPlayer.setAudioSource(_playlist, initialIndex: index);
-  // }
-
-  // void _sequenceChangelistener() {
-  //   _audioPlayer.sequenceStateStream.listen((sequence) {
-  //     if (sequence == null) return;
-
-  //     final currentItem = sequence.currentSource;
-  //     final title = currentItem?.tag as String;
-  //     CurrentSongTitle.value = title;
-  //     final playlist = sequence.effectiveSequence;
-
-  //     if (playlist.isEmpty || currentItem == null) {
-  //       isFirstSongNotifier.value = true;
-  //       isLastSongNotifier.value = true;
-  //     } else {
-  //       isFirstSongNotifier.value = playlist.first == currentItem;
-  //       isLastSongNotifier.value = playlist.last == currentItem;
-  //     }
-  //   });
-  // }
-
-  // void _listenPlayerState() {
-  //   _audioPlayer.playerStateStream.listen((playerState) {
-  //     final isPlaying = playerState.playing;
-  //     final processingState = playerState.processingState;
-  //     if (processingState == ProcessingState.loading ||
-  //         processingState == ProcessingState.buffering) {
-  //       btnNotifier.value = ButtonState.loading;
-  //     } else if (!isPlaying) {
-  //       btnNotifier.value = ButtonState.paused;
-  //     } else if (processingState != ProcessingState.completed) {
-  //       btnNotifier.value = ButtonState.playing;
-  //     } else {
-  //       _audioPlayer.seek(Duration.zero);
-  //       _audioPlayer.pause();
-  //     }
-  //   });
-  // }
-
-  // void _changeInPlayerPosition() {
-  //   _audioPlayer.positionStream.listen((position) {
-  //     final oldState = ProgressNotifier.value;
-  //     ProgressNotifier.value = ProgressBarState(
-  //       current: position,
-  //       buffered: oldState.buffered,
-  //       total: oldState.total,
-  //     );
-  //   });
-  // }
-
-  // void _changeInBufferPosition() {
-  //   _audioPlayer.bufferedPositionStream.listen((position) {
-  //     final oldState = ProgressNotifier.value;
-  //     ProgressNotifier.value = ProgressBarState(
-  //       current: oldState.current,
-  //       buffered: position,
-  //       total: oldState.total,
-  //     );
-  //   });
-  // }
-
-  // void _changeInDurationPosition() {
-  //   _audioPlayer.durationStream.listen((position) {
-  //     final oldState = ProgressNotifier.value;
-  //     ProgressNotifier.value = ProgressBarState(
-  //       current: oldState.current,
-  //       buffered: oldState.buffered,
-  //       total: position ?? Duration.zero,
-  //     );
-  //   });
-  // }
-
-  // void onRepeatlistener() {
-  //   repeatNotifier.nextState();
-  //   switch (repeatNotifier.value) {
-  //     case RepeatState.off:
-  //       _audioPlayer.setLoopMode(LoopMode.off);
-  //       break;
-  //     case RepeatState.repeatSong:
-  //       _audioPlayer.setLoopMode(LoopMode.one);
-  //       break;
-  //     case RepeatState.repeatPlaylist:
-  //       _audioPlayer.setLoopMode(LoopMode.all);
-  //       break;
-  //   }
-  // }
-
-  // void dispose() {
-  //   _audioPlayer.dispose();
-  // }
-
-  // final ProgressNotifier = ValueNotifier<ProgressBarState>(
-  //   ProgressBarState(
-  //     current: Duration.zero,
-  //     buffered: Duration.zero,
-  //     total: Duration.zero,
-  //   ),
-  // );
 
   final btnNotifier = ValueNotifier<ButtonState>(ButtonState.paused);
 }

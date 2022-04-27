@@ -18,6 +18,7 @@ class ViewPodcast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(details);
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(details['id']);
     return Scaffold(
       backgroundColor: Colors.black87,
@@ -270,10 +271,10 @@ class ViewPodcast extends StatelessWidget {
                                 pushNewScreen(
                                   context,
                                   screen: MusicPlayer(
-                                    episode: index,
-                                    img: details['cover_art'],
-                                    pd: state.episodes,
-                                  ),
+                                      episode: index,
+                                      img: details['cover_art'],
+                                      pd: state.episodes,
+                                      author: details['author']),
                                   withNavBar: false,
                                 );
                               },

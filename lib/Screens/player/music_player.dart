@@ -12,9 +12,14 @@ class MusicPlayer extends StatefulWidget {
   final dynamic episode;
   final String img;
   final List pd;
-  const MusicPlayer(
-      {Key? key, required this.episode, required this.img, required this.pd})
-      : super(key: key);
+  final String author;
+  const MusicPlayer({
+    Key? key,
+    required this.episode,
+    required this.img,
+    required this.pd,
+    required this.author,
+  }) : super(key: key);
 
   @override
   State<MusicPlayer> createState() => _MusicPlayerState();
@@ -34,15 +39,10 @@ class _MusicPlayerState extends State<MusicPlayer> {
   @override
   void initState() {
     super.initState();
-    // _getColor();
-    _audioManager = AudioManager(widget.pd, widget.episode);
+    _getColor();
+    _audioManager =
+        AudioManager(widget.pd, widget.episode, widget.img, widget.author);
     _audioManager.play();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    // _audioManager.dispose();
   }
 
   @override
@@ -71,18 +71,22 @@ class _MusicPlayerState extends State<MusicPlayer> {
               const SizedBox(
                 height: 30,
               ),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: CachedNetworkImage(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  imageUrl: widget.img,
-                  placeholder: (context, url) => const Center(
-                    child: CircularProgressIndicator(
-                      color: btnColor,
-                    ),
-                  ),
-                ),
-              ),
+              ValueListenableBuilder(
+                  valueListenable: _audioManager.artWork,
+                  builder: (_, artwork, __) {
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: CachedNetworkImage(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        imageUrl: widget.img,
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(
+                            color: btnColor,
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
               const SizedBox(
                 height: 20,
               ),
@@ -100,6 +104,20 @@ class _MusicPlayerState extends State<MusicPlayer> {
                           textAlign: TextAlign.center,
                         );
                       }),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  ValueListenableBuilder(
+                      valueListenable: _audioManager.CurrentArtist,
+                      builder: (_, artist, __) {
+                        return Text(
+                          artist.toString(),
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
+                          textAlign: TextAlign.center,
+                        );
+                      })
                 ],
               ),
               const SizedBox(
