@@ -1,5 +1,6 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecast/Utils/Notifiers/progressNotifier.dart';
 import 'package:ecast/Utils/Notifiers/repeat_Btn_Notifier.dart';
 import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
@@ -41,7 +42,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
   @override
   void dispose() {
     super.dispose();
-    _audioManager.dispose();
+    // _audioManager.dispose();
   }
 
   @override
@@ -110,7 +111,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                   right: MediaQuery.of(context).size.width * 0.1,
                 ),
                 child: ValueListenableBuilder<ProgressBarState>(
-                    valueListenable: _audioManager.ProgressNotifier,
+                    valueListenable: _audioManager.progressNotifier,
                     builder: (_, value, __) {
                       return ProgressBar(
                         baseBarColor: Colors.grey,
@@ -143,7 +144,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         }
                         return IconButton(
                           icon: icon,
-                          onPressed: _audioManager.onRepeatlistener,
+                          onPressed: _audioManager.repeat,
                         );
                       }),
                   ValueListenableBuilder<bool>(

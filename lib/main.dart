@@ -1,13 +1,14 @@
 import 'package:ecast/Services/router.dart';
 import 'package:ecast/Utils/backgroundService.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Utils/getter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 // import 'package:just_audio_background/just_audio_background.dart';
 
 Future<void> main() async {
-  await initAudioService();
+  await setupServiceLocator();
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) {
