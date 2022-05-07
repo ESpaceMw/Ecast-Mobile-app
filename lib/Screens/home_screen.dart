@@ -15,13 +15,10 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late PersistentTabController _controller;
-  late bool _hideNavBar;
-
   @override
   void initState() {
     super.initState();
     _controller = PersistentTabController(initialIndex: 0);
-    _hideNavBar = false;
   }
 
   // int _selectedIndex = 0;
@@ -86,25 +83,5 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: kBackgroundColor,
       ),
     );
-
-    // return Scaffold(
-    //   backgroundColor: Colors.black87,
-    //   body: tabBodies[_selectedIndex],
-    //   bottomNavigationBar: BottomNavigationBar(
-    //     items: bottomTabs,
-    //     selectedItemColor: selectedIten,
-    //     showUnselectedLabels: false,
-    //     iconSize: 30,
-    //     currentIndex: _selectedIndex,
-    //     type: BottomNavigationBarType.fixed,
-    //     onTap: _onTapItem,
-    //   ),
-    // );
   }
-
-  // void _onTapItem(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //   });
-  // }
 }

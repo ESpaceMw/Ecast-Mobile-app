@@ -31,15 +31,9 @@ class Repository {
     return parsed.map<Channels>((json) => Channels.fromJson(json)).toList();
   }
 
-  Future<List<Channels>> fetchSubscription() async {
+  Future fetchSubscription() async {
     final data = await networkService.fetchSubscriptions();
-    return parsePhotos(data);
-  }
-
-  List<Charts> parseCharts(String responseBody) {
-    final parsed =
-        convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
-    return parsed.map<Charts>((json) => Charts.fromJson(json)).toList();
+    return data;
   }
 
   Future fetchCharts() async {

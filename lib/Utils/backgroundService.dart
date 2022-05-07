@@ -12,8 +12,9 @@ Future<AudioHandler> initAudioService() async {
         androidNotificationChannelName: 'Ecast',
         androidNotificationOngoing: true,
         androidStopForegroundOnPause: true,
-        // androidNotificationIcon: '@mipmap/ecast.png',
+        androidNotificationIcon: 'mipmap/ecast',
         notificationColor: btnColor,
+        androidShowNotificationBadge: true,
       ));
 }
 
@@ -35,6 +36,9 @@ class MyAudioHandler extends BaseAudioHandler {
       print(e);
     }
   }
+
+  @override
+  // Future<void> skipToQueueItem(int index) => skipToQueueItem(index);
 
   @override
   Future<void> addQueueItems(List<MediaItem> mediaItems) async {

@@ -2,7 +2,6 @@ import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -59,6 +58,9 @@ class _SignInState extends State<SignIn> {
                           CircularProgressIndicator(
                             color: btnColor,
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Text("Signing in into Your Account")
                         ],
                       ));
@@ -71,11 +73,11 @@ class _SignInState extends State<SignIn> {
                             TextFormField(
                               validator: (value) {
                                 if (value == '') {
-                                  return 'Please enter your username';
+                                  return 'Please enter your Email';
                                 }
                                 return null;
                               },
-                              controller: username,
+                              controller: email,
                               keyboardType: TextInputType.emailAddress,
                               enableSuggestions: true,
                               decoration: const InputDecoration(
@@ -83,8 +85,8 @@ class _SignInState extends State<SignIn> {
                                   Icons.person,
                                   color: whiteColor,
                                 ),
-                                hintText: "Username",
-                                labelText: "Username",
+                                hintText: "Email",
+                                labelText: "Email",
                                 fillColor: whiteColor,
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(

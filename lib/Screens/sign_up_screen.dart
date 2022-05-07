@@ -111,7 +111,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 20,
                             ),
                             TextFormField(
                               validator: (value) {
@@ -155,7 +155,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 20,
                             ),
                             TextFormField(
                               validator: (value) {
@@ -364,7 +364,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 20,
                             ),
                             TextFormField(
                               validator: (value) {
@@ -408,7 +408,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 20,
                             ),
                             TextFormField(
                               validator: (value) {
@@ -453,7 +453,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 20,
                             ),
                             TextFormField(
                               validator: (value) {

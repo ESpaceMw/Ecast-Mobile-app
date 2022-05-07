@@ -16,6 +16,7 @@ class Podcasts extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<PodcastsCubit>(context).fetchPodcasts();
     return Scaffold(
+      backgroundColor: Colors.black87,
       body: ListView(
         shrinkWrap: true,
         children: [
@@ -56,7 +57,7 @@ class Podcasts extends StatelessWidget {
                   mainAxisSpacing: 2.0,
                   crossAxisSpacing: 0,
                   childAspectRatio: MediaQuery.of(context).size.width /
-                      (MediaQuery.of(context).size.height / 1.5),
+                      (MediaQuery.of(context).size.height / 1.6),
                 ),
                 itemCount: state.arts.length,
                 itemBuilder: (context, index) {
@@ -105,7 +106,7 @@ class Podcasts extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                             ),
                           )
                         ],

@@ -54,7 +54,7 @@ class _HomeState extends State<Home> {
                   width: MediaQuery.of(context).size.width,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/img_7.jpg'),
+                      image: AssetImage('assets/images/ob.jpg'),
                       fit: BoxFit.cover,
                       colorFilter:
                           ColorFilter.mode(Colors.black45, BlendMode.darken),
@@ -171,9 +171,6 @@ class _HomeState extends State<Home> {
                               options: CarouselOptions(
                                   aspectRatio: 2.0, enlargeCenterPage: true),
                             )),
-                        const SizedBox(
-                          height: 10,
-                        ),
                         const Padding(
                           padding: EdgeInsets.all(10.0),
                           child: Text("Recommended Podcasts", style: textStyle),
@@ -190,7 +187,7 @@ class _HomeState extends State<Home> {
                             mainAxisSpacing: 4.0,
                             childAspectRatio:
                                 MediaQuery.of(context).size.width /
-                                    (MediaQuery.of(context).size.height / 1.5),
+                                    (MediaQuery.of(context).size.height / 1.6),
                           ),
                           itemCount: state.podcasts.length,
                           itemBuilder: (context, index) {
@@ -246,7 +243,7 @@ class _HomeState extends State<Home> {
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
                                         ),
-                                        textAlign: TextAlign.center,
+                                        textAlign: TextAlign.start,
                                       ),
                                     )
                                   ],

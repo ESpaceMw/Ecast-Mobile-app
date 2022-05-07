@@ -1,7 +1,8 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:ecast/Utils/Notifiers/progressNotifier.dart';
 import 'package:ecast/Utils/Notifiers/repeat_Btn_Notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:audio_service/audio_service.dart';
 import 'getter.dart';
 
@@ -9,7 +10,6 @@ enum ButtonState { playing, paused, loading }
 
 class AudioManager {
   final _audioHandler = getIt<AudioHandler>();
-  // ignore: non_constant_identifier_names
   final CurrentSongTitle = ValueNotifier<String>("");
   final CurrentArtist = ValueNotifier<String>("");
   final isFirstSongNotifier = ValueNotifier<bool>(true);
@@ -45,6 +45,7 @@ class AudioManager {
     }).toList();
 
     _audioHandler.addQueueItems(mediaItems);
+    // _audioHandler.skipToQueueItem(index);
   }
 
   void _listenPlaybackState() {

@@ -7,6 +7,7 @@ import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -18,7 +19,6 @@ class ViewPodcast extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(details);
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(details['id']);
     return Scaffold(
       backgroundColor: Colors.black87,
@@ -232,10 +232,13 @@ class ViewPodcast extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      state.episodes[index]['name'],
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Text(
+                                        state.episodes[index]['name'],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                     const SizedBox(
@@ -251,34 +254,40 @@ class ViewPodcast extends StatelessWidget {
                                   ],
                                 ),
                                 const SizedBox(
-                                  width: 20,
+                                  width: 30,
                                 ),
-                                const Icon(Icons.download),
+                                const FaIcon(FontAwesomeIcons.download),
                                 const SizedBox(
-                                  width: 5,
+                                  width: 15,
                                 ),
-                                Text(
-                                  state.episodes[index]['runtime'],
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                    color: Colors.grey,
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Text(
+                                    state.episodes[index]['runtime'],
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 )
                               ],
                             ),
-                            trailing: GestureDetector(
-                              onTap: () {
-                                pushNewScreen(
-                                  context,
-                                  screen: MusicPlayer(
-                                      episode: index,
-                                      img: details['cover_art'],
-                                      pd: state.episodes,
-                                      author: details['author']),
-                                  withNavBar: false,
-                                );
-                              },
-                              child: const Icon(Icons.play_circle),
+                            trailing: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  pushNewScreen(
+                                    context,
+                                    screen: MusicPlayer(
+                                        episode: index,
+                                        img: details['cover_art'],
+                                        pd: state.episodes,
+                                        author: details['author']),
+                                    withNavBar: false,
+                                  );
+                                },
+                                child: const FaIcon(FontAwesomeIcons.play),
+                              ),
                             ),
                           ),
                         ),

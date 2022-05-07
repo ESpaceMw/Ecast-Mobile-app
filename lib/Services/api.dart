@@ -7,8 +7,8 @@ import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NetworkService {
-  // final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-  var baseUrl = 'http://159.223.234.130';
+  // var baseUrl = 'http://159.223.234.130';
+  var baseUrl = 'http://192.168.8.144';
   var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
 
   Future signup() async {
@@ -31,7 +31,6 @@ class NetworkService {
 
       if (req.statusCode == 400) {
         var errinfo = convert.jsonDecode(req.body);
-        print(errinfo);
         bool keyExists = errinfo.containsKey('email');
         bool userNameExists = errinfo.containsKey('username');
         bool birth = errinfo.containsKey('birth_date');
@@ -68,24 +67,25 @@ class NetworkService {
   Future<dynamic> login() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var data = await http.post(
+      var request = await http.post(
           Uri.parse(
             "$baseUrl/rest-auth/login/",
           ),
           body: {
-            'username': username.text,
+            'email': email.text,
             'password': password.text,
           });
-      // print(data);
-      if (data.statusCode != 200) {
-        print(data.body);
-        return {'err': true, 'msg': "Error"};
+      if (request.statusCode != 200) {
+        var err = convert.jsonDecode(request.body);
+        return {
+          'err': true,
+          'msg': err['non_field_error'][0],
+        };
       } else {
-        var res = convert.jsonDecode(data.body);
+        var res = convert.jsonDecode(request.body);
         // ignore: non_constant_identifier_names
         prefs.setBool("loggedin", true);
         prefs.setString("token", res['key']);
-        print(res);
         return {'err': false, 'msg': "Login Successfully"};
       }
     } on SocketException {
@@ -109,11 +109,15 @@ class NetworkService {
       prefs.setBool("loggedin", false);
       prefs.setString("token", "");
       var res = convert.jsonDecode(request.body);
-      print(res);
       return {'err': false, 'msg': "Logged out successfully"};
     } on SocketException {
       return {"err": true, 'type': "net", 'msg': 'Network Error'};
     } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server error, contact system admin'
+      };
     } catch (e) {
       return {
         "err": true,
@@ -123,10 +127,22 @@ class NetworkService {
     }
   }
 
-  Future<String> fetchSubscriptions() async {
-    final data = await http.get(Uri.parse(url));
-    // var res = convert.jsonDecode(data.body);
-    return data.body;
+  Future fetchSubscriptions() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var request = await http.get(
+          Uri.parse('$baseUrl/podcast/api/v1/follow/show_following'),
+          headers: {'Authorization': 'Token $token'});
+      if (request.statusCode != 200) {
+        return {'err': true, 'type': 'tk', 'msg': "Invalid token"};
+      } else {
+        var res = convert.jsonDecode(request.body);
+        return {'err': false, 'msg': res};
+      }
+    } on SocketException {
+    } on HttpException {
+    } catch (e) {}
   }
 
   Future fetchCharts() async {

@@ -6,7 +6,6 @@ import 'package:ecast/Widgets/Errors/httpex.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ChartsScreen extends StatefulWidget {
   const ChartsScreen({Key? key}) : super(key: key);
@@ -22,6 +21,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
   Widget build(BuildContext context) {
     BlocProvider.of<ChartsCubit>(context).charts();
     return Scaffold(
+      backgroundColor: Colors.black87,
       body: ListView(
         shrinkWrap: true,
         controller: _scrollController,
@@ -63,7 +63,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                     crossAxisCount: 2,
                     mainAxisSpacing: 4.0,
                     childAspectRatio: MediaQuery.of(context).size.width /
-                        (MediaQuery.of(context).size.height / 1.5),
+                        (MediaQuery.of(context).size.height / 1.6),
                   ),
                   itemCount: state.charts.length,
                   itemBuilder: (context, index) {
@@ -78,6 +78,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                         );
                       },
                       child: Container(
+                        height: 2000,
                         margin: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
                           color: recColor,
@@ -93,6 +94,8 @@ class _ChartsScreenState extends State<ChartsScreen> {
                                   borderRadius: BorderRadius.circular(18),
                                   child: CachedNetworkImage(
                                     width: MediaQuery.of(context).size.width *
+                                        0.37,
+                                    height: MediaQuery.of(context).size.width *
                                         0.37,
                                     imageUrl: state.charts[index]
                                         ['header_image'],
@@ -113,7 +116,7 @@ class _ChartsScreenState extends State<ChartsScreen> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.start,
                               ),
                             ),
                           ],

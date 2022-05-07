@@ -8,7 +8,7 @@ class PodCastsLoading extends PodcastsState {}
 class PodcastsInitial extends PodcastsState {}
 
 class PodcastsLoaded extends PodcastsState {
-  final List<Channels> subs;
+  final List subs;
 
   PodcastsLoaded({required this.subs});
 }

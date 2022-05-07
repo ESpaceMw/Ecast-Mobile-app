@@ -6,7 +6,9 @@ import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/components/popmenu.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:drop_shadow_image/drop_shadow_image.dart';
 
 class MusicPlayer extends StatefulWidget {
   final dynamic episode;
@@ -42,11 +44,12 @@ class _MusicPlayerState extends State<MusicPlayer> {
     _getColor();
     _audioManager =
         AudioManager(widget.pd, widget.episode, widget.img, widget.author);
-    _audioManager.play();
+    // _audioManager.play();
   }
 
   @override
   Widget build(BuildContext context) {
+    _audioManager.play();
     return Scaffold(
       backgroundColor: bg,
       body: ListView(
@@ -74,14 +77,18 @@ class _MusicPlayerState extends State<MusicPlayer> {
               ValueListenableBuilder(
                   valueListenable: _audioManager.artWork,
                   builder: (_, artwork, __) {
+                    // print(artwork);
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
-                      child: CachedNetworkImage(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        imageUrl: widget.img,
-                        placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(
-                            color: btnColor,
+                      child: Material(
+                        elevation: 10.0,
+                        child: CachedNetworkImage(
+                          width: MediaQuery.of(context).size.width * 0.8,
+                          imageUrl: widget.img,
+                          placeholder: (context, url) => const Center(
+                            child: CircularProgressIndicator(
+                              color: btnColor,
+                            ),
                           ),
                         ),
                       ),
@@ -144,27 +151,27 @@ class _MusicPlayerState extends State<MusicPlayer> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ValueListenableBuilder(
-                      valueListenable: _audioManager.repeatNotifier,
-                      builder: (context, state, child) {
-                        Icon icon =
-                            const Icon(Icons.repeat, color: Colors.grey);
-                        switch (state) {
-                          case RepeatState.off:
-                            icon = const Icon(Icons.repeat, color: Colors.grey);
-                            break;
-                          case RepeatState.repeatSong:
-                            icon = const Icon(Icons.repeat_one);
-                            break;
-                          case RepeatState.repeatPlaylist:
-                            icon = const Icon(Icons.repeat);
-                            break;
-                        }
-                        return IconButton(
-                          icon: icon,
-                          onPressed: _audioManager.repeat,
-                        );
-                      }),
+                  // ValueListenableBuilder(
+                  //     valueListenable: _audioManager.repeatNotifier,
+                  //     builder: (context, state, child) {
+                  //       Icon icon =
+                  //           const Icon(Icons.repeat, color: Colors.grey);
+                  //       switch (state) {
+                  //         case RepeatState.off:
+                  //           icon = const Icon(Icons.repeat, color: Colors.grey);
+                  //           break;
+                  //         case RepeatState.repeatSong:
+                  //           icon = const Icon(Icons.repeat_one);
+                  //           break;
+                  //         case RepeatState.repeatPlaylist:
+                  //           icon = const Icon(Icons.repeat);
+                  //           break;
+                  //       }
+                  //       return IconButton(
+                  //         icon: icon,
+                  //         onPressed: _audioManager.repeat,
+                  //       );
+                  //     }),
                   ValueListenableBuilder<bool>(
                       valueListenable: _audioManager.isFirstSongNotifier,
                       builder: (_, isfirst, __) {
@@ -172,8 +179,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
                           onPressed:
                               (isfirst) ? null : _audioManager.onPreviousBtn,
                           iconSize: 42,
-                          icon: const Icon(
-                            Icons.skip_previous,
+                          icon: const FaIcon(
+                            FontAwesomeIcons.angleLeft,
                           ),
                         );
                       }),
@@ -193,23 +200,24 @@ class _MusicPlayerState extends State<MusicPlayer> {
                           );
                         case ButtonState.paused:
                           return IconButton(
-                              iconSize: 62.0,
+                              iconSize: 42.0,
                               onPressed: () {
                                 _audioManager.play();
                               },
-                              icon: const Icon(
-                                Icons.play_circle_filled_rounded,
+                              icon: const FaIcon(
+                                FontAwesomeIcons.play,
                               ));
 
                         case ButtonState.playing:
                           return IconButton(
-                              iconSize: 62.0,
-                              onPressed: () {
-                                _audioManager.pause();
-                              },
-                              icon: const Icon(
-                                Icons.pause_circle_outline_outlined,
-                              ));
+                            iconSize: 42.0,
+                            onPressed: () {
+                              _audioManager.pause();
+                            },
+                            icon: const FaIcon(
+                              FontAwesomeIcons.pause,
+                            ),
+                          );
                       }
                     },
                   ),
@@ -222,8 +230,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         return IconButton(
                           onPressed: (isLast) ? null : _audioManager.onNextBtn,
                           iconSize: 42,
-                          icon: const Icon(
-                            Icons.skip_next,
+                          icon: const FaIcon(
+                            FontAwesomeIcons.angleRight,
                           ),
                         );
                       })

@@ -13,7 +13,10 @@ class PodcastsCubit extends Cubit<PodcastsState> {
   void subScription() {
     emit(PodCastsLoading());
     repository.fetchSubscription().then((value) {
-      emit(PodcastsLoaded(subs: value));
+      if (value['err']) {
+      } else {
+        emit(PodcastsLoaded(subs: value['msg']));
+      }
     });
   }
 
