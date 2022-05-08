@@ -13,6 +13,11 @@ class PodcastsLoaded extends PodcastsState {
   PodcastsLoaded({required this.subs});
 }
 
+class PodcastSubscripted extends PodcastsState {
+  final String msg;
+  PodcastSubscripted({required this.msg});
+}
+
 class Pod extends PodcastsState {
   final List arts;
 

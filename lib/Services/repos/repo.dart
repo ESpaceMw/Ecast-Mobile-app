@@ -57,5 +57,10 @@ class Repository {
     return data;
   }
 
+  Future subscribe(id) async {
+    final data = await networkService.subscribe(id);
+    return data;
+  }
+
   Future singleEp() async {}
 }

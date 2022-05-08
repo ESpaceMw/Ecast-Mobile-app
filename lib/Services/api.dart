@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class NetworkService {
   // var baseUrl = 'http://159.223.234.130';
-  var baseUrl = 'http://192.168.8.144';
+  var baseUrl = 'http://10.0.2.2:8080';
   var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
 
   Future signup() async {
@@ -272,6 +272,41 @@ class NetworkService {
       return {"err": true, 'msg': 'Server Error, contact system admin'};
     } catch (e) {
       return {"err": true, 'msg': 'Server Error, contact system admin'};
+    }
+  }
+
+  Future subscribe(var id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var request = await http
+          .post(Uri.parse('$baseUrl/podcast/api/v1/follow/podcast'), headers: {
+        'Authorization': 'Token $token'
+      }, body: {
+        'podcast_id': id,
+      });
+
+      if (request.statusCode != 200) {
+        return {'err': true, 'type': 'tk', 'msg': "Invalid token"};
+      } else {
+        var response = convert.jsonDecode(request.body);
+        print(response);
+        return {'err': false, 'msg': response};
+      }
+    } on SocketException {
+      return {'err': true, 'type': 'net', 'msg': "Failed to make requests"};
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server error, contact system admin'
+      };
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'System failure, contact admin'
+      };
     }
   }
 }

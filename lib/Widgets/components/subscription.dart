@@ -1,5 +1,3 @@
-import 'package:ecast/Models/channels.dart';
-import 'package:ecast/Screens/view_channel.dart';
 import 'package:ecast/Screens/view_podcasts.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
@@ -19,12 +17,6 @@ class Subscriptions extends StatefulWidget {
 }
 
 class _SubscriptionsState extends State<Subscriptions> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  // final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<PodcastsCubit>(context).subScription();

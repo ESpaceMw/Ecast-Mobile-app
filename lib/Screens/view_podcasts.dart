@@ -4,6 +4,7 @@ import 'package:ecast/Screens/view_ep.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Utils/loader.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -146,23 +147,38 @@ class ViewPodcast extends StatelessWidget {
               const SizedBox(
                 width: 20,
               ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.only(
-                      left: 35, right: 35, top: 8, bottom: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.circular(
-                      20.8,
+              BlocListener<PodcastsCubit, PodcastsState>(
+                listener: (context, state) {
+                  if (state is PodCastsLoading) {
+                    Dialogs.showLoadingDialog(context, keyLoader, 'Please');
+                  }
+
+                  if (state is PodcastSubscripted) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text(state.msg)));
+                  }
+                },
+                child: GestureDetector(
+                  onTap: () {
+                    BlocProvider.of<PodcastsCubit>(context)
+                        .subscribe(details['id']);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                        left: 35, right: 35, top: 8, bottom: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.circular(
+                        20.8,
+                      ),
                     ),
-                  ),
-                  child: const Text(
-                    "Subscribe",
-                    style: TextStyle(
-                      color: whiteColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
+                    child: const Text(
+                      "Subscribe",
+                      style: TextStyle(
+                        color: whiteColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
                     ),
                   ),
                 ),
