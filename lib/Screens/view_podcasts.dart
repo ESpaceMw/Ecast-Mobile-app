@@ -21,6 +21,7 @@ class ViewPodcast extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(details['id']);
+    print(details['id']);
     return Scaffold(
       backgroundColor: Colors.black87,
       body: ListView(
@@ -150,10 +151,24 @@ class ViewPodcast extends StatelessWidget {
               BlocListener<PodcastsCubit, PodcastsState>(
                 listener: (context, state) {
                   if (state is PodCastsLoading) {
-                    Dialogs.showLoadingDialog(context, keyLoader, 'Please');
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SimpleDialog(
+                            children: [
+                              Row(
+                                children: const [
+                                  Text('Please wait'),
+                                  CircularProgressIndicator(),
+                                ],
+                              )
+                            ],
+                          );
+                        });
                   }
 
                   if (state is PodcastSubscripted) {
+                    Navigator.pop(context);
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(state.msg)));
                   }
@@ -270,22 +285,26 @@ class ViewPodcast extends StatelessWidget {
                                   ],
                                 ),
                                 const SizedBox(
-                                  width: 30,
+                                  width: 15,
                                 ),
-                                const FaIcon(FontAwesomeIcons.download),
+                                const Flexible(
+                                  child: FaIcon(
+                                    FontAwesomeIcons.download,
+                                  ),
+                                ),
                                 const SizedBox(
                                   width: 15,
                                 ),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(
-                                    state.episodes[index]['runtime'],
-                                    style: const TextStyle(
-                                      fontSize: 11,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                )
+                                // SingleChildScrollView(
+                                //   scrollDirection: Axis.horizontal,
+                                //   child: Text(
+                                //     state.episodes[index]['runtime'],
+                                //     style: const TextStyle(
+                                //       fontSize: 11,
+                                //       color: Colors.grey,
+                                //     ),
+                                //   ),
+                                // )
                               ],
                             ),
                             trailing: Padding(

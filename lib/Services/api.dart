@@ -104,11 +104,10 @@ class NetworkService {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
-      var request = await http.post(Uri.parse("$baseUrl/rest-auth/logout/"),
+      await http.post(Uri.parse("$baseUrl/rest-auth/logout/"),
           headers: {'Authorization': "Token $token"});
       prefs.setBool("loggedin", false);
       prefs.setString("token", "");
-      var res = convert.jsonDecode(request.body);
       return {'err': false, 'msg': "Logged out successfully"};
     } on SocketException {
       return {"err": true, 'type': "net", 'msg': 'Network Error'};
@@ -141,8 +140,24 @@ class NetworkService {
         return {'err': false, 'msg': res};
       }
     } on SocketException {
+      return {
+        'err': true,
+        'type': 'net',
+        'msg': "Failed to make request to host"
+      };
     } on HttpException {
-    } catch (e) {}
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error, contact system admin'
+      };
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error, contact system admin'
+      };
+    }
   }
 
   Future fetchCharts() async {
@@ -192,6 +207,7 @@ class NetworkService {
       var request = await http.get(Uri.parse("$baseUrl/rest-auth/user"),
           headers: {'Authorization': 'Token $token'});
       var response = convert.jsonDecode(request.body);
+      print(token);
       return {'err': false, 'msg': response};
     } on SocketException {
       return {'err': true, 'msg': "The internet and i are not talking"};
@@ -264,7 +280,6 @@ class NetworkService {
 
       // check status code
       var response = convert.jsonDecode(request.body);
-      // print(response['podcast_episodes']);
       return {'err': false, 'msg': response['podcast_episodes']};
     } on SocketException {
       return {'err': true, 'msg': "No internet connection"};
@@ -280,13 +295,14 @@ class NetworkService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
       var request = await http
-          .post(Uri.parse('$baseUrl/podcast/api/v1/follow/podcast'), headers: {
+          .post(Uri.parse('$baseUrl/podcast/api/v1/follow/podcast/'), headers: {
         'Authorization': 'Token $token'
       }, body: {
         'podcast_id': id,
       });
 
       if (request.statusCode != 200) {
+        print(request.body);
         return {'err': true, 'type': 'tk', 'msg': "Invalid token"};
       } else {
         var response = convert.jsonDecode(request.body);
