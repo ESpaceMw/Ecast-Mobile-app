@@ -79,7 +79,7 @@ class NetworkService {
         var err = convert.jsonDecode(request.body);
         return {
           'err': true,
-          'msg': err['non_field_error'][0],
+          'msg': err['non_field_errors'][0],
         };
       } else {
         var res = convert.jsonDecode(request.body);
@@ -96,6 +96,7 @@ class NetworkService {
     } on HttpException {
       return {'err': true, 'msg': 'Server error, Contact system admin'};
     } catch (e) {
+      print(e);
       return {'err': true, 'msg': "Error, Contact system admin"};
     }
   }
@@ -167,7 +168,9 @@ class NetworkService {
       final request = await http.get(
           Uri.parse("$baseUrl/podcast/api/v1/podcast/chats/"),
           headers: {'Authorization': "Token $token"});
-      if (request.statusCode == 400 || request.statusCode == 403) {
+      if (request.statusCode == 400 ||
+          request.statusCode == 403 ||
+          request.statusCode == 401) {
         prefs.setBool("loggedin", false);
         prefs.setString("token", "");
         return {

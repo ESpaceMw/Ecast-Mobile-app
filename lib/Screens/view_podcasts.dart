@@ -263,13 +263,11 @@ class ViewPodcast extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Text(
-                                        state.episodes[index]['name'],
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                    Text(
+                                      state.episodes[index]['name'],
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
                                       ),
                                     ),
                                     const SizedBox(
@@ -287,11 +285,7 @@ class ViewPodcast extends StatelessWidget {
                                 const SizedBox(
                                   width: 15,
                                 ),
-                                const Flexible(
-                                  child: FaIcon(
-                                    FontAwesomeIcons.download,
-                                  ),
-                                ),
+                                const Flexible(child: Icon(Icons.download)),
                                 const SizedBox(
                                   width: 15,
                                 ),

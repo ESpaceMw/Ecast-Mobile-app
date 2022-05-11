@@ -1,6 +1,7 @@
 import 'package:coolicons/coolicons.dart';
 import 'package:ecast/Screens/screen_options.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Widgets/bottom_nav_options.dart';
 // import 'package:ecast/Widgets/bottom_nav_options.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,67 +22,104 @@ class _HomeScreenState extends State<HomeScreen> {
     _controller = PersistentTabController(initialIndex: 0);
   }
 
-  // int _selectedIndex = 0;
+  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PersistentTabView(
-        context,
-        controller: _controller,
-        navBarStyle: NavBarStyle.style10,
-        navBarHeight: 60,
-        items: [
-          PersistentBottomNavBarItem(
-            icon: const Icon(Coolicons.home_alt_fill),
-            title: "Home",
-            activeColorPrimary: btnColor,
-            activeColorSecondary: whiteColor,
-            inactiveColorPrimary: Colors.white,
-            textStyle: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
+      body: tabBodies[_selectedIndex],
+      bottomNavigationBar: Container(
+        height: 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            // ignore: avoid_unnecessary_containers
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.play_circle,
+                    // size: 10,
+                  )
+                ],
+              ),
             ),
-          ),
-          PersistentBottomNavBarItem(
-            icon: const FaIcon(FontAwesomeIcons.searchengin),
-            title: "Search",
-            activeColorPrimary: btnColor,
-            activeColorSecondary: whiteColor,
-            inactiveColorPrimary: Colors.white,
-            textStyle: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
+            BottomNavigationBar(
+              items: bottomTabs,
+              onTap: _changeIndex,
+              showUnselectedLabels: false,
+              selectedItemColor: btnColor,
+              unselectedItemColor: whiteColor,
+              currentIndex: _selectedIndex,
+              backgroundColor: kBackgroundColor,
             ),
-          ),
-          PersistentBottomNavBarItem(
-            icon: const Icon(
-              Icons.video_library_outlined,
-            ),
-            title: "library",
-            activeColorPrimary: btnColor,
-            activeColorSecondary: whiteColor,
-            inactiveColorPrimary: Colors.white,
-            textStyle: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          PersistentBottomNavBarItem(
-            icon: const FaIcon(FontAwesomeIcons.bars),
-            title: "Menu",
-            activeColorPrimary: btnColor,
-            activeColorSecondary: whiteColor,
-            inactiveColorPrimary: Colors.white,
-            textStyle: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            ),
-          )
-        ],
-        screens: tabBodies,
-        stateManagement: true,
-        backgroundColor: kBackgroundColor,
+          ],
+        ),
       ),
     );
   }
+
+  void _changeIndex(index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 }
+
+// PersistentTabView(
+//         context,
+//         controller: _controller,
+//         navBarStyle: NavBarStyle.style10,
+//         navBarHeight: 60,
+//         items: [
+//           PersistentBottomNavBarItem(
+//             icon: const Icon(Coolicons.home_alt_fill),
+//             title: "Home",
+//             activeColorPrimary: btnColor,
+//             activeColorSecondary: whiteColor,
+//             inactiveColorPrimary: Colors.white,
+//             textStyle: const TextStyle(
+//               fontSize: 15,
+//               fontWeight: FontWeight.bold,
+//             ),
+//           ),
+//           PersistentBottomNavBarItem(
+//             icon: const FaIcon(FontAwesomeIcons.searchengin),
+//             title: "Search",
+//             activeColorPrimary: btnColor,
+//             activeColorSecondary: whiteColor,
+//             inactiveColorPrimary: Colors.white,
+//             textStyle: const TextStyle(
+//               fontSize: 15,
+//               fontWeight: FontWeight.bold,
+//             ),
+//           ),
+//           PersistentBottomNavBarItem(
+//             icon: const Icon(
+//               Icons.video_library_outlined,
+//             ),
+//             title: "library",
+//             activeColorPrimary: btnColor,
+//             activeColorSecondary: whiteColor,
+//             inactiveColorPrimary: Colors.white,
+//             textStyle: const TextStyle(
+//               fontSize: 15,
+//               fontWeight: FontWeight.bold,
+//             ),
+//           ),
+//           PersistentBottomNavBarItem(
+//             icon: const FaIcon(FontAwesomeIcons.bars),
+//             title: "Menu",
+//             activeColorPrimary: btnColor,
+//             activeColorSecondary: whiteColor,
+//             inactiveColorPrimary: Colors.white,
+//             textStyle: const TextStyle(
+//               fontSize: 15,
+//               fontWeight: FontWeight.bold,
+//             ),
+//           )
+//         ],
+//         screens: tabBodies,
+//         stateManagement: true,
+//         backgroundColor: kBackgroundColor,
+//       ),
