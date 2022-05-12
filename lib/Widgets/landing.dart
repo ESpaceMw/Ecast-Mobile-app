@@ -130,7 +130,7 @@ class _HomeState extends State<Home> {
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.only(
-                                        left: 30, right: 20),
+                                        left: 25, right: 15),
                                     child: ClipRRect(
                                         borderRadius: const BorderRadius.all(
                                             Radius.circular(10.0)),
