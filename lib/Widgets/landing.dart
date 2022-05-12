@@ -33,9 +33,12 @@ class _HomeState extends State<Home> {
     DateTime now = DateTime.now();
     var timenow = int.parse(DateFormat('kk').format(now));
     String message = timeChecker(timenow);
+    final size = MediaQuery.of(context).size;
     return Container(
+      width: double.infinity,
       color: Colors.black87,
       child: ListView(
+        shrinkWrap: true,
         children: [
           Stack(
             children: [
@@ -103,15 +106,18 @@ class _HomeState extends State<Home> {
                 builder: (context, state) {
                   if (state is ChartsLoaded) {
                     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                            margin: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * 0.14,
-                            ),
-                            child: CarouselSlider.builder(
+                          height: 300.0,
+                          margin: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.13,
+                          ),
+                          child: ListView.builder(
+                              shrinkWrap: true,
                               itemCount: state.charts.length,
-                              itemBuilder: (context, index, data) {
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, index) {
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).push(
@@ -122,136 +128,60 @@ class _HomeState extends State<Home> {
                                       ),
                                     );
                                   },
-                                  child: ClipRRect(
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(5.0)),
-                                      child: Stack(
-                                        children: <Widget>[
-                                          Image.network(
+                                  child: Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 30, right: 20),
+                                    child: ClipRRect(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                        child: Stack(
+                                          children: <Widget>[
+                                            Image.network(
                                               state.charts[index]
                                                   ['header_image'],
                                               fit: BoxFit.cover,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width),
-                                          Positioned(
-                                            bottom: 0.0,
-                                            left: 0.0,
-                                            right: 0.0,
-                                            child: Container(
-                                              decoration: const BoxDecoration(
-                                                gradient: LinearGradient(
-                                                  colors: [
-                                                    Color.fromARGB(
-                                                        200, 0, 0, 0),
-                                                    Color.fromARGB(200, 0, 0, 0)
-                                                  ],
-                                                  begin: Alignment.bottomCenter,
-                                                  end: Alignment.topCenter,
+                                              width: size.width * 0.7,
+                                              height: size.height * 0.9,
+                                            ),
+                                            Positioned(
+                                              bottom: 0.0,
+                                              left: 0.0,
+                                              right: 0.0,
+                                              child: Container(
+                                                decoration: const BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Color.fromARGB(
+                                                          200, 0, 0, 0),
+                                                      Color.fromARGB(
+                                                          200, 0, 0, 0)
+                                                    ],
+                                                    begin:
+                                                        Alignment.bottomCenter,
+                                                    end: Alignment.topCenter,
+                                                  ),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10.0,
+                                                        horizontal: 20.0),
+                                                child: Text(
+                                                  state.charts[index]['name'],
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: 'OpenSans'),
                                                 ),
                                               ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 10.0,
-                                                      horizontal: 20.0),
-                                              child: Text(
-                                                state.charts[index]['name'],
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20.0,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'OpenSans'),
-                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      )),
+                                          ],
+                                        )),
+                                  ),
                                 );
-                              },
-                              options: CarouselOptions(
-                                  aspectRatio: 2.0, enlargeCenterPage: true),
-                            )),
-                        const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text("Recommended Podcasts", style: textStyle),
+                              }),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        GridView.builder(
-                          shrinkWrap: true,
-                          physics: const ScrollPhysics(),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 4.0,
-                            childAspectRatio:
-                                MediaQuery.of(context).size.width /
-                                    (MediaQuery.of(context).size.height / 1.6),
-                          ),
-                          itemCount: state.podcasts.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                      builder: (context) => BlocProvider.value(
-                                            value: PodcastsCubit(
-                                                repository: repos),
-                                            child: ViewPodcast(
-                                                details: state.podcasts[index]),
-                                          )),
-                                );
-                              },
-                              child: Container(
-                                margin: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: recColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Flexible(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 13),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(18),
-                                          child: CachedNetworkImage(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.37,
-                                            imageUrl: state.podcasts[index]
-                                                ['cover_art'],
-                                            placeholder: (context, url) =>
-                                                const Center(
-                                              child: CircularProgressIndicator(
-                                                color: btnColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Text(
-                                        state.podcasts[index]['title'],
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16,
-                                        ),
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        )
                       ],
                     );
                   } else if (state is NetError) {

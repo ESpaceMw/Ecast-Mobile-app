@@ -44,7 +44,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
     _getColor();
     _audioManager =
         AudioManager(widget.pd, widget.episode, widget.img, widget.author);
-    // _audioManager.play();
   }
 
   @override
