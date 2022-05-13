@@ -326,4 +326,32 @@ class NetworkService {
       };
     }
   }
+
+  Future unsubscribe(id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
+      var request = await http.post(
+          Uri.parse('$baseUrl/podcast/api/v1/unfollow/podcast'),
+          headers: {
+            'Authorization': 'Token $token'
+          },
+          body: {
+            'podcast_id': id,
+          });
+      if (request.statusCode != 200) {
+        return {'err': true, 'type': 'tk', 'msg': "Error"};
+      } else {
+        return {'err': false, 'msg': 'unSubscribed Successfully'};
+      }
+    } on SocketException {
+      return {'err': true, 'type': 'net', 'msg': "Network Error"};
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error, contact system admin'
+      };
+    } catch (e) {}
+  }
 }

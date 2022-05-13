@@ -39,3 +39,9 @@ class FetchedEpisodes extends PodcastsState {
 }
 
 class FetchingEpisodes extends PodcastsState {}
+
+class Unsubscribed extends PodcastsState {
+  final String msg;
+
+  Unsubscribed({required this.msg});
+}

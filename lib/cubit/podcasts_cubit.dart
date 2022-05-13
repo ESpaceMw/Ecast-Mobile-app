@@ -60,7 +60,6 @@ class PodcastsCubit extends Cubit<PodcastsState> {
   void subscribe(id) {
     emit(SubProcess());
     repository.subscribes(id).then((value) {
-      print(value);
       if (value['err']) {
         emit(PodcastsError(msg: value['msg']));
       } else {
@@ -71,5 +70,12 @@ class PodcastsCubit extends Cubit<PodcastsState> {
 
   void unsubscribe(id) {
     emit(SubProcess());
+    repository.unsubscribe(id).then((value) {
+      if (value['err']) {
+        emit(PodcastsError(msg: value['msg']));
+      } else {
+        emit(Unsubscribed(msg: value['msg']));
+      }
+    });
   }
 }
