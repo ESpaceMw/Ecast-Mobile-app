@@ -96,7 +96,6 @@ class NetworkService {
     } on HttpException {
       return {'err': true, 'msg': 'Server error, Contact system admin'};
     } catch (e) {
-      print(e);
       return {'err': true, 'msg': "Error, Contact system admin"};
     }
   }
@@ -168,7 +167,6 @@ class NetworkService {
       final request = await http.get(
           Uri.parse("$baseUrl/podcast/api/v1/podcast/chats/"),
           headers: {'Authorization': "Token $token"});
-      // print(request.body);
       if (request.statusCode == 400 ||
           request.statusCode == 403 ||
           request.statusCode == 401) {
@@ -299,18 +297,16 @@ class NetworkService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
       var request = await http
-          .post(Uri.parse('$baseUrl/podcast/api/v1/follow/podcast/'), headers: {
+          .post(Uri.parse('$baseUrl/podcast/api/v1/follow/podcast'), headers: {
         'Authorization': 'Token $token'
       }, body: {
         'podcast_id': id,
       });
 
       if (request.statusCode != 200) {
-        print(request.body);
         return {'err': true, 'type': 'tk', 'msg': "Invalid token"};
       } else {
         var response = convert.jsonDecode(request.body);
-        print(response);
         return {'err': false, 'msg': response};
       }
     } on SocketException {
@@ -322,6 +318,7 @@ class NetworkService {
         'msg': 'Server error, contact system admin'
       };
     } catch (e) {
+      print(e);
       return {
         'err': true,
         'type': 'http',

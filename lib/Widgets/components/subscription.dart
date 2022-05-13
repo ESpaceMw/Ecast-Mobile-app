@@ -1,4 +1,5 @@
 import 'package:ecast/Screens/view_podcasts.dart';
+import 'package:ecast/Screens/view_subs.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
@@ -53,7 +54,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => BlocProvider.value(
                               value: PodcastsCubit(repository: repository),
-                              child: ViewPodcast(details: state.subs[index]),
+                              child: Subs(details: state.subs[index]),
                             )));
                   },
                   child: Container(

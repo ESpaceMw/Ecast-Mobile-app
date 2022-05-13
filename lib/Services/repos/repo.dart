@@ -25,12 +25,6 @@ class Repository {
     return networkService.logout();
   }
 
-  List<Channels> parsePhotos(String responseBody) {
-    final parsed =
-        convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
-    return parsed.map<Channels>((json) => Channels.fromJson(json)).toList();
-  }
-
   Future fetchSubscription() async {
     final data = await networkService.fetchSubscriptions();
     return data;
@@ -38,7 +32,6 @@ class Repository {
 
   Future fetchCharts() async {
     final data = await networkService.fetchCharts();
-    // return parseCharts(data);
     return data;
   }
 
@@ -57,7 +50,7 @@ class Repository {
     return data;
   }
 
-  Future subscribe(var id) async {
+  Future subscribes(var id) async {
     final data = await networkService.subscribe(id);
     return data;
   }

@@ -1,11 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Screens/player/music_player.dart';
 import 'package:ecast/Screens/view_ep.dart';
-import 'package:ecast/Services/api.dart';
-import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
-import 'package:ecast/Utils/loader.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,19 +11,16 @@ import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-final Repository repository = Repository(networkService: NetworkService());
-
-class ViewPodcast extends StatefulWidget {
+class Subs extends StatefulWidget {
   final dynamic details;
-  const ViewPodcast({Key? key, required this.details}) : super(key: key);
+  const Subs({Key? key, required this.details}) : super(key: key);
 
   @override
-  State<ViewPodcast> createState() => _ViewPodcastState();
+  State<Subs> createState() => _SubsState();
 }
 
-class _ViewPodcastState extends State<ViewPodcast> {
+class _SubsState extends State<Subs> {
   late final AudioManager _audioManager;
-
   @override
   void initState() {
     super.initState();
@@ -164,22 +158,22 @@ class _ViewPodcastState extends State<ViewPodcast> {
               ),
               BlocListener<PodcastsCubit, PodcastsState>(
                 listener: (context, state) {
-                  // if (state is PodCastsLoading) {
-                  //   showDialog(
-                  //       context: context,
-                  //       builder: (context) {
-                  //         return SimpleDialog(
-                  //           children: [
-                  //             Row(
-                  //               children: const [
-                  //                 Text('Please wait'),
-                  //                 CircularProgressIndicator(),
-                  //               ],
-                  //             )
-                  //           ],
-                  //         );
-                  //       });
-                  // }
+                  if (state is SubProcess) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SimpleDialog(
+                            children: [
+                              Row(
+                                children: const [
+                                  Text('Please wait'),
+                                  CircularProgressIndicator(),
+                                ],
+                              )
+                            ],
+                          );
+                        });
+                  }
 
                   if (state is PodcastSubscripted) {
                     Navigator.pop(context);
@@ -202,7 +196,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
                       ),
                     ),
                     child: const Text(
-                      "Subscribe",
+                      "Un Subscribe",
                       style: TextStyle(
                         color: whiteColor,
                         fontWeight: FontWeight.bold,
@@ -252,7 +246,8 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                 value: PodcastsCubit(repository: repository),
                                 child: ViewEp(
                                   ep: state.episodes[index],
-                                  cover: widget.details['cover_art'],
+                                  cover: 'http://10.0.2.2:8080' +
+                                      widget.details['cover_art'],
                                 ),
                               ),
                             ));
@@ -264,7 +259,8 @@ class _ViewPodcastState extends State<ViewPodcast> {
                               ),
                               child: CachedNetworkImage(
                                 width: MediaQuery.of(context).size.width * 0.1,
-                                imageUrl: widget.details['cover_art'],
+                                imageUrl: 'http://10.0.2.2:8080' +
+                                    widget.details['cover_art'],
                                 placeholder: (context, url) =>
                                     const CircularProgressIndicator(
                                   color: btnColor,
@@ -336,7 +332,8 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                   _audioManager.init(
                                       state.episodes,
                                       index,
-                                      widget.details['cover_art'],
+                                      'http://10.0.2.2:8080' +
+                                          widget.details['cover_art'],
                                       widget.details['author']);
                                   pushNewScreen(
                                     context,
@@ -383,5 +380,6 @@ class _ViewPodcastState extends State<ViewPodcast> {
         ],
       ),
     );
+    ;
   }
 }

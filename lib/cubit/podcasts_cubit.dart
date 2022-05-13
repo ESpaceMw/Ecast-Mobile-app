@@ -57,14 +57,19 @@ class PodcastsCubit extends Cubit<PodcastsState> {
     emit(FetchingEpisodes());
   }
 
-  void subscribe(var id) {
-    emit(PodCastsLoading());
-    repository.subscribe(id).then((value) {
+  void subscribe(id) {
+    emit(SubProcess());
+    repository.subscribes(id).then((value) {
+      print(value);
       if (value['err']) {
         emit(PodcastsError(msg: value['msg']));
       } else {
-        emit(PodcastSubscripted(msg: value['msg']));
+        emit(PodcastSubscripted(msg: value['msg'].toString()));
       }
     });
+  }
+
+  void unsubscribe(id) {
+    emit(SubProcess());
   }
 }

@@ -18,6 +18,8 @@ class PodcastSubscripted extends PodcastsState {
   PodcastSubscripted({required this.msg});
 }
 
+class SubProcess extends PodcastsState {}
+
 class Pod extends PodcastsState {
   final List arts;
 
