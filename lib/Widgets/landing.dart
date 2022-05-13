@@ -26,7 +26,7 @@ Repository repos = Repository(networkService: NetworkService());
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    print(Playing);
+    // print(Playing);
     Repository repository = Repository(networkService: NetworkService());
     BlocProvider.of<ChartsCubit>(context).charts();
     DateTime now = DateTime.now();

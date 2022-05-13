@@ -46,7 +46,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    _audioManager.play();
+    // _audioManager.play();
     // setState(() {
     //   Playing.add(widget.pd);
     // });

@@ -325,11 +325,13 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                       widget.details['author']);
                                   pushNewScreen(
                                     context,
-                                    screen: MusicPlayer(
-                                        // img: widget.details['cover_art'],
-                                        ),
+                                    screen: const MusicPlayer(),
                                     withNavBar: false,
                                   );
+                                  _audioManager.play();
+                                  setState(() {
+                                    playing = true;
+                                  });
                                 },
                                 child: const FaIcon(FontAwesomeIcons.play),
                               ),

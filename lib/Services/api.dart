@@ -168,6 +168,7 @@ class NetworkService {
       final request = await http.get(
           Uri.parse("$baseUrl/podcast/api/v1/podcast/chats/"),
           headers: {'Authorization': "Token $token"});
+      // print(request.body);
       if (request.statusCode == 400 ||
           request.statusCode == 403 ||
           request.statusCode == 401) {

@@ -26,7 +26,7 @@ final TextEditingController birthdate = TextEditingController();
 String gender = 'Male';
 List<String> gvals = ['Male', 'Female', 'Non-Binary'];
 List RecentlyPlayed = [];
-var Playing = [];
+bool playing = false;
 
 bool playAll = false;
 
