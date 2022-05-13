@@ -24,10 +24,9 @@ class Home extends StatefulWidget {
 Repository repos = Repository(networkService: NetworkService());
 
 class _HomeState extends State<Home> {
-  final ScrollController _scrollController = ScrollController();
-
   @override
   Widget build(BuildContext context) {
+    print(Playing);
     Repository repository = Repository(networkService: NetworkService());
     BlocProvider.of<ChartsCubit>(context).charts();
     DateTime now = DateTime.now();
@@ -147,6 +146,7 @@ class _HomeState extends State<Home> {
                                               bottom: 0.0,
                                               left: 0.0,
                                               right: 0.0,
+                                              // top: 0.0,
                                               child: Container(
                                                 decoration: const BoxDecoration(
                                                   gradient: LinearGradient(
@@ -158,7 +158,7 @@ class _HomeState extends State<Home> {
                                                     ],
                                                     begin:
                                                         Alignment.bottomCenter,
-                                                    end: Alignment.topCenter,
+                                                    end: Alignment.center,
                                                   ),
                                                 ),
                                                 padding:

@@ -8,19 +8,18 @@ import 'package:ecast/Widgets/components/popmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:palette_generator/palette_generator.dart';
-import 'package:drop_shadow_image/drop_shadow_image.dart';
 
 class MusicPlayer extends StatefulWidget {
-  final dynamic episode;
-  final String img;
-  final List pd;
-  final String author;
+  // final dynamic episode;
+  // final String img;
+  // final List pd;
+  // final String author;
   const MusicPlayer({
     Key? key,
-    required this.episode,
-    required this.img,
-    required this.pd,
-    required this.author,
+    // required this.episode,
+    // required this.img,
+    // required this.pd,
+    // required this.author,
   }) : super(key: key);
 
   @override
@@ -31,24 +30,26 @@ class _MusicPlayerState extends State<MusicPlayer> {
   late final AudioManager _audioManager;
   Color bg = Colors.black87;
 
-  _getColor() async {
-    var cc = await PaletteGenerator.fromImageProvider(NetworkImage(widget.img));
-    setState(() {
-      bg = cc.dominantColor!.color;
-    });
-  }
+  // _getColor() async {
+  //   var cc = await PaletteGenerator.fromImageProvider(NetworkImage(widget.img));
+  //   setState(() {
+  //     bg = cc.dominantColor!.color;
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    _getColor();
-    _audioManager =
-        AudioManager(widget.pd, widget.episode, widget.img, widget.author);
+    // _getColor();
+    _audioManager = AudioManager();
   }
 
   @override
   Widget build(BuildContext context) {
     _audioManager.play();
+    // setState(() {
+    //   Playing.add(widget.pd);
+    // });
     return Scaffold(
       backgroundColor: bg,
       body: ListView(
@@ -83,7 +84,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         elevation: 10.0,
                         child: CachedNetworkImage(
                           width: MediaQuery.of(context).size.width * 0.8,
-                          imageUrl: widget.img,
+                          imageUrl: artwork.toString(),
                           placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(
                               color: btnColor,

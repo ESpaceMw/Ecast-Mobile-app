@@ -18,8 +18,8 @@ class AudioManager {
   final progressNotifier = ProgressNotifier();
   final artWork = ValueNotifier<String>("");
 
-  void _init(source, index, cover, author) async {
-    await _loadInitialPlaylist(source, index, cover, author);
+  void _init() async {
+    // await _loadInitialPlaylist(source, index, cover, author);
     _listenPlaybackState();
     _listenToTotalDuration();
     _listenToBufferedPosition();
@@ -29,7 +29,9 @@ class AudioManager {
     _listenToArtChange();
   }
 
-  void init(source, index) {}
+  void init(source, index, cover, author) async {
+    await _loadInitialPlaylist(source, index, cover, author);
+  }
 
   Future<void> _loadInitialPlaylist(source, index, cover, author) async {
     final mediaItems = source.map<MediaItem>((podcast) {
@@ -45,7 +47,7 @@ class AudioManager {
     }).toList();
 
     _audioHandler.addQueueItems(mediaItems);
-    // _audioHandler.skipToQueueItem(index);
+    _audioHandler.skipToQueueItem(index);
   }
 
   void _listenPlaybackState() {
@@ -116,7 +118,9 @@ class AudioManager {
 
   void _listenToArtChange() {
     _audioHandler.mediaItem.listen((event) {
-      artWork.value = event?.extras!['art'];
+      print(event!.extras!['art']);
+      print(event.extras!['art'].runtimeType);
+      artWork.value = event.extras!['art'];
     });
   }
 
@@ -148,8 +152,8 @@ class AudioManager {
     }
   }
 
-  AudioManager(source, index, cover, author) {
-    _init(source, index, cover, author);
+  AudioManager() {
+    _init();
   }
 
   void play() => _audioHandler.play();

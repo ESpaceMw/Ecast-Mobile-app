@@ -148,13 +148,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.5"
-  drop_shadow_image:
-    dependency: "direct main"
+  fading_edge_scrollview:
+    dependency: transitive
     description:
-      name: drop_shadow_image
+      name: fading_edge_scrollview
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.9.1"
+    version: "2.0.1"
   fake_async:
     dependency: transitive
     description:
@@ -282,13 +282,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.20"
-  just_audio_background:
-    dependency: "direct main"
-    description:
-      name: just_audio_background
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1-beta.5"
   just_audio_platform_interface:
     dependency: transitive
     description:
@@ -310,6 +303,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  marquee:
+    dependency: "direct main"
+    description:
+      name: marquee
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
   matcher:
     dependency: transitive
     description:
@@ -471,13 +471,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.3"
-  scroll_snap_list:
-    dependency: "direct main"
-    description:
-      name: scroll_snap_list
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.8.4"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -534,13 +527,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  simple_shadow:
-    dependency: "direct main"
-    description:
-      name: simple_shadow
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
   sky_engine:
     dependency: transitive
     description: flutter

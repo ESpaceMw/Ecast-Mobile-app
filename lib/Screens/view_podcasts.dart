@@ -3,6 +3,7 @@ import 'package:ecast/Screens/player/music_player.dart';
 import 'package:ecast/Screens/view_ep.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
+import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/loader.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
@@ -14,14 +15,26 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 final Repository repository = Repository(networkService: NetworkService());
 
-class ViewPodcast extends StatelessWidget {
+class ViewPodcast extends StatefulWidget {
   final dynamic details;
   const ViewPodcast({Key? key, required this.details}) : super(key: key);
 
   @override
+  State<ViewPodcast> createState() => _ViewPodcastState();
+}
+
+class _ViewPodcastState extends State<ViewPodcast> {
+  late final AudioManager _audioManager;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioManager = AudioManager();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(details['id']);
-    print(details['id']);
+    BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(widget.details['id']);
     return Scaffold(
       backgroundColor: Colors.black87,
       body: ListView(
@@ -83,7 +96,7 @@ class ViewPodcast extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                   child: CachedNetworkImage(
                     width: MediaQuery.of(context).size.width * 0.5,
-                    imageUrl: details['cover_art'],
+                    imageUrl: widget.details['cover_art'],
                     placeholder: (context, url) =>
                         const CircularProgressIndicator(
                       color: btnColor,
@@ -94,12 +107,12 @@ class ViewPodcast extends StatelessWidget {
             ],
           ),
           Text(
-            details['title'],
+            widget.details['title'],
             style: titleStyles,
             textAlign: TextAlign.center,
           ),
           Text(
-            details['author'],
+            widget.details['author'],
             style: const TextStyle(
               color: Colors.blue,
             ),
@@ -108,7 +121,7 @@ class ViewPodcast extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              details['description'],
+              widget.details['description'],
               style: infostyle,
               textAlign: TextAlign.center,
             ),
@@ -176,7 +189,7 @@ class ViewPodcast extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () {
                     BlocProvider.of<PodcastsCubit>(context)
-                        .subscribe(details['id']);
+                        .subscribe(widget.details['id']);
                   },
                   child: Container(
                     padding: const EdgeInsets.only(
@@ -238,7 +251,7 @@ class ViewPodcast extends StatelessWidget {
                                 value: PodcastsCubit(repository: repository),
                                 child: ViewEp(
                                   ep: state.episodes[index],
-                                  cover: details['cover_art'],
+                                  cover: widget.details['cover_art'],
                                 ),
                               ),
                             ));
@@ -250,7 +263,7 @@ class ViewPodcast extends StatelessWidget {
                               ),
                               child: CachedNetworkImage(
                                 width: MediaQuery.of(context).size.width * 0.1,
-                                imageUrl: details['cover_art'],
+                                imageUrl: widget.details['cover_art'],
                                 placeholder: (context, url) =>
                                     const CircularProgressIndicator(
                                   color: btnColor,
@@ -305,13 +318,16 @@ class ViewPodcast extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
                                 onTap: () {
+                                  _audioManager.init(
+                                      state.episodes,
+                                      index,
+                                      widget.details['cover_art'],
+                                      widget.details['author']);
                                   pushNewScreen(
                                     context,
                                     screen: MusicPlayer(
-                                        episode: index,
-                                        img: details['cover_art'],
-                                        pd: state.episodes,
-                                        author: details['author']),
+                                        // img: widget.details['cover_art'],
+                                        ),
                                     withNavBar: false,
                                   );
                                 },
