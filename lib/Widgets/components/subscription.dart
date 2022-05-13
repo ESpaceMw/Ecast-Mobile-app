@@ -75,7 +75,8 @@ class _SubscriptionsState extends State<Subscriptions> {
                                 width: MediaQuery.of(context).size.width * 0.37,
                                 height:
                                     MediaQuery.of(context).size.width * 0.37,
-                                imageUrl: state.subs[index]['cover_art'],
+                                imageUrl: 'http://10.0.2.2:8080' +
+                                    state.subs[index]['cover_art'],
                                 placeholder: (context, url) =>
                                     const CircularProgressIndicator(
                                   color: btnColor,

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:marquee/marquee.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 final Repository repository = Repository(networkService: NetworkService());
@@ -276,13 +277,35 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      state.episodes[index]['name'],
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13,
-                                      ),
-                                    ),
+                                    Container(
+                                        height: 20,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                        child: Marquee(
+                                          startPadding: 10.0,
+                                          blankSpace: 20.0,
+                                          text: state.episodes[index]['name'],
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 13,
+                                          ),
+                                          scrollAxis: Axis.horizontal,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          velocity: 50.0,
+                                          pauseAfterRound:
+                                              const Duration(seconds: 1),
+                                          // numberOfRounds: 3,
+                                        )
+                                        // Text(
+                                        //   state.episodes[index]['name'],
+                                        //   style: const TextStyle(
+                                        //     fontWeight: FontWeight.bold,
+                                        //     fontSize: 13,
+                                        //   ),
+                                        // ),
+                                        ),
                                     const SizedBox(
                                       height: 2,
                                     ),

@@ -117,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     builder: (_, title, __) {
                                       return Marquee(
                                         text: title,
+                                        blankSpace: 15.0,
                                         scrollAxis: Axis.horizontal,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,

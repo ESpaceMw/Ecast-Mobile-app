@@ -19,7 +19,6 @@ class AudioManager {
   final artWork = ValueNotifier<String>("");
 
   void _init() async {
-    // await _loadInitialPlaylist(source, index, cover, author);
     _listenPlaybackState();
     _listenToTotalDuration();
     _listenToBufferedPosition();
@@ -118,9 +117,9 @@ class AudioManager {
 
   void _listenToArtChange() {
     _audioHandler.mediaItem.listen((event) {
-      print(event!.extras!['art']);
-      print(event.extras!['art'].runtimeType);
-      artWork.value = event.extras!['art'];
+      // print(event!.extras!['art']);
+      // print(event.extras!['art'].runtimeType);
+      artWork.value = event!.extras!['art'] ?? '';
     });
   }
 

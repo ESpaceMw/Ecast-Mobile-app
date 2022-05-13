@@ -18,7 +18,7 @@ class Podcasts extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black87,
       body: ListView(
-        shrinkWrap: true,
+        // shrinkWrap: true,
         children: [
           const SizedBox(
             height: 10,
@@ -90,9 +90,10 @@ class Podcasts extends StatelessWidget {
                                   height:
                                       MediaQuery.of(context).size.width * 0.37,
                                   imageUrl: state.arts[index]['cover_art'],
-                                  placeholder: (context, url) =>
-                                      const CircularProgressIndicator(
-                                    color: btnColor,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(
+                                      color: btnColor,
+                                    ),
                                   ),
                                 ),
                               ),
