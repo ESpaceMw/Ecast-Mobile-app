@@ -77,7 +77,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
               ValueListenableBuilder(
                   valueListenable: _audioManager.artWork,
                   builder: (_, artwork, __) {
-                    // print(artwork);
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
                       child: Material(
@@ -139,6 +138,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                     valueListenable: _audioManager.progressNotifier,
                     builder: (_, value, __) {
                       return ProgressBar(
+                        thumbCanPaintOutsideBar: false,
                         baseBarColor: Colors.grey,
                         progressBarColor: btnColor,
                         progress: value.current,

@@ -63,6 +63,7 @@ class _MenuState extends State<Menu> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
                                 state.user['first_name'] ?? 'First name',
@@ -76,7 +77,7 @@ class _MenuState extends State<Menu> {
                             ],
                           ),
                           const SizedBox(
-                            height: 10,
+                            height: 5,
                           ),
                           Padding(
                             padding: const EdgeInsets.only(left: 5),

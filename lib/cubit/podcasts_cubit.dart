@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:ecast/Models/channels.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:meta/meta.dart';
 
@@ -74,7 +73,7 @@ class PodcastsCubit extends Cubit<PodcastsState> {
       if (value['err']) {
         emit(PodcastsError(msg: value['msg']));
       } else {
-        emit(Unsubscribed(msg: value['msg']));
+        emit(Unsubscribed(msg: value['msg'].toString()));
       }
     });
   }

@@ -91,7 +91,8 @@ class _SubsState extends State<Subs> {
                   borderRadius: BorderRadius.circular(5),
                   child: CachedNetworkImage(
                     width: MediaQuery.of(context).size.width * 0.5,
-                    imageUrl: widget.details['cover_art'],
+                    imageUrl:
+                        'http://10.0.2.2:8080' + widget.details['cover_art'],
                     placeholder: (context, url) =>
                         const CircularProgressIndicator(
                       color: btnColor,
@@ -164,18 +165,23 @@ class _SubsState extends State<Subs> {
                         builder: (context) {
                           return SimpleDialog(
                             children: [
-                              Row(
-                                children: const [
-                                  Text('Please wait'),
-                                  CircularProgressIndicator(),
-                                ],
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: const [
+                                    CircularProgressIndicator(),
+                                    Text('Please wait'),
+                                  ],
+                                ),
                               )
                             ],
                           );
                         });
                   }
 
-                  if (state is PodcastSubscripted) {
+                  if (state is Unsubscribed) {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text(state.msg)));
@@ -184,7 +190,7 @@ class _SubsState extends State<Subs> {
                 child: GestureDetector(
                   onTap: () {
                     BlocProvider.of<PodcastsCubit>(context)
-                        .subscribe(widget.details['id'].toString());
+                        .unsubscribe(widget.details['id'].toString());
                   },
                   child: Container(
                     padding: const EdgeInsets.only(
@@ -196,7 +202,7 @@ class _SubsState extends State<Subs> {
                       ),
                     ),
                     child: const Text(
-                      "Un Subscribe",
+                      "UnSubscribe",
                       style: TextStyle(
                         color: whiteColor,
                         fontWeight: FontWeight.bold,

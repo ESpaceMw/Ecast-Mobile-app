@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: tabBodies[_selectedIndex],
       bottomNavigationBar: Container(
-        height: playing ? 120 : 65,
+        height: playing ? 113 : 65,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -44,42 +44,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     // ignore: avoid_unnecessary_containers
                     child: Container(
+                      color: Colors.grey[900],
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          ValueListenableBuilder<ButtonState>(
-                            valueListenable: _audioManager.btnNotifier,
-                            builder: (_, value, __) {
-                              switch (value) {
-                                case ButtonState.loading:
-                                  return Container(
-                                    margin: const EdgeInsets.all(8.0),
-                                    width: 32.0,
-                                    height: 32.0,
-                                    child: const CircularProgressIndicator(),
-                                  );
-                                case ButtonState.paused:
-                                  return IconButton(
-                                      iconSize: 24.0,
-                                      onPressed: () {
-                                        _audioManager.play();
-                                      },
-                                      icon: const FaIcon(
-                                        FontAwesomeIcons.play,
-                                      ));
-
-                                case ButtonState.playing:
-                                  return IconButton(
-                                    iconSize: 24.0,
-                                    onPressed: () {
-                                      _audioManager.pause();
-                                    },
-                                    icon: const FaIcon(
-                                      FontAwesomeIcons.pause,
-                                    ),
-                                  );
-                              }
-                            },
+                          const SizedBox(
+                            width: 10,
                           ),
                           ValueListenableBuilder(
                               valueListenable: _audioManager.artWork,
@@ -109,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                width: MediaQuery.of(context).size.width * 0.35,
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 height: 20,
                                 child: ValueListenableBuilder<String>(
                                     valueListenable:
@@ -121,7 +91,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         scrollAxis: Axis.horizontal,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        numberOfRounds: 3,
                                         style: const TextStyle(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold),
@@ -137,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     return Text(
                                       artist.toString(),
                                       style: const TextStyle(
-                                        fontSize: 13,
+                                        fontSize: 10,
                                       ),
                                       textAlign: TextAlign.center,
                                     );
@@ -145,22 +114,42 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           const SizedBox(
-                            width: 10,
+                            width: 15,
                           ),
-                          ValueListenableBuilder<bool>(
-                              valueListenable:
-                                  _audioManager.isFirstSongNotifier,
-                              builder: (_, isfirst, __) {
-                                return IconButton(
-                                  onPressed: (isfirst)
-                                      ? null
-                                      : _audioManager.onPreviousBtn,
-                                  iconSize: 22,
-                                  icon: const FaIcon(
-                                    FontAwesomeIcons.backwardStep,
-                                  ),
-                                );
-                              }),
+                          ValueListenableBuilder<ButtonState>(
+                            valueListenable: _audioManager.btnNotifier,
+                            builder: (_, value, __) {
+                              switch (value) {
+                                case ButtonState.loading:
+                                  return Container(
+                                    margin: const EdgeInsets.all(8.0),
+                                    width: 32.0,
+                                    height: 32.0,
+                                    child: const CircularProgressIndicator(),
+                                  );
+                                case ButtonState.paused:
+                                  return IconButton(
+                                      iconSize: 22.0,
+                                      onPressed: () {
+                                        _audioManager.play();
+                                      },
+                                      icon: const FaIcon(
+                                        FontAwesomeIcons.play,
+                                      ));
+
+                                case ButtonState.playing:
+                                  return IconButton(
+                                    iconSize: 22.0,
+                                    onPressed: () {
+                                      _audioManager.pause();
+                                    },
+                                    icon: const FaIcon(
+                                      FontAwesomeIcons.pause,
+                                    ),
+                                  );
+                              }
+                            },
+                          ),
                           ValueListenableBuilder<bool>(
                               valueListenable: _audioManager.isLastSongNotifier,
                               builder: (_, isLast, __) {
@@ -185,8 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 8,
             ),
             BottomNavigationBar(
-              type: BottomNavigationBarType.shifting,
+              type: BottomNavigationBarType.fixed,
               items: bottomTabs,
+              elevation: 10.5,
               onTap: _changeIndex,
               showUnselectedLabels: false,
               selectedItemColor: btnColor,

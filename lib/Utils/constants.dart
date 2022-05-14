@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 const kBackgroundColor = Color(0xFF101010);
 const kPrimaryColor = Color(0xFFFFBD73);
-const btnColor = Color(0xFF337d78);
+const btnColor = Color(0xFF2AB7B1);
 const whiteColor = Colors.white;
 const errorColor = Colors.red;
 const selectedIten = Color(0xFF5ED0FB);
@@ -47,7 +47,7 @@ const extreStyles = TextStyle(
 );
 
 const infostyle = TextStyle(
-  fontSize: 16,
+  fontSize: 14,
 );
 
 const info = TextStyle(
@@ -96,157 +96,9 @@ List<String> options = [
       'Details'
 ];
 
-Repository repository = Repository(networkService: NetworkService());
+List genres = [
+  {'art_url': '', 'title': 'Arts'},
+  {'art_url': "", 'title': ''},
+];
 
-                    // return Column(
-                    //   crossAxisAlignment: CrossAxisAlignment.start,
-                    //   children: [
-                    //     Container(
-                    //         margin: EdgeInsets.only(
-                    //           top: MediaQuery.of(context).size.height * 0.14,
-                    //         ),
-                    //         child: CarouselSlider.builder(
-                    //           itemCount: state.charts.length,
-                    //           itemBuilder: (context, index, data) {
-                    //             return GestureDetector(
-                    //               onTap: () {
-                    //                 Navigator.of(context).push(
-                    //                   MaterialPageRoute(
-                    //                     builder: (_) => ViewChart(
-                    //                       chartDetails: state.charts[index],
-                    //                     ),
-                    //                   ),
-                    //                 );
-                    //               },
-                    //               child: ClipRRect(
-                    //                   borderRadius: const BorderRadius.all(
-                    //                       Radius.circular(5.0)),
-                    //                   child: Stack(
-                    //                     children: <Widget>[
-                    //                       Image.network(
-                    //                           state.charts[index]
-                    //                               ['header_image'],
-                    //                           fit: BoxFit.cover,
-                    //                           width: MediaQuery.of(context)
-                    //                               .size
-                    //                               .width),
-                    //                       Positioned(
-                    //                         bottom: 0.0,
-                    //                         left: 0.0,
-                    //                         right: 0.0,
-                    //                         child: Container(
-                    //                           decoration: const BoxDecoration(
-                    //                             gradient: LinearGradient(
-                    //                               colors: [
-                    //                                 Color.fromARGB(
-                    //                                     200, 0, 0, 0),
-                    //                                 Color.fromARGB(200, 0, 0, 0)
-                    //                               ],
-                    //                               begin: Alignment.bottomCenter,
-                    //                               end: Alignment.topCenter,
-                    //                             ),
-                    //                           ),
-                    //                           padding:
-                    //                               const EdgeInsets.symmetric(
-                    //                                   vertical: 10.0,
-                    //                                   horizontal: 20.0),
-                    //                           child: Text(
-                    //                             state.charts[index]['name'],
-                    //                             style: const TextStyle(
-                    //                                 color: Colors.white,
-                    //                                 fontSize: 20.0,
-                    //                                 fontWeight: FontWeight.bold,
-                    //                                 fontFamily: 'OpenSans'),
-                    //                           ),
-                    //                         ),
-                    //                       ),
-                    //                     ],
-                    //                   )),
-                    //             );
-                    //           },
-                    //           options: CarouselOptions(
-                    //               aspectRatio: 2.0, enlargeCenterPage: true),
-                    //         )),
-                    //     const Padding(
-                    //       padding: EdgeInsets.all(10.0),
-                    //       child: Text("Recommended Podcasts", style: textStyle),
-                    //     ),
-                    //     const SizedBox(
-                    //       height: 10,
-                    //     ),
-                    //     GridView.builder(
-                    //       shrinkWrap: true,
-                    //       physics: const ScrollPhysics(),
-                    //       gridDelegate:
-                    //           SliverGridDelegateWithFixedCrossAxisCount(
-                    //         crossAxisCount: 2,
-                    //         mainAxisSpacing: 4.0,
-                    //         childAspectRatio:
-                    //             MediaQuery.of(context).size.width /
-                    //                 (MediaQuery.of(context).size.height / 1.6),
-                    //       ),
-                    //       itemCount: state.podcasts.length,
-                    //       itemBuilder: (context, index) {
-                    //         return GestureDetector(
-                    //           onTap: () {
-                    //             Navigator.of(context).push(
-                    //               MaterialPageRoute(
-                    //                   builder: (context) => BlocProvider.value(
-                    //                         value: PodcastsCubit(
-                    //                             repository: repos),
-                    //                         child: ViewPodcast(
-                    //                             details: state.podcasts[index]),
-                    //                       )),
-                    //             );
-                    //           },
-                    //           child: Container(
-                    //             margin: const EdgeInsets.all(10),
-                    //             decoration: BoxDecoration(
-                    //               color: recColor,
-                    //               borderRadius: BorderRadius.circular(10),
-                    //             ),
-                    //             child: Column(
-                    //               mainAxisAlignment: MainAxisAlignment.start,
-                    //               children: [
-                    //                 Flexible(
-                    //                   child: Padding(
-                    //                     padding: const EdgeInsets.only(top: 13),
-                    //                     child: ClipRRect(
-                    //                       borderRadius:
-                    //                           BorderRadius.circular(18),
-                    //                       child: CachedNetworkImage(
-                    //                         width: MediaQuery.of(context)
-                    //                                 .size
-                    //                                 .width *
-                    //                             0.37,
-                    //                         imageUrl: state.podcasts[index]
-                    //                             ['cover_art'],
-                    //                         placeholder: (context, url) =>
-                    //                             const Center(
-                    //                           child: CircularProgressIndicator(
-                    //                             color: btnColor,
-                    //                           ),
-                    //                         ),
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //                 Padding(
-                    //                   padding: const EdgeInsets.all(10.0),
-                    //                   child: Text(
-                    //                     state.podcasts[index]['title'],
-                    //                     style: const TextStyle(
-                    //                       fontWeight: FontWeight.bold,
-                    //                       fontSize: 16,
-                    //                     ),
-                    //                     textAlign: TextAlign.start,
-                    //                   ),
-                    //                 )
-                    //               ],
-                    //             ),
-                    //           ),
-                    //         );
-                    //       },
-                    //     )
-                    //   ],
-                    // );
+Repository repository = Repository(networkService: NetworkService());

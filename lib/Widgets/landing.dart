@@ -26,7 +26,6 @@ Repository repos = Repository(networkService: NetworkService());
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    // print(Playing);
     Repository repository = Repository(networkService: NetworkService());
     BlocProvider.of<ChartsCubit>(context).charts();
     DateTime now = DateTime.now();
@@ -44,7 +43,7 @@ class _HomeState extends State<Home> {
               ShaderMask(
                 shaderCallback: (rect) => const LinearGradient(
                   begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
+                  end: Alignment.center,
                   colors: [
                     Colors.black87,
                     kBackgroundColor,
@@ -72,6 +71,7 @@ class _HomeState extends State<Home> {
                     Container(
                       margin: const EdgeInsets.only(
                         top: 10,
+                        left: 12,
                       ),
                       child: Text(
                         message,
@@ -106,11 +106,12 @@ class _HomeState extends State<Home> {
                   if (state is ChartsLoaded) {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           height: 300.0,
                           margin: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.13,
+                            top: MediaQuery.of(context).size.height * 0.11,
                           ),
                           child: ListView.builder(
                               shrinkWrap: true,
@@ -139,14 +140,13 @@ class _HomeState extends State<Home> {
                                               state.charts[index]
                                                   ['header_image'],
                                               fit: BoxFit.cover,
-                                              width: size.width * 0.7,
+                                              width: size.width * 0.6,
                                               height: size.height * 0.9,
                                             ),
                                             Positioned(
                                               bottom: 0.0,
                                               left: 0.0,
                                               right: 0.0,
-                                              // top: 0.0,
                                               child: Container(
                                                 decoration: const BoxDecoration(
                                                   gradient: LinearGradient(
@@ -182,6 +182,107 @@ class _HomeState extends State<Home> {
                                 );
                               }),
                         ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              color: btnColor,
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Image.asset(
+                                  'assets/logos/live.png',
+                                  width: 50,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Listen to live Podcast broadcasts',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    const Text(
+                                      'and radio stations',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Container(
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[900],
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                        ),
+                                        child: const Padding(
+                                            padding: EdgeInsets.only(
+                                              left: 25,
+                                              right: 25,
+                                              top: 3,
+                                            ),
+                                            child: Text("Listen Live Now",
+                                                style: TextStyle(
+                                                  color: whiteColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 13,
+                                                ))))
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          child: Text('Recently Played', style: textStyle),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Container(
+                          height: 100,
+                          child: ListView.builder(
+                              itemCount: state.podcasts.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, index) {
+                                return GestureDetector(
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 20),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        // width: size.width * 0.4,
+                                        imageUrl: state.podcasts[index]
+                                            ['cover_art'],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                        )
                       ],
                     );
                   } else if (state is NetError) {

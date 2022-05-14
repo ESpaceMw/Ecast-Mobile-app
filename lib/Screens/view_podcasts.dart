@@ -115,40 +115,17 @@ class _ViewPodcastState extends State<ViewPodcast> {
           Text(
             widget.details['author'],
             style: const TextStyle(
-              color: Colors.blue,
+              color: Colors.grey,
             ),
             textAlign: TextAlign.center,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10.0),
             child: Text(
               widget.details['description'],
               style: infostyle,
               textAlign: TextAlign.center,
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
-                "153 listeners",
-                style: TextStyle(
-                  color: Colors.blue,
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                "130 episodes",
-                style: TextStyle(
-                  color: Colors.blue,
-                ),
-              ),
-            ],
           ),
           const SizedBox(
             height: 15,
@@ -194,9 +171,9 @@ class _ViewPodcastState extends State<ViewPodcast> {
                   },
                   child: Container(
                     padding: const EdgeInsets.only(
-                        left: 35, right: 35, top: 8, bottom: 8),
+                        left: 35, right: 35, top: 5, bottom: 5),
                     decoration: BoxDecoration(
-                      color: Colors.blueAccent,
+                      color: btnColor,
                       borderRadius: BorderRadius.circular(
                         20.8,
                       ),
@@ -206,7 +183,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
                       style: TextStyle(
                         color: whiteColor,
                         fontWeight: FontWeight.bold,
-                        fontSize: 17,
+                        fontSize: 16,
                       ),
                     ),
                   ),
@@ -229,11 +206,12 @@ class _ViewPodcastState extends State<ViewPodcast> {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 10,
           ),
           BlocBuilder<PodcastsCubit, PodcastsState>(
             builder: (context, state) {
               if (state is FetchedEpisodes) {
+                print(state.episodes);
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const ScrollPhysics(),
@@ -281,7 +259,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                         height: 20,
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.5,
+                                                0.52,
                                         child: Marquee(
                                           startPadding: 10.0,
                                           blankSpace: 20.0,
@@ -296,13 +274,12 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                           velocity: 50.0,
                                           pauseAfterRound:
                                               const Duration(seconds: 1),
-                                          // numberOfRounds: 3,
                                         )),
                                     const SizedBox(
                                       height: 2,
                                     ),
                                     Text(
-                                      'Published on $date',
+                                      date,
                                       style: const TextStyle(
                                         fontSize: 10,
                                         color: Colors.grey,
@@ -311,22 +288,17 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                   ],
                                 ),
                                 const SizedBox(
-                                  width: 15,
+                                  width: 30,
                                 ),
-                                const Flexible(child: Icon(Icons.download)),
+                                const Flexible(
+                                  child: FaIcon(
+                                    FontAwesomeIcons.circleArrowDown,
+                                    size: 20,
+                                  ),
+                                ),
                                 const SizedBox(
                                   width: 15,
                                 ),
-                                // SingleChildScrollView(
-                                //   scrollDirection: Axis.horizontal,
-                                //   child: Text(
-                                //     state.episodes[index]['runtime'],
-                                //     style: const TextStyle(
-                                //       fontSize: 11,
-                                //       color: Colors.grey,
-                                //     ),
-                                //   ),
-                                // )
                               ],
                             ),
                             trailing: Padding(
@@ -348,25 +320,36 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                     playing = true;
                                   });
                                 },
-                                child: const FaIcon(FontAwesomeIcons.play),
+                                child: const FaIcon(
+                                  FontAwesomeIcons.circlePlay,
+                                  size: 22,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 8,
-                            right: 8,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 13),
+                          child: Text(
+                            state.episodes[index]['description'],
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
                           child: Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: Colors.grey,
+                            height: 10,
+                            thickness: 0.8,
+                            color: Colors.grey.shade800,
                           ),
                         ),
-                        const SizedBox(
-                          height: 5,
-                        ),
+                        const SizedBox(height: 10),
                       ],
                     );
                   },
