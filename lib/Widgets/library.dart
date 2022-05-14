@@ -21,54 +21,62 @@ class _LibraryState extends State<Library> {
   Repository repository = Repository(networkService: NetworkService());
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.black87,
-      body: ListView(
-        controller: _Controller,
-        shrinkWrap: true,
-        children: [
-          const SizedBox(
-            height: 15,
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Library",
-              style: TextStyle(
-                fontSize: 23,
-                fontWeight: FontWeight.bold,
+      body: Container(
+        margin: const EdgeInsets.only(
+          left: 15,
+          right: 15,
+        ),
+        child: ListView(
+          controller: _Controller,
+          shrinkWrap: true,
+          children: [
+            const SizedBox(
+              height: 15,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                "Library",
+                style: TextStyle(
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              const SizedBox(
-                width: 20,
+            const SizedBox(
+              height: 15,
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 5),
+              child: Row(
+                children: [
+                  _buildTabs(0),
+                  _buildTabs(1),
+                  _buildTabs(2),
+                ],
               ),
-              _buildTabs(0),
-              _buildTabs(1),
-              _buildTabs(2),
-            ],
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Container(
-            child: _currentBuild == 0
-                ? BlocProvider(
-                    create: (context) => PodcastsCubit(repository: repository),
-                    child: const Subscriptions(),
-                  )
-                : _currentBuild == 1
-                    ? const Downloads()
-                    : const Center(
-                        child: Text("Dude"),
-                      ),
-          )
-        ],
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Container(
+              child: _currentBuild == 0
+                  ? BlocProvider(
+                      create: (context) =>
+                          PodcastsCubit(repository: repository),
+                      child: const Subscriptions(),
+                    )
+                  : _currentBuild == 1
+                      ? const Downloads()
+                      : const Center(
+                          child: Text("Dude"),
+                        ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -81,7 +89,7 @@ class _LibraryState extends State<Library> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(5),
         margin: const EdgeInsets.only(left: 5),
         decoration: BoxDecoration(
           color: _currentBuild == index ? btnColor : null,

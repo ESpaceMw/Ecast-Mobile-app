@@ -103,10 +103,7 @@ class Podcasts extends StatelessWidget {
                             padding: const EdgeInsets.all(10.0),
                             child: Text(
                               state.arts[index]['title'],
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                              style: podstyles,
                               textAlign: TextAlign.start,
                             ),
                           )

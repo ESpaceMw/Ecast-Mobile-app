@@ -30,6 +30,16 @@ bool playing = false;
 
 bool playAll = false;
 
+const optStyles = TextStyle(
+  fontSize: 15,
+  fontWeight: FontWeight.bold,
+);
+
+const podstyles = TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 13,
+);
+
 const textStyle = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.bold,

@@ -36,13 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            // ignore: avoid_unnecessary_containers
             playing
                 ? GestureDetector(
                     onTap: () {
                       pushNewScreen(context, screen: const MusicPlayer());
                     },
-                    // ignore: avoid_unnecessary_containers
                     child: Container(
                       color: Colors.grey[900],
                       child: Row(

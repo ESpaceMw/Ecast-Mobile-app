@@ -45,7 +45,7 @@ class _SubscriptionsState extends State<Subscriptions> {
                 mainAxisSpacing: 2.0,
                 crossAxisSpacing: 0,
                 childAspectRatio: MediaQuery.of(context).size.width /
-                    (MediaQuery.of(context).size.height / 1.6),
+                    (MediaQuery.of(context).size.height / 1.3),
               ),
               itemCount: state.subs.length,
               itemBuilder: (context, index) {
@@ -58,46 +58,38 @@ class _SubscriptionsState extends State<Subscriptions> {
                             )));
                   },
                   child: Container(
-                    // width: 30,
-                    height: 2000,
+                    width: 200,
                     margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: recColor,
-                      borderRadius: BorderRadius.circular(18),
-                    ),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 13),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(18),
-                              child: CachedNetworkImage(
-                                width: MediaQuery.of(context).size.width * 0.37,
-                                height:
-                                    MediaQuery.of(context).size.width * 0.37,
-                                imageUrl: 'http://10.0.2.2:8080' +
-                                    state.subs[index]['cover_art'],
-                                placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator(
-                                    color: btnColor,
-                                  ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 13),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: CachedNetworkImage(
+                              imageUrl: 'http://10.0.2.2:8080' +
+                                  state.subs[index]['cover_art'],
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(
+                                  color: btnColor,
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            state.subs[index]['title'],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                            textAlign: TextAlign.start,
-                          ),
-                        )
+                        const SizedBox(
+                          height: 7,
+                        ),
+                        Text(
+                          state.subs[index]['title'],
+                          style: podstyles,
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          state.subs[index]['author'],
+                          style: TextStyle(color: Colors.grey[400]),
+                        ),
                       ],
                     ),
                   ),
