@@ -305,6 +305,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
                                 onTap: () {
+                                  _audioManager.dispose();
                                   _audioManager.init(
                                       state.episodes,
                                       index,

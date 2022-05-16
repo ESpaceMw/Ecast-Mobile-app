@@ -82,6 +82,24 @@ class MyAudioHandler extends BaseAudioHandler {
   Future<void> skipToPrevious() => _player.seekToPrevious();
 
   @override
+  Future customAction(String name, [Map<String, dynamic>? extras]) async {
+    if (name == 'clear') {
+      if (_playlist.length == 0) {
+        print('not filled');
+      } else {
+        print(_playlist);
+        _playlist.clear();
+        final newQueue = queue.value..clear();
+        queue.add(newQueue);
+        _player.seek(Duration.zero);
+        // await _player.stop();
+      }
+
+      // super.stop();
+    }
+  }
+
+  @override
   Future<void> setRepeatMode(AudioServiceRepeatMode repeatMode) async {
     switch (repeatMode) {
       case AudioServiceRepeatMode.none:

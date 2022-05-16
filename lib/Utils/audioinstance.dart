@@ -32,6 +32,10 @@ class AudioManager {
     await _loadInitialPlaylist(source, index, cover, author);
   }
 
+  void dispose() {
+    _audioHandler.customAction('clear');
+  }
+
   Future<void> _loadInitialPlaylist(source, index, cover, author) async {
     final mediaItems = source.map<MediaItem>((podcast) {
       return MediaItem(
