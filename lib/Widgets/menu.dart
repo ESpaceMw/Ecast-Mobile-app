@@ -12,6 +12,7 @@ import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 Repository repository = Repository(networkService: NetworkService());
@@ -122,9 +123,7 @@ class _MenuState extends State<Menu> {
                 "Podcasts",
                 style: textStyle,
               ),
-              trailing: const Icon(
-                Icons.arrow_forward_rounded,
-              ),
+              trailing: const FaIcon(FontAwesomeIcons.angleRight),
             ),
           ),
           const SizedBox(
@@ -155,9 +154,7 @@ class _MenuState extends State<Menu> {
                 "Charts",
                 style: textStyle,
               ),
-              trailing: const Icon(
-                Icons.arrow_forward_rounded,
-              ),
+              trailing: const FaIcon(FontAwesomeIcons.angleRight),
             ),
           ),
           const SizedBox(
@@ -166,23 +163,20 @@ class _MenuState extends State<Menu> {
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, '/notes'),
             child: ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(15.0),
-                decoration: boxColor,
-                child: const Icon(
-                  Coolicons.note,
-                  color: whiteColor,
-                  size: 30,
+                leading: Container(
+                  padding: const EdgeInsets.all(15.0),
+                  decoration: boxColor,
+                  child: const Icon(
+                    Coolicons.note,
+                    color: whiteColor,
+                    size: 30,
+                  ),
                 ),
-              ),
-              title: const Text(
-                "Notes",
-                style: textStyle,
-              ),
-              trailing: const Icon(
-                Icons.arrow_forward_rounded,
-              ),
-            ),
+                title: const Text(
+                  "Notes",
+                  style: textStyle,
+                ),
+                trailing: const FaIcon(FontAwesomeIcons.angleRight)),
           ),
           const SizedBox(
             height: 20,
@@ -201,31 +195,26 @@ class _MenuState extends State<Menu> {
               "Help",
               style: textStyle,
             ),
-            trailing: const Icon(
-              Icons.arrow_forward_rounded,
-            ),
+            trailing: const FaIcon(FontAwesomeIcons.angleRight),
           ),
           const SizedBox(
             height: 20,
           ),
           ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(15.0),
-              decoration: boxColor,
-              child: const Icon(
-                Icons.info,
-                color: whiteColor,
-                size: 30,
+              leading: Container(
+                padding: const EdgeInsets.all(15.0),
+                decoration: boxColor,
+                child: const Icon(
+                  Icons.info,
+                  color: whiteColor,
+                  size: 30,
+                ),
               ),
-            ),
-            title: const Text(
-              "About",
-              style: textStyle,
-            ),
-            trailing: const Icon(
-              Icons.arrow_forward_rounded,
-            ),
-          ),
+              title: const Text(
+                "About",
+                style: textStyle,
+              ),
+              trailing: const FaIcon(FontAwesomeIcons.angleRight)),
           const SizedBox(
             height: 20,
           ),
@@ -243,9 +232,7 @@ class _MenuState extends State<Menu> {
               "Settings",
               style: textStyle,
             ),
-            trailing: const Icon(
-              Icons.arrow_forward_rounded,
-            ),
+            trailing: const FaIcon(FontAwesomeIcons.angleRight),
           ),
           const SizedBox(
             height: 20,
@@ -284,6 +271,7 @@ class _MenuState extends State<Menu> {
                   "Logout",
                   style: textStyle,
                 ),
+                trailing: const FaIcon(FontAwesomeIcons.angleRight),
               ),
             ),
           )

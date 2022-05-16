@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecast/Screens/view_chart.dart';
 import 'package:ecast/Screens/view_podcasts.dart';
 import 'package:ecast/Screens/wrapper.dart';
@@ -12,7 +13,6 @@ import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -109,15 +109,20 @@ class _HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 300.0,
-                          margin: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height * 0.11,
-                          ),
-                          child: ListView.builder(
-                              shrinkWrap: true,
+                            height: 320.0,
+                            margin: EdgeInsets.only(
+                              top: MediaQuery.of(context).size.height * 0.11,
+                            ),
+                            child: CarouselSlider.builder(
                               itemCount: state.charts.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (BuildContext context, index) {
+                              options: CarouselOptions(
+                                height: 320,
+                                enableInfiniteScroll: false,
+                                enlargeCenterPage: true,
+                                enlargeStrategy:
+                                    CenterPageEnlargeStrategy.height,
+                              ),
+                              itemBuilder: (context, index, realIdx) {
                                 return GestureDetector(
                                   onTap: () {
                                     Navigator.of(context).push(
@@ -128,60 +133,52 @@ class _HomeState extends State<Home> {
                                       ),
                                     );
                                   },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 25, right: 15),
-                                    child: ClipRRect(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10.0)),
-                                        child: Stack(
-                                          children: <Widget>[
-                                            Image.network(
-                                              state.charts[index]
-                                                  ['header_image'],
-                                              fit: BoxFit.cover,
-                                              width: size.width * 0.6,
-                                              height: size.height * 0.9,
-                                            ),
-                                            Positioned(
-                                              bottom: 0.0,
-                                              left: 0.0,
-                                              right: 0.0,
-                                              child: Container(
-                                                decoration: const BoxDecoration(
-                                                  gradient: LinearGradient(
-                                                    colors: [
-                                                      Color.fromARGB(
-                                                          200, 0, 0, 0),
-                                                      Color.fromARGB(
-                                                          200, 0, 0, 0)
-                                                    ],
-                                                    begin:
-                                                        Alignment.bottomCenter,
-                                                    end: Alignment.center,
-                                                  ),
-                                                ),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        vertical: 10.0,
-                                                        horizontal: 20.0),
-                                                child: Text(
-                                                  state.charts[index]['name'],
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily: 'OpenSans'),
+                                  child: ClipRRect(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                      child: Stack(
+                                        children: <Widget>[
+                                          Image.network(
+                                            state.charts[index]['header_image'],
+                                            fit: BoxFit.cover,
+                                            width: size.width * 0.7,
+                                            height: size.height,
+                                          ),
+                                          Positioned(
+                                            bottom: 0.0,
+                                            left: 0.0,
+                                            right: 0.0,
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Color.fromARGB(
+                                                        200, 0, 0, 0),
+                                                    Color.fromARGB(200, 0, 0, 0)
+                                                  ],
+                                                  begin: Alignment.bottomCenter,
+                                                  end: Alignment.center,
                                                 ),
                                               ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10.0,
+                                                      horizontal: 20.0),
+                                              child: Text(
+                                                state.charts[index]['name'],
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'OpenSans'),
+                                              ),
                                             ),
-                                          ],
-                                        )),
-                                  ),
+                                          ),
+                                        ],
+                                      )),
                                 );
-                              }),
-                        ),
+                              },
+                            )),
                         const SizedBox(
                           height: 30,
                         ),
