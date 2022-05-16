@@ -343,7 +343,8 @@ class _SubsState extends State<Subs> {
                                       widget.details['author']);
                                   pushNewScreen(
                                     context,
-                                    screen: const MusicPlayer(),
+                                    screen: MusicPlayer(
+                                        img: widget.details['cover_art']),
                                     withNavBar: false,
                                   );
                                   _audioManager.play();

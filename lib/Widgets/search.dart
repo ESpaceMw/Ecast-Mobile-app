@@ -16,7 +16,6 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  final ScrollController _Controller = ScrollController();
   final TextEditingController _searchQuery = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,6 @@ class _SearchState extends State<Search> {
       backgroundColor: Colors.black87,
       body: ListView(
         shrinkWrap: true,
-        controller: _Controller,
         children: [
           const SizedBox(
             height: 20,

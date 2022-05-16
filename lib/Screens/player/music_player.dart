@@ -11,13 +11,13 @@ import 'package:palette_generator/palette_generator.dart';
 
 class MusicPlayer extends StatefulWidget {
   // final dynamic episode;
-  // final String img;
+  final String img;
   // final List pd;
   // final String author;
   const MusicPlayer({
     Key? key,
     // required this.episode,
-    // required this.img,
+    required this.img,
     // required this.pd,
     // required this.author,
   }) : super(key: key);
@@ -29,19 +29,21 @@ class MusicPlayer extends StatefulWidget {
 class _MusicPlayerState extends State<MusicPlayer> {
   late final AudioManager _audioManager;
   Color bg = Colors.black87;
+  var art = '';
 
-  // _getColor() async {
-  //   var cc = await PaletteGenerator.fromImageProvider(NetworkImage(widget.img));
-  //   setState(() {
-  //     bg = cc.dominantColor!.color;
-  //   });
-  // }
+  _getColor() async {
+    var cc = await PaletteGenerator.fromImageProvider(NetworkImage(widget.img));
+    setState(() {
+      bg = cc.dominantColor!.color;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    // _getColor();
+    _getColor();
     _audioManager = AudioManager();
+    // print(_audioManager.artWork.value);
   }
 
   @override
@@ -50,6 +52,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
     // setState(() {
     //   Playing.add(widget.pd);
     // });
+
     return Scaffold(
       backgroundColor: bg,
       body: ListView(
@@ -83,7 +86,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         elevation: 10.0,
                         child: CachedNetworkImage(
                           width: MediaQuery.of(context).size.width * 0.8,
-                          imageUrl: artwork.toString(),
+                          imageUrl: widget.img,
                           placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(
                               color: btnColor,

@@ -211,7 +211,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
           BlocBuilder<PodcastsCubit, PodcastsState>(
             builder: (context, state) {
               if (state is FetchedEpisodes) {
-                print(state.episodes);
+                // print(state.episodes);
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const ScrollPhysics(),
@@ -312,7 +312,8 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                       widget.details['author']);
                                   pushNewScreen(
                                     context,
-                                    screen: const MusicPlayer(),
+                                    screen: MusicPlayer(
+                                        img: widget.details['cover_art']),
                                     withNavBar: false,
                                   );
                                   _audioManager.play();

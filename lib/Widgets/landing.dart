@@ -194,40 +194,42 @@ class _HomeState extends State<Home> {
                               color: btnColor,
                               borderRadius: BorderRadius.circular(15.0),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
+                            child: Wrap(
+                              direction: Axis.vertical,
                               children: [
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Image.asset(
-                                  'assets/logos/live.png',
-                                  width: 50,
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Listen to live Podcast broadcasts',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
+                                Row(children: [
+                                  const SizedBox(
+                                    width: 8,
+                                  ),
+                                  Image.asset(
+                                    'assets/logos/live.png',
+                                    width: 50,
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Listen to live Podcast broadcasts',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
                                       ),
-                                    ),
-                                    const Text(
-                                      'and radio stations',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
+                                      const Text(
+                                        'and radio stations',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Container(
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Container(
                                         height: 30,
                                         decoration: BoxDecoration(
                                           color: Colors.grey[900],
@@ -235,19 +237,24 @@ class _HomeState extends State<Home> {
                                               BorderRadius.circular(30.0),
                                         ),
                                         child: const Padding(
-                                            padding: EdgeInsets.only(
-                                              left: 25,
-                                              right: 25,
-                                              top: 3,
+                                          padding: EdgeInsets.only(
+                                            left: 25,
+                                            right: 25,
+                                            top: 3,
+                                          ),
+                                          child: Text(
+                                            "Listen Live Now",
+                                            style: TextStyle(
+                                              color: whiteColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 13,
                                             ),
-                                            child: Text("Listen Live Now",
-                                                style: TextStyle(
-                                                  color: whiteColor,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 13,
-                                                ))))
-                                  ],
-                                )
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ])
                               ],
                             ),
                           ),
@@ -274,7 +281,6 @@ class _HomeState extends State<Home> {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: CachedNetworkImage(
-                                        // width: size.width * 0.4,
                                         imageUrl: state.podcasts[index]
                                             ['cover_art'],
                                       ),

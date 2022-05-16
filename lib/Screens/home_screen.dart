@@ -39,7 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
             playing
                 ? GestureDetector(
                     onTap: () {
-                      pushNewScreen(context, screen: const MusicPlayer());
+                      pushNewScreen(context,
+                          screen: const MusicPlayer(img: ''));
                     },
                     child: Container(
                       color: Colors.grey[900],
