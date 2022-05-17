@@ -192,7 +192,9 @@ class _ViewPodcastState extends State<ViewPodcast> {
               const SizedBox(
                 width: 20,
               ),
-              const Icon(Icons.share)
+              GestureDetector(
+                child: const Icon(Icons.share),
+              )
             ],
           ),
           const SizedBox(

@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: tabBodies[_selectedIndex],
       bottomNavigationBar: Container(
-        height: playing ? 113 : 65,
+        height: playing ? 105 : 65,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -169,9 +169,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 0,
                     color: kBackgroundColor,
                   ),
-            const SizedBox(
-              height: 8,
-            ),
+            // const SizedBox(
+            //   height: 8,
+            // ),
             BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
               items: bottomTabs,

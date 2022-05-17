@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ecast/Models/channels.dart';
-import 'package:ecast/Screens/view_channel.dart';
+import 'package:ecast/Screens/podcasts_list.dart';
+import 'package:ecast/Services/api.dart';
+import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
-import 'package:ecast/Utils/logic.dart';
+import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/search_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+Repository repository = Repository(networkService: NetworkService());
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -19,7 +22,7 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      // backgroundColor: Colors.black87,
       body: ListView(
         shrinkWrap: true,
         children: [
@@ -80,18 +83,29 @@ class _SearchState extends State<Search> {
                 return ListView(
                   shrinkWrap: true,
                   children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      height: 80,
-                      margin: const EdgeInsets.only(left: 10, right: 10),
-                      decoration: BoxDecoration(
-                        color: btnColor,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          'All Podcasts',
-                          style: textStyle,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider.value(
+                                value: PodcastsCubit(repository: repository),
+                                child: const Podcasts()),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 80,
+                        margin: const EdgeInsets.only(left: 10, right: 10),
+                        decoration: BoxDecoration(
+                          color: btnColor,
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'All Podcasts',
+                            style: textStyle,
+                          ),
                         ),
                       ),
                     ),

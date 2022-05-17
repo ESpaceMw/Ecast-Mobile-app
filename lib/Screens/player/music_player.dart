@@ -10,16 +10,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class MusicPlayer extends StatefulWidget {
-  // final dynamic episode;
   final String img;
-  // final List pd;
-  // final String author;
   const MusicPlayer({
     Key? key,
-    // required this.episode,
     required this.img,
-    // required this.pd,
-    // required this.author,
   }) : super(key: key);
 
   @override
@@ -29,30 +23,23 @@ class MusicPlayer extends StatefulWidget {
 class _MusicPlayerState extends State<MusicPlayer> {
   late final AudioManager _audioManager;
   Color bg = Colors.black87;
-  var art = '';
 
-  _getColor() async {
-    var cc = await PaletteGenerator.fromImageProvider(NetworkImage(widget.img));
-    setState(() {
-      bg = cc.dominantColor!.color;
-    });
-  }
+  // _getColor() async {
+  //   var cc = await PaletteGenerator.fromImageProvider(NetworkImage(widget.img));
+  //   setState(() {
+  //     bg = cc.dominantColor!.color;
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    _getColor();
+    // _getColor();
     _audioManager = AudioManager();
-    // print(_audioManager.artWork.value);
   }
 
   @override
   Widget build(BuildContext context) {
-    // _audioManager.play();
-    // setState(() {
-    //   Playing.add(widget.pd);
-    // });
-
     return Scaffold(
       backgroundColor: bg,
       body: ListView(
@@ -86,7 +73,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         elevation: 10.0,
                         child: CachedNetworkImage(
                           width: MediaQuery.of(context).size.width * 0.8,
-                          imageUrl: widget.img,
+                          imageUrl: artwork.toString(),
                           placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(
                               color: btnColor,
@@ -142,8 +129,9 @@ class _MusicPlayerState extends State<MusicPlayer> {
                     builder: (_, value, __) {
                       return ProgressBar(
                         thumbCanPaintOutsideBar: false,
-                        baseBarColor: Colors.grey,
-                        progressBarColor: btnColor,
+                        baseBarColor: Colors.grey[600],
+                        thumbColor: whiteColor,
+                        progressBarColor: whiteColor,
                         progress: value.current,
                         buffered: value.buffered,
                         total: value.total,

@@ -69,7 +69,7 @@ class _ProfileState extends State<Profile> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: _currentTab == index ? codeColor.withGreen(100) : null,
+          color: _currentTab == index ? btnColor.withGreen(100) : null,
           borderRadius: BorderRadius.circular(10.5),
         ),
         padding: const EdgeInsets.all(8.0),

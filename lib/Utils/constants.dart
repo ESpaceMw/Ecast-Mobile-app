@@ -8,8 +8,9 @@ const btnColor = Color(0xFF2AB7B1);
 const whiteColor = Colors.white;
 const errorColor = Colors.red;
 const selectedIten = Color(0xFF5ED0FB);
-const codeColor = Color(0xFF37474F);
+final codeColor = Colors.grey[900];
 const recColor = Color(0xFF1A1A1A);
+final iconColor = Colors.grey[700];
 final GlobalKey<State> keyLoader = GlobalKey<State>();
 
 final TextEditingController email = TextEditingController();
@@ -112,3 +113,45 @@ List genres = [
 ];
 
 Repository repository = Repository(networkService: NetworkService());
+
+List<Widget> plans = [
+  Container(
+    width: 1000,
+    decoration: BoxDecoration(
+      color: btnColor,
+      borderRadius: BorderRadius.circular(
+        10.0,
+      ),
+    ),
+    child: const Center(
+        child: Text(
+      'Solo Packages',
+    )),
+  ),
+  Container(
+    width: 1000,
+    decoration: BoxDecoration(
+      color: btnColor,
+      borderRadius: BorderRadius.circular(
+        10.0,
+      ),
+    ),
+    child: const Center(
+        child: Text(
+      'Duo Package',
+    )),
+  ),
+  Container(
+    width: 1000,
+    decoration: BoxDecoration(
+      color: btnColor,
+      borderRadius: BorderRadius.circular(
+        10.0,
+      ),
+    ),
+    child: const Center(
+        child: Text(
+      'Squad',
+    )),
+  )
+];

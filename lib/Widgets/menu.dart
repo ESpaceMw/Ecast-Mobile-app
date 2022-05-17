@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coolicons/coolicons.dart';
 import 'package:ecast/Screens/charts_screen.dart';
 import 'package:ecast/Screens/podcasts_list.dart';
@@ -8,7 +9,6 @@ import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/loader.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
-import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,64 +29,60 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     BlocProvider.of<UserCubit>(context).userProfile();
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: Colors.black54,
       body: ListView(
         children: [
           const SizedBox(
             height: 20,
           ),
           BlocConsumer<UserCubit, UserState>(
-            listener: (context, state) {
-              // TODO: implement listener
-            },
+            listener: (context, state) {},
             builder: (context, state) {
               if (state is FetchedUser) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Profile(
-                              details: state.user,
-                            )));
-                  },
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          "assets/logos/user.png",
-                          width: MediaQuery.of(context).size.width * 0.2,
+                return Container(
+                  margin: const EdgeInsets.only(left: 12),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => Profile(
+                                details: state.user,
+                              )));
+                    },
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            "assets/logos/user.png",
+                            width: MediaQuery.of(context).size.width * 0.15,
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                state.user['first_name'] ?? 'First name',
-                                style: textStyle,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                state.user['last_name'] ?? 'last name',
-                                style: textStyle,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 5),
-                            child: Text(state.user['email'] ?? 'User email'),
-                          )
-                        ],
-                      )
-                    ],
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  state.user['first_name'] ?? 'First name',
+                                  style: textStyle,
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  state.user['last_name'] ?? 'last name',
+                                  style: textStyle,
+                                ),
+                              ],
+                            ),
+                            Text(state.user['email'] ?? 'User email')
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 );
               } else {
@@ -97,37 +93,20 @@ class _MenuState extends State<Menu> {
             },
           ),
           const SizedBox(
-            height: 20,
+            height: 30,
           ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => BlocProvider.value(
-                      value: PodcastsCubit(repository: repository),
-                      child: const Podcasts()),
-                ),
-              );
-            },
-            child: ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(15.0),
-                decoration: boxColor,
-                child: const Icon(
-                  Icons.podcasts,
-                  color: whiteColor,
-                  size: 30,
-                ),
+          Container(
+            height: 110,
+            child: CarouselSlider(
+              items: plans,
+              options: CarouselOptions(
+                enlargeCenterPage: true,
+                aspectRatio: 1.5,
               ),
-              title: const Text(
-                "Podcasts",
-                style: textStyle,
-              ),
-              trailing: const FaIcon(FontAwesomeIcons.angleRight),
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 30,
           ),
           GestureDetector(
             onTap: () {
@@ -144,17 +123,20 @@ class _MenuState extends State<Menu> {
               leading: Container(
                 padding: const EdgeInsets.all(15.0),
                 decoration: boxColor,
-                child: const Icon(
+                child: Icon(
                   Icons.table_chart,
-                  color: whiteColor,
-                  size: 30,
+                  color: iconColor,
+                  size: 23,
                 ),
               ),
               title: const Text(
                 "Charts",
                 style: textStyle,
               ),
-              trailing: const FaIcon(FontAwesomeIcons.angleRight),
+              trailing: const FaIcon(
+                FontAwesomeIcons.angleRight,
+                size: 20,
+              ),
             ),
           ),
           const SizedBox(
@@ -163,20 +145,24 @@ class _MenuState extends State<Menu> {
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, '/notes'),
             child: ListTile(
-                leading: Container(
-                  padding: const EdgeInsets.all(15.0),
-                  decoration: boxColor,
-                  child: const Icon(
-                    Coolicons.note,
-                    color: whiteColor,
-                    size: 30,
-                  ),
+              leading: Container(
+                padding: const EdgeInsets.all(15.0),
+                decoration: boxColor,
+                child: Icon(
+                  Coolicons.note,
+                  color: iconColor,
+                  size: 23,
                 ),
-                title: const Text(
-                  "Notes",
-                  style: textStyle,
-                ),
-                trailing: const FaIcon(FontAwesomeIcons.angleRight)),
+              ),
+              title: const Text(
+                "Notes",
+                style: textStyle,
+              ),
+              trailing: const FaIcon(
+                FontAwesomeIcons.angleRight,
+                size: 20,
+              ),
+            ),
           ),
           const SizedBox(
             height: 20,
@@ -185,36 +171,21 @@ class _MenuState extends State<Menu> {
             leading: Container(
               padding: const EdgeInsets.all(15.0),
               decoration: boxColor,
-              child: const Icon(
+              child: Icon(
                 Icons.help,
-                color: whiteColor,
-                size: 30,
+                color: iconColor,
+                size: 23,
               ),
             ),
             title: const Text(
               "Help",
               style: textStyle,
             ),
-            trailing: const FaIcon(FontAwesomeIcons.angleRight),
+            trailing: const FaIcon(
+              FontAwesomeIcons.angleRight,
+              size: 20,
+            ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(15.0),
-                decoration: boxColor,
-                child: const Icon(
-                  Icons.info,
-                  color: whiteColor,
-                  size: 30,
-                ),
-              ),
-              title: const Text(
-                "About",
-                style: textStyle,
-              ),
-              trailing: const FaIcon(FontAwesomeIcons.angleRight)),
           const SizedBox(
             height: 20,
           ),
@@ -222,17 +193,42 @@ class _MenuState extends State<Menu> {
             leading: Container(
               padding: const EdgeInsets.all(15.0),
               decoration: boxColor,
-              child: const Icon(
+              child: Icon(
+                Icons.info,
+                color: iconColor,
+                size: 23,
+              ),
+            ),
+            title: const Text(
+              "About",
+              style: textStyle,
+            ),
+            trailing: const FaIcon(
+              FontAwesomeIcons.angleRight,
+              size: 20,
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          ListTile(
+            leading: Container(
+              padding: const EdgeInsets.all(15.0),
+              decoration: boxColor,
+              child: Icon(
                 Icons.settings,
-                color: whiteColor,
-                size: 30,
+                color: iconColor,
+                size: 23,
               ),
             ),
             title: const Text(
               "Settings",
               style: textStyle,
             ),
-            trailing: const FaIcon(FontAwesomeIcons.angleRight),
+            trailing: const FaIcon(
+              FontAwesomeIcons.angleRight,
+              size: 20,
+            ),
           ),
           const SizedBox(
             height: 20,
@@ -262,9 +258,10 @@ class _MenuState extends State<Menu> {
                 leading: Container(
                   padding: const EdgeInsets.all(15.0),
                   decoration: boxColor,
-                  child: const Icon(
+                  child: Icon(
                     Icons.logout_outlined,
-                    size: 30,
+                    size: 23,
+                    color: iconColor,
                   ),
                 ),
                 title: const Text(

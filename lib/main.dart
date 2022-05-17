@@ -16,7 +16,7 @@ Future<void> main() async {
       theme: ThemeData(
         fontFamily: 'OpenSans',
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: kBackgroundColor,
+        scaffoldBackgroundColor: Colors.black54,
         primaryColor: whiteColor,
         textTheme: const TextTheme(
           headline1: TextStyle(

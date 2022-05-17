@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecast/Screens/view_chart.dart';
-import 'package:ecast/Screens/view_podcasts.dart';
 import 'package:ecast/Screens/wrapper.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
@@ -12,7 +11,9 @@ import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:badges/badges.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -26,7 +27,6 @@ Repository repos = Repository(networkService: NetworkService());
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    Repository repository = Repository(networkService: NetworkService());
     BlocProvider.of<ChartsCubit>(context).charts();
     DateTime now = DateTime.now();
     var timenow = int.parse(DateFormat('kk').format(now));
@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
                   begin: Alignment.bottomCenter,
                   end: Alignment.center,
                   colors: [
-                    Colors.black87,
+                    Colors.black54,
                     kBackgroundColor,
                   ],
                 ).createShader(rect),
@@ -81,13 +81,26 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 10,
-                      ),
-                      child: const Icon(
-                        Icons.notification_important,
-                        size: 30,
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0)),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
+                              );
+                            });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                          top: 10,
+                        ),
+                        child: const FaIcon(
+                          FontAwesomeIcons.bell,
+                        ),
                       ),
                     )
                   ],
@@ -97,9 +110,9 @@ class _HomeState extends State<Home> {
                 listener: (context, state) {
                   if (state is Exception) {
                     Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (context) => const Wrapper()),
-                        (route) => false);
+                      MaterialPageRoute(builder: (context) => const Wrapper()),
+                      (route) => false,
+                    );
                   }
                 },
                 builder: (context, state) {
@@ -162,15 +175,17 @@ class _HomeState extends State<Home> {
                                               ),
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                      vertical: 10.0,
-                                                      horizontal: 20.0),
+                                                vertical: 10.0,
+                                                horizontal: 20.0,
+                                              ),
                                               child: Text(
                                                 state.charts[index]['name'],
                                                 style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 20.0,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'OpenSans'),
+                                                  color: Colors.white,
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'OpenSans',
+                                                ),
                                               ),
                                             ),
                                           ),
