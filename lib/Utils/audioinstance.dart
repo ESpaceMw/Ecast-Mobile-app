@@ -29,6 +29,7 @@ class AudioManager {
   }
 
   void init(source, index, cover, author) async {
+    _playbackState();
     await _loadInitialPlaylist(source, index, cover, author);
   }
 
@@ -51,6 +52,16 @@ class AudioManager {
 
     _audioHandler.addQueueItems(mediaItems);
     _audioHandler.skipToQueueItem(index);
+  }
+
+  void _playbackState() {
+    _audioHandler.playbackState.listen((state) {
+      final playing = state.playing;
+      final processingState = state.processingState;
+      if (processingState == AudioProcessingState.idle) {
+        print("stopped");
+      }
+    });
   }
 
   void _listenPlaybackState() {

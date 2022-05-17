@@ -5,6 +5,7 @@ import 'package:ecast/Widgets/menu.dart';
 import 'package:ecast/Widgets/library.dart';
 import 'package:ecast/Widgets/search.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
+import 'package:ecast/cubit/search_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,7 +17,10 @@ List<Widget> tabBodies = [
     create: (context) => ChartsCubit(repository: repository),
     child: const Home(),
   ),
-  const Search(),
+  BlocProvider(
+    create: (context) => SearchCubit(repository: repository),
+    child: const Search(),
+  ),
   const Library(),
   BlocProvider(
     create: (context) => UserCubit(repository: repository),

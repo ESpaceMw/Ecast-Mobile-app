@@ -3,10 +3,9 @@ import 'package:ecast/Models/channels.dart';
 import 'package:ecast/Screens/view_channel.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/logic.dart';
+import 'package:ecast/cubit/search_cubit.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert' as convert;
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -31,7 +30,7 @@ class _SearchState extends State<Search> {
             width: MediaQuery.of(context).size.width * 0.9,
             margin: const EdgeInsets.only(left: 10, right: 10),
             decoration: const BoxDecoration(
-              color: codeColor,
+              color: kBackgroundColor,
               borderRadius: BorderRadius.all(
                 Radius.circular(
                   10.8,
@@ -40,158 +39,206 @@ class _SearchState extends State<Search> {
             ),
             child: TextFormField(
               controller: _searchQuery,
+              onTap: () => BlocProvider.of<SearchCubit>(context).searchOption(),
               decoration: const InputDecoration(
                 prefixIcon: Icon(
                   Icons.search_rounded,
+                  // color: ,
                 ),
                 hintText: "Search",
                 border: InputBorder.none,
               ),
-              onFieldSubmitted: searchData,
+              onFieldSubmitted: (String text) {
+                BlocProvider.of<SearchCubit>(context).prev();
+              },
             ),
           ),
           const SizedBox(
-            height: 10,
+            height: 15,
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Genres",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const Genres(),
-        ],
-      ),
-    );
-  }
-}
-
-class Genres extends StatefulWidget {
-  const Genres({Key? key}) : super(key: key);
-
-  @override
-  _GenresState createState() => _GenresState();
-}
-
-class _GenresState extends State<Genres> {
-  List<Channels> parsePhotos(String responseBody) {
-    final parsed =
-        convert.jsonDecode(responseBody).cast<Map<String, dynamic>>();
-    return parsed.map<Channels>((json) => Channels.fromJson(json)).toList();
-  }
-
-  Future<List<Channels>> _getChannels() async {
-    var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
-    var response = await http.get(Uri.parse(url));
-    var jsonData = convert.jsonDecode(response.body);
-    return parsePhotos(response.body);
-  }
-
-  _getDate() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(prefs.getBool("loggedin"));
-    print(prefs.getString("token"));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _getDate();
-    _getChannels();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<Channels>>(
-      future: _getChannels(),
-      builder: (context, snapshot) {
-        // ignore: unused_local_variable
-        switch (snapshot.connectionState) {
-          case ConnectionState.none:
-            return const Center(
-              child: Text("Fetch somethin"),
-            );
-
-          case ConnectionState.active:
-          case ConnectionState.waiting:
-            return Container(
-              height: MediaQuery.of(context).size.height * 0.8,
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-
-          case ConnectionState.done:
-            if (snapshot.hasError) {
-              return const Center(
-                child: Text("Ooops, something went wrong"),
-              );
-            } else {
-              if (snapshot.data != []) {
-                return ChannelsList(photos: snapshot.data!);
-              } else {
-                return const Center(
-                  child: Text("No subscriptions"),
+          BlocConsumer<SearchCubit, SearchState>(
+            listener: (context, state) {
+              // TODO: implement listener
+            },
+            builder: (context, state) {
+              if (state is Searching) {
+                return SafeArea(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(left: 11, top: 2.0),
+                        child: Text(
+                          'Recent Searches',
+                          style: info,
+                        ),
+                      )
+                    ],
+                  ),
                 );
-              }
-            }
-        }
-      },
-    );
-  }
-}
-
-class ChannelsList extends StatelessWidget {
-  const ChannelsList({Key? key, required this.photos}) : super(key: key);
-
-  final List<Channels> photos;
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 4.0,
-      ),
-      itemCount: photos.length,
-      itemBuilder: (context, index) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    ViewChannel(channelDetails: photos[index])));
-          },
-          child: Card(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0)),
-            color: Colors.blueGrey[900],
-            child: Container(
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  Flexible(
-                      child: Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 9),
-                    child: CachedNetworkImage(
-                      imageUrl: photos[index].thumbnail,
-                      placeholder: (context, url) =>
-                          const CircularProgressIndicator(
+              } else {
+                return ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: 80,
+                      margin: const EdgeInsets.only(left: 10, right: 10),
+                      decoration: BoxDecoration(
                         color: btnColor,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'All Podcasts',
+                          style: textStyle,
+                        ),
                       ),
                     ),
-                  )),
-                  const Text('Title')
-                ],
-              ),
-            ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        bottom: 5.0,
+                        left: 15.0,
+                      ),
+                      child: Text(
+                        "Your Top Genres",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      height: 120,
+                      margin: const EdgeInsets.only(left: 7, right: 10),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            Container(
+                              width: 120,
+                              decoration: const BoxDecoration(
+                                color: btnColor,
+                              ),
+                            ),
+                            const SizedBox(width: 15),
+                            Container(
+                              width: 120,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                              ),
+                            ),
+                            const SizedBox(width: 15),
+                            Container(
+                              width: 120,
+                              decoration: const BoxDecoration(
+                                color: btnColor,
+                              ),
+                            ),
+                            const SizedBox(width: 15),
+                            Container(
+                              width: 120,
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(
+                        bottom: 5.0,
+                        left: 15.0,
+                      ),
+                      child: Text(
+                        "All Genres",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 7, right: 10),
+                      child: GridView(
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 2.0,
+                          crossAxisSpacing: 0,
+                          childAspectRatio: MediaQuery.of(context).size.width /
+                              (MediaQuery.of(context).size.height / 3),
+                        ),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: btnColor,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: btnColor,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: btnColor,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+            },
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 }
