@@ -43,7 +43,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   carousel_slider: ^4.0.0
-  badges: ^2.0.2
   coolicons: ^1.0.0
   font_awesome_flutter: ^10.1.0
   just_audio: ^0.9.20
@@ -52,6 +51,7 @@ dependencies:
   audio_service: ^0.18.4
   marquee: ^2.2.1
   get_it: ^7.2.0
+  package_info_plus: ^1.4.2
 
 dev_dependencies:
   flutter_test:

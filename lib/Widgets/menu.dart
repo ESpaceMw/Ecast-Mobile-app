@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coolicons/coolicons.dart';
+import 'package:ecast/Screens/about.dart';
 import 'package:ecast/Screens/charts_screen.dart';
-import 'package:ecast/Screens/podcasts_list.dart';
 import 'package:ecast/Screens/profile.dart';
 import 'package:ecast/Screens/wrapper.dart';
 import 'package:ecast/Services/api.dart';
@@ -189,23 +189,32 @@ class _MenuState extends State<Menu> {
           const SizedBox(
             height: 20,
           ),
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(15.0),
-              decoration: boxColor,
-              child: Icon(
-                Icons.info,
-                color: iconColor,
-                size: 23,
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const About(),
+                ),
+              );
+            },
+            child: ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(15.0),
+                decoration: boxColor,
+                child: Icon(
+                  Icons.info,
+                  color: iconColor,
+                  size: 23,
+                ),
               ),
-            ),
-            title: const Text(
-              "About",
-              style: textStyle,
-            ),
-            trailing: const FaIcon(
-              FontAwesomeIcons.angleRight,
-              size: 20,
+              title: const Text(
+                "About",
+                style: textStyle,
+              ),
+              trailing: const FaIcon(
+                FontAwesomeIcons.angleRight,
+                size: 20,
+              ),
             ),
           ),
           const SizedBox(
