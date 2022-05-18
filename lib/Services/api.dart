@@ -292,6 +292,7 @@ class NetworkService {
     }
   }
 
+// subscribe
   Future subscribe(var id) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -318,7 +319,6 @@ class NetworkService {
         'msg': 'Server error, contact system admin'
       };
     } catch (e) {
-      print(e);
       return {
         'err': true,
         'type': 'http',
@@ -327,6 +327,7 @@ class NetworkService {
     }
   }
 
+// unsubscribe to podcast
   Future unsubscribe(id) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -354,4 +355,49 @@ class NetworkService {
       };
     } catch (e) {}
   }
+
+  // Fetch user playlist
+  Future fetchPlaylist() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      final request = await http.get(
+        Uri.parse('$baseUrl/'),
+        headers: {'Authorization': 'Token $token'},
+      );
+
+      if (request.statusCode == 401) {
+        prefs.setBool("loggedin", false);
+        prefs.setString("token", "");
+        return {
+          'err': true,
+          'type': 'tk',
+          'msg': "Invalid token! login again",
+        };
+      } else {
+        final response = convert.jsonDecode(request.body);
+        return {'err': false, 'msg': response};
+      }
+    } on SocketException {
+      return {
+        'err': true,
+        'type': 'net',
+        'msg': "Error! check your network connection"
+      };
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server error! Contact system admin'
+      };
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server error! Contact system admin'
+      };
+    }
+  }
+
+  //
 }

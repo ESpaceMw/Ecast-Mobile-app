@@ -5,7 +5,6 @@ import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
-import 'package:ecast/Utils/loader.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -233,6 +232,8 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                 child: ViewEp(
                                   ep: state.episodes[index],
                                   cover: widget.details['cover_art'],
+                                  author: widget.details['author'],
+                                  title: widget.details['title'],
                                 ),
                               ),
                             ));

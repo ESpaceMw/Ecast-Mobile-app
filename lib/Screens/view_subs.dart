@@ -254,6 +254,8 @@ class _SubsState extends State<Subs> {
                                   ep: state.episodes[index],
                                   cover: 'http://10.0.2.2:8080' +
                                       widget.details['cover_art'],
+                                  author: widget.details['author'],
+                                  title: widget.details['title'],
                                 ),
                               ),
                             ));

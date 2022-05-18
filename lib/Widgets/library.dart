@@ -2,9 +2,11 @@ import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/components/downloads.dart';
+import 'package:ecast/Widgets/components/playlist.dart';
 import 'package:ecast/Widgets/components/subscription.dart';
 import 'package:ecast/Widgets/components/top_tab_options.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,14 +25,12 @@ class _LibraryState extends State<Library> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      // backgroundColor: Colors.black87,
       body: Container(
         margin: const EdgeInsets.only(
           left: 15,
           right: 15,
         ),
         child: ListView(
-          controller: _Controller,
           shrinkWrap: true,
           children: [
             const SizedBox(
@@ -71,8 +71,10 @@ class _LibraryState extends State<Library> {
                     )
                   : _currentBuild == 1
                       ? const Downloads()
-                      : const Center(
-                          child: Text("Dude"),
+                      : BlocProvider(
+                          create: (context) =>
+                              UserCubit(repository: repository),
+                          child: const Playlist(),
                         ),
             )
           ],

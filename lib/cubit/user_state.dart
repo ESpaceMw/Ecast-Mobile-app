@@ -58,3 +58,7 @@ class HttpError extends UserState {
 
   HttpError({required this.msg});
 }
+
+class FetchPlaylist extends UserState {}
+
+class FetchingPlaylist extends UserState {}
