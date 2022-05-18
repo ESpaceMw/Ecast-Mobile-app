@@ -1,5 +1,4 @@
 import 'package:ecast/Services/router.dart';
-import 'package:ecast/Utils/backgroundService.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/getter.dart';
 import 'package:flutter/material.dart';

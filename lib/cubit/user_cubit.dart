@@ -63,4 +63,46 @@ class UserCubit extends Cubit<UserState> {
       }
     });
   }
+
+  void playlist() async {
+    emit(FetchingPlaylist());
+    repository.fetchPlaylist().then((value) {
+      if (value['err']) {
+        if (value['type'] == 'http') {
+          emit(
+            HttpError(
+              msg: value['msg'],
+            ),
+          );
+        } else {
+          emit(
+            NetError(
+              msg: value['msg'],
+            ),
+          );
+        }
+      } else {
+        emit(FetchedPlaylist(playlist: value['msg']));
+      }
+    });
+  }
+
+  void newPlaylist(title) async {
+    emit(CreatingPlaylist());
+    repository.createPlaylist(title).then((value) {
+      if (value['err']) {
+        if (value['type'] == 'http') {
+          emit(HttpError(msg: value['msg']));
+        } else {
+          NetError(msg: value['msg']);
+        }
+      } else {
+        emit(
+          PlaylistCreated(
+            msg: value['msg'],
+          ),
+        );
+      }
+    });
+  }
 }

@@ -59,6 +59,18 @@ class HttpError extends UserState {
   HttpError({required this.msg});
 }
 
-class FetchPlaylist extends UserState {}
+class FetchedPlaylist extends UserState {
+  final List playlist;
+
+  FetchedPlaylist({required this.playlist});
+}
 
 class FetchingPlaylist extends UserState {}
+
+class CreatingPlaylist extends UserState {}
+
+class PlaylistCreated extends UserState {
+  final String msg;
+
+  PlaylistCreated({required this.msg});
+}

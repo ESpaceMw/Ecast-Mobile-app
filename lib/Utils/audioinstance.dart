@@ -17,6 +17,7 @@ class AudioManager {
   final repeatNotifier = RepeatBtnNotifier();
   final progressNotifier = ProgressNotifier();
   final artWork = ValueNotifier<String>("");
+  final isPlaying = ValueNotifier<bool>(false);
 
   void _init() async {
     _listenPlaybackState();
@@ -26,10 +27,10 @@ class AudioManager {
     _listenToSongChange();
     _listenToArtistChange();
     _listenToArtChange();
+    _playbackState();
   }
 
   void init(source, index, cover, author) async {
-    _playbackState();
     await _loadInitialPlaylist(source, index, cover, author);
   }
 
@@ -58,8 +59,13 @@ class AudioManager {
     _audioHandler.playbackState.listen((state) {
       final playing = state.playing;
       final processingState = state.processingState;
-      if (processingState == AudioProcessingState.idle) {
-        print("stopped");
+      if (playing ||
+          processingState != AudioProcessingState.completed ||
+          processingState == AudioProcessingState.buffering ||
+          processingState == AudioProcessingState.loading) {
+        isPlaying.value = true;
+      } else {
+        isPlaying.value = false;
       }
     });
   }
@@ -132,8 +138,6 @@ class AudioManager {
 
   void _listenToArtChange() {
     _audioHandler.mediaItem.listen((event) {
-      // print(event!.extras!['art']);
-      // print(event.extras!['art'].runtimeType);
       artWork.value = event!.extras!['art'] ?? '';
     });
   }

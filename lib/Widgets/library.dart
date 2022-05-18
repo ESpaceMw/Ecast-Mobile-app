@@ -3,12 +3,14 @@ import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/components/downloads.dart';
 import 'package:ecast/Widgets/components/playlist.dart';
+import 'package:ecast/Widgets/components/playlistinput.dart';
 import 'package:ecast/Widgets/components/subscription.dart';
 import 'package:ecast/Widgets/components/top_tab_options.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);
@@ -34,17 +36,36 @@ class _LibraryState extends State<Library> {
           shrinkWrap: true,
           children: [
             const SizedBox(
-              height: 15,
+              height: 20,
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: Text(
-                "Library",
-                style: TextStyle(
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Text(
+                    "Library",
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: kBackgroundColor,
+                        builder: (context) {
+                          return PlaylistInput(size: size);
+                        });
+                  },
+                  child: const FaIcon(
+                    FontAwesomeIcons.plus,
+                  ),
+                )
+              ],
             ),
             const SizedBox(
               height: 15,

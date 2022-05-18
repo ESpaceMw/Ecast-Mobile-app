@@ -52,7 +52,6 @@ dependencies:
   audio_service: ^0.18.4
   marquee: ^2.2.1
   get_it: ^7.2.0
-  share_plus: ^4.0.4
 
 dev_dependencies:
   flutter_test:
@@ -81,6 +80,7 @@ flutter:
     - assets/images/
     - assets/fonts/
     - assets/logos/user.png
+    - assets/images/dude.jpg
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.

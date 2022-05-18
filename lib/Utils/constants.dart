@@ -24,6 +24,8 @@ final TextEditingController city = TextEditingController();
 final TextEditingController phone = TextEditingController();
 final TextEditingController birthdate = TextEditingController();
 // final TextEditingController gender = TextEditingController();
+final TextEditingController playlistName = TextEditingController();
+
 String gender = 'Male';
 List<String> gvals = ['Male', 'Female', 'Non-Binary'];
 List RecentlyPlayed = [];

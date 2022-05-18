@@ -50,12 +50,12 @@ class _ViewEpState extends State<ViewEp> {
                   ),
                 ),
                 child: ShaderMask(
-                  shaderCallback: (rect) => const LinearGradient(
+                  shaderCallback: (rect) => LinearGradient(
                     begin: Alignment.bottomCenter,
-                    end: Alignment.center,
+                    end: Alignment.topCenter,
                     colors: [
-                      Colors.black87,
-                      kBackgroundColor,
+                      Colors.black,
+                      Colors.black.withOpacity(0.7),
                     ],
                   ).createShader(rect),
                   blendMode: BlendMode.darken,
@@ -64,10 +64,10 @@ class _ViewEpState extends State<ViewEp> {
                     width: MediaQuery.of(context).size.width,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/images/img_7.jpg'),
+                        image: AssetImage('assets/images/ob.jpg'),
                         fit: BoxFit.cover,
                         colorFilter:
-                            ColorFilter.mode(Colors.black45, BlendMode.lighten),
+                            ColorFilter.mode(Colors.black54, BlendMode.dstIn),
                       ),
                     ),
                   ),
@@ -91,7 +91,6 @@ class _ViewEpState extends State<ViewEp> {
                 ),
               ),
               Wrap(
-                // direction: Axis.vertical,
                 children: [
                   Container(
                     margin: EdgeInsets.only(

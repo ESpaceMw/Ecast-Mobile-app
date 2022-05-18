@@ -60,5 +60,15 @@ class Repository {
     return data;
   }
 
+  Future fetchPlaylist() async {
+    final playlist = await networkService.fetchPlaylist();
+    return playlist;
+  }
+
+  Future createPlaylist(title) async {
+    final data = await networkService.createPlaylist(title);
+    return data;
+  }
+
   Future singleEp() async {}
 }

@@ -41,12 +41,12 @@ class _HomeState extends State<Home> {
           Stack(
             children: [
               ShaderMask(
-                shaderCallback: (rect) => const LinearGradient(
+                shaderCallback: (rect) => LinearGradient(
                   begin: Alignment.bottomCenter,
-                  end: Alignment.center,
+                  end: Alignment.topCenter,
                   colors: [
-                    Colors.black54,
-                    kBackgroundColor,
+                    Colors.black,
+                    Colors.black.withOpacity(0.7),
                   ],
                 ).createShader(rect),
                 blendMode: BlendMode.darken,
@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
                       image: AssetImage('assets/images/ob.jpg'),
                       fit: BoxFit.cover,
                       colorFilter:
-                          ColorFilter.mode(Colors.black45, BlendMode.darken),
+                          ColorFilter.mode(Colors.black45, BlendMode.dstATop),
                     ),
                   ),
                 ),

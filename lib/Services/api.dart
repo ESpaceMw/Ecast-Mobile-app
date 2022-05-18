@@ -361,6 +361,7 @@ class NetworkService {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
+      // await http.get(url)
       final request = await http.get(
         Uri.parse('$baseUrl/'),
         headers: {'Authorization': 'Token $token'},
@@ -399,5 +400,49 @@ class NetworkService {
     }
   }
 
-  //
+  //Create user playlist
+  Future createPlaylist(title) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      final request = await http.post(
+        Uri.parse("$baseUrl/"),
+        headers: {
+          'Authorization': 'Token $token',
+        },
+        body: {
+          'podcast_title': title,
+        },
+      );
+
+      if (request.statusCode == 401) {
+        return {
+          'err': true,
+          'type': 'tk',
+          'msg': "Invalid token! Please log in again"
+        };
+      } else {
+        final response = convert.jsonDecode(request.body);
+        return {'err': false, 'msg': response};
+      }
+    } on SocketException {
+      return {
+        'err': true,
+        'type': 'net',
+        'msg': "Network Error! Check your Connection"
+      };
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact System Admin'
+      };
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact System Admin'
+      };
+    }
+  }
 }
