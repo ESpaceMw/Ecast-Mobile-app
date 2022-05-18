@@ -1,6 +1,7 @@
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const kBackgroundColor = Color(0xFF101010);
 const kPrimaryColor = Color(0xFFFFBD73);
@@ -155,5 +156,151 @@ List<Widget> plans = [
         child: Text(
       'Squad',
     )),
+  )
+];
+
+List<Widget> reslits = [
+  Row(
+    children: const [
+      SizedBox(
+        width: 9.0,
+      ),
+      FaIcon(
+        FontAwesomeIcons.check,
+        color: btnColor,
+        size: 20,
+      ),
+      SizedBox(
+        width: 9.0,
+      ),
+      Text('Download to Listen offline without Wifi')
+    ],
+  ),
+  const SizedBox(
+    height: 9.0,
+  ),
+  Row(
+    children: const [
+      SizedBox(
+        width: 9.0,
+      ),
+      FaIcon(
+        FontAwesomeIcons.check,
+        color: btnColor,
+        size: 20,
+      ),
+      SizedBox(
+        width: 9.0,
+      ),
+      Text('Music and Podcasts without ad interuptions')
+    ],
+  ),
+  const SizedBox(
+    height: 9.0,
+  ),
+  Row(
+    children: const [
+      SizedBox(
+        width: 9.0,
+      ),
+      FaIcon(
+        FontAwesomeIcons.check,
+        color: btnColor,
+        size: 20,
+      ),
+      SizedBox(
+        width: 9.0,
+      ),
+      Text('High sound quality Music and Podcasts')
+    ],
+  ),
+  const SizedBox(
+    height: 9.0,
+  ),
+  Row(
+    children: const [
+      SizedBox(
+        width: 9.0,
+      ),
+      FaIcon(
+        FontAwesomeIcons.check,
+        color: btnColor,
+        size: 20,
+      ),
+      SizedBox(
+        width: 9.0,
+      ),
+      Text('Play songs in desired order, without shuffling')
+    ],
+  ),
+  const SizedBox(
+    height: 9.0,
+  ),
+  Row(
+    children: const [
+      SizedBox(
+        width: 9.0,
+      ),
+      FaIcon(
+        FontAwesomeIcons.check,
+        color: btnColor,
+        size: 20,
+      ),
+      SizedBox(
+        width: 9.0,
+      ),
+      Text(
+        'Pick and Play any Track on Mobile',
+      )
+    ],
+  )
+];
+
+List<Widget> plandetails = [
+  Container(
+    width: 1000,
+    decoration: BoxDecoration(
+        color: kBackgroundColor, borderRadius: BorderRadius.circular(10.0)),
+    child: Column(
+      children: const [
+        Text(
+          "Solo",
+          textAlign: TextAlign.center,
+          style: textStyle,
+        )
+      ],
+    ),
+  ),
+  Container(
+    width: 1000,
+    decoration: BoxDecoration(
+        color: kBackgroundColor, borderRadius: BorderRadius.circular(10.0)),
+    child: Column(
+      children: const [
+        Text(
+          "Pro",
+          textAlign: TextAlign.center,
+          style: textStyle,
+        )
+      ],
+    ),
+  ),
+  Container(
+    width: 1000,
+    decoration: BoxDecoration(
+      color: kBackgroundColor,
+      borderRadius: BorderRadius.circular(
+        10.0,
+      ),
+    ),
+    child: Column(
+      children: const [
+        Text(
+          "Solo",
+          textAlign: TextAlign.center,
+          style: textStyle,
+        ),
+      ],
+    ),
   )
 ];

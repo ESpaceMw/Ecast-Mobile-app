@@ -26,7 +26,10 @@ class _AboutState extends State<About> {
           ),
           child: ListView(
             children: [
-              const FaIcon(FontAwesomeIcons.angleLeft),
+              GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: const FaIcon(FontAwesomeIcons.angleLeft),
+              ),
               const SizedBox(
                 height: 25,
               ),

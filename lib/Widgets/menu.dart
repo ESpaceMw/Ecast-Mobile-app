@@ -8,6 +8,7 @@ import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/loader.dart';
+import 'package:ecast/Widgets/components/plan.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
@@ -95,13 +96,22 @@ class _MenuState extends State<Menu> {
           const SizedBox(
             height: 30,
           ),
-          Container(
-            height: 110,
-            child: CarouselSlider(
-              items: plans,
-              options: CarouselOptions(
-                enlargeCenterPage: true,
-                aspectRatio: 1.5,
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (contex) => const Plan(),
+                ),
+              );
+            },
+            child: Container(
+              height: 110,
+              child: CarouselSlider(
+                items: plans,
+                options: CarouselOptions(
+                  enlargeCenterPage: true,
+                  aspectRatio: 1.5,
+                ),
               ),
             ),
           ),
@@ -167,23 +177,28 @@ class _MenuState extends State<Menu> {
           const SizedBox(
             height: 20,
           ),
-          ListTile(
-            leading: Container(
-              padding: const EdgeInsets.all(15.0),
-              decoration: boxColor,
-              child: Icon(
-                Icons.help,
-                color: iconColor,
-                size: 23,
+          GestureDetector(
+            onTap: () {
+              // TODO: implement link binding
+            },
+            child: ListTile(
+              leading: Container(
+                padding: const EdgeInsets.all(15.0),
+                decoration: boxColor,
+                child: Icon(
+                  Icons.help,
+                  color: iconColor,
+                  size: 23,
+                ),
               ),
-            ),
-            title: const Text(
-              "Help",
-              style: textStyle,
-            ),
-            trailing: const FaIcon(
-              FontAwesomeIcons.angleRight,
-              size: 20,
+              title: const Text(
+                "Help",
+                style: textStyle,
+              ),
+              trailing: const FaIcon(
+                FontAwesomeIcons.angleRight,
+                size: 20,
+              ),
             ),
           ),
           const SizedBox(
