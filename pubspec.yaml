@@ -51,7 +51,6 @@ dependencies:
   audio_service: ^0.18.4
   marquee: ^2.2.1
   get_it: ^7.2.0
-  package_info_plus: ^1.4.2
 
 dev_dependencies:
   flutter_test:

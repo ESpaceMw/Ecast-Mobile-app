@@ -9,8 +9,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class NetworkService {
   // var baseUrl = 'http://159.223.234.130';
   var baseUrl = 'http://10.0.2.2:8080';
+  // final baseUrl = 'http://192.168.0.243:8080';
   var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
 
+// register a new account
   Future signup() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();

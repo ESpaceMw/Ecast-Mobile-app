@@ -83,6 +83,21 @@ const btnStyle = BoxDecoration(
   ),
 );
 
+const priceStyles = TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 18,
+);
+
+const planStyles = TextStyle(
+  fontWeight: FontWeight.w600,
+  fontSize: 14,
+);
+
+const packageStyles = TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 20,
+);
+
 BoxDecoration boxColor = BoxDecoration(
   color: codeColor,
   borderRadius: BorderRadius.circular(
@@ -117,6 +132,7 @@ List genres = [
 
 Repository repository = Repository(networkService: NetworkService());
 
+// plan list
 List<Widget> plans = [
   Container(
     width: 1000,
@@ -159,6 +175,7 @@ List<Widget> plans = [
   )
 ];
 
+// why join premium list
 List<Widget> reslits = [
   Row(
     children: const [
@@ -256,6 +273,7 @@ List<Widget> reslits = [
   )
 ];
 
+// plan details const list
 List<Widget> plandetails = [
   Container(
     width: 1000,
@@ -263,11 +281,48 @@ List<Widget> plandetails = [
         color: kBackgroundColor, borderRadius: BorderRadius.circular(10.0)),
     child: Column(
       children: const [
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            "Solo Package",
+            textAlign: TextAlign.center,
+            style: packageStyles,
+          ),
+        ),
+        SizedBox(height: 10),
         Text(
-          "Solo",
-          textAlign: TextAlign.center,
-          style: textStyle,
-        )
+          'Solo Daily',
+          style: planStyles,
+        ),
+        Text(
+          'MK 250',
+          style: priceStyles,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Solo Weekly',
+          style: planStyles,
+        ),
+        Text(
+          'MK 1,500',
+          style: priceStyles,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Solo Monthly',
+          style: planStyles,
+        ),
+        Text(
+          'MK 5,000',
+          style: priceStyles,
+        ),
+        SizedBox(
+          height: 10,
+        ),
       ],
     ),
   ),
@@ -277,11 +332,37 @@ List<Widget> plandetails = [
         color: kBackgroundColor, borderRadius: BorderRadius.circular(10.0)),
     child: Column(
       children: const [
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            "Duo Package",
+            textAlign: TextAlign.center,
+            style: packageStyles,
+          ),
+        ),
+        SizedBox(height: 10),
         Text(
-          "Pro",
-          textAlign: TextAlign.center,
-          style: textStyle,
-        )
+          'Duo Weekly',
+          style: planStyles,
+        ),
+        Text(
+          'MK 2,500',
+          style: priceStyles,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Duo Monthly',
+          style: planStyles,
+        ),
+        Text(
+          'MK 7,500',
+          style: priceStyles,
+        ),
+        SizedBox(
+          height: 10,
+        ),
       ],
     ),
   ),
@@ -295,10 +376,42 @@ List<Widget> plandetails = [
     ),
     child: Column(
       children: const [
+        Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            "Squad Package",
+            textAlign: TextAlign.center,
+            style: packageStyles,
+          ),
+        ),
+        SizedBox(
+          height: 8.0,
+        ),
+        Text("Max 5 people"),
+        SizedBox(
+          height: 10,
+        ),
         Text(
-          "Solo",
-          textAlign: TextAlign.center,
-          style: textStyle,
+          'Squad Weekly',
+          style: planStyles,
+        ),
+        Text(
+          'MK 3,500',
+          style: priceStyles,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          'Squad Monthly',
+          style: planStyles,
+        ),
+        Text(
+          'MK 10,000',
+          style: priceStyles,
+        ),
+        SizedBox(
+          height: 10,
         ),
       ],
     ),

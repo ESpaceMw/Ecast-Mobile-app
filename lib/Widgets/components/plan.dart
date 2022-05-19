@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Plan extends StatefulWidget {
-  // final dyanmic plandetails;
   const Plan({Key? key}) : super(key: key);
 
   @override
@@ -14,6 +13,7 @@ class Plan extends StatefulWidget {
 class _PlanState extends State<Plan> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -33,6 +33,39 @@ class _PlanState extends State<Plan> {
               ),
               const SizedBox(
                 height: 35.0,
+              ),
+              Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      bottom: size.height * 0.06,
+                    ),
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      image: const DecorationImage(
+                        image: AssetImage('assets/images/ob.jpg'),
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                          Colors.black45,
+                          BlendMode.dstATop,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    left: size.width * 0.3,
+                    bottom: size.width * 0.25,
+                    child: const Text(
+                      'Free Account',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Container(
                 decoration: BoxDecoration(
@@ -88,6 +121,36 @@ class _PlanState extends State<Plan> {
                   enlargeCenterPage: true,
                   aspectRatio: 1.5,
                 ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 40.0,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    // TODO: link to site
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: btnColor,
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: const Text(
+                      'Upgrade Subscription',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
               )
             ],
           ),
