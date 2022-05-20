@@ -90,9 +90,6 @@ class _ProfileState extends State<Profile> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // const SizedBox(
-              //   height: 30,
-              // ),
               const SizedBox(
                 height: 15,
               ),
@@ -132,7 +129,7 @@ class _ProfileState extends State<Profile> {
                     builder: (context) {
                       return SingleChildScrollView(
                         child: SizedBox(
-                          height: size.height * 0.9,
+                          height: size.height,
                           child: Column(
                             children: [],
                           ),

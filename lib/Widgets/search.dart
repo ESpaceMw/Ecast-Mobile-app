@@ -22,7 +22,6 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.black87,
       body: ListView(
         shrinkWrap: true,
         children: [
@@ -46,7 +45,6 @@ class _SearchState extends State<Search> {
               decoration: const InputDecoration(
                 prefixIcon: Icon(
                   Icons.search_rounded,
-                  // color: ,
                 ),
                 hintText: "Search",
                 border: InputBorder.none,

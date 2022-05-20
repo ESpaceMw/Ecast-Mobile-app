@@ -15,19 +15,6 @@ class Popmenu extends StatelessWidget {
           );
         }).toList();
       },
-      // onSelected: (String choice) {
-      //   if (choice == "") {
-      //     showAboutDialog(
-      //         context: context,
-      //         applicationName: "Synop",
-      //         applicationVersion: "1.2.2",
-      //         children: [
-      //           Text(
-      //             'This app was designed and built by Rodger Kumwanje',
-      //           ),
-      //         ]);
-      //   } else {}
-      // },
     );
   }
 }

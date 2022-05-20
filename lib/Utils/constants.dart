@@ -29,8 +29,7 @@ final TextEditingController playlistName = TextEditingController();
 
 String gender = 'Male';
 List<String> gvals = ['Male', 'Female', 'Non-Binary'];
-List RecentlyPlayed = [];
-bool playing = false;
+bool Playing = false;
 
 bool playAll = false;
 

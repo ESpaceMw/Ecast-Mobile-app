@@ -20,7 +20,6 @@ Future<void> main() async {
         textTheme: const TextTheme(
           headline1: TextStyle(
             fontSize: 25,
-            // fontWeight: FontWeight.bold,
           ),
         ),
       ),

@@ -7,6 +7,7 @@ import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/logic.dart';
 import 'package:ecast/Widgets/Errors/socketerr.dart';
+import 'package:ecast/Widgets/components/indicator.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,6 @@ class _HomeState extends State<Home> {
     final size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
-      color: Colors.black87,
       child: ListView(
         shrinkWrap: true,
         children: [
@@ -305,16 +305,7 @@ class _HomeState extends State<Home> {
                   } else if (state is NetError) {
                     return SocketErr(msg: state.msg);
                   } else {
-                    return Container(
-                      margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.3,
-                      ),
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          color: btnColor,
-                        ),
-                      ),
-                    );
+                    return const CirculaIndicator();
                   }
                 },
               ),

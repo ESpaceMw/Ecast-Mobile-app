@@ -9,8 +9,6 @@ class PlaylistInput extends StatelessWidget {
 
   final Size size;
 
-  get playlistName => null;
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

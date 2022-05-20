@@ -170,9 +170,6 @@ class _ViewEpState extends State<ViewEp> {
                       widget.author,
                     );
                     _audioManager.play();
-                    setState(() {
-                      playing = true;
-                    });
                     pushNewScreen(
                       context,
                       screen: MusicPlayer(

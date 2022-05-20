@@ -321,9 +321,6 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                     withNavBar: false,
                                   );
                                   _audioManager.play();
-                                  setState(() {
-                                    playing = true;
-                                  });
                                 },
                                 child: const FaIcon(
                                   FontAwesomeIcons.circlePlay,

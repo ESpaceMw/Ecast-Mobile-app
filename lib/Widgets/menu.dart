@@ -30,7 +30,6 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     BlocProvider.of<UserCubit>(context).userProfile();
     return Scaffold(
-      backgroundColor: Colors.black54,
       body: ListView(
         children: [
           const SizedBox(

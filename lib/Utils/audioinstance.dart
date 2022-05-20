@@ -2,6 +2,7 @@
 
 import 'package:ecast/Utils/Notifiers/progressNotifier.dart';
 import 'package:ecast/Utils/Notifiers/repeat_Btn_Notifier.dart';
+import 'package:ecast/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:audio_service/audio_service.dart';
 import 'getter.dart';
@@ -64,6 +65,7 @@ class AudioManager {
           processingState == AudioProcessingState.buffering ||
           processingState == AudioProcessingState.loading) {
         isPlaying.value = true;
+        Playing = true;
       } else {
         isPlaying.value = false;
       }

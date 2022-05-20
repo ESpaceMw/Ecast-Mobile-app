@@ -350,9 +350,6 @@ class _SubsState extends State<Subs> {
                                     withNavBar: false,
                                   );
                                   _audioManager.play();
-                                  setState(() {
-                                    playing = true;
-                                  });
                                 },
                                 child: const FaIcon(FontAwesomeIcons.play),
                               ),

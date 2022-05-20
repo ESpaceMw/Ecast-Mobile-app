@@ -3,6 +3,7 @@ import 'package:ecast/Screens/view_subs.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Widgets/components/indicator.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -98,14 +99,7 @@ class _SubscriptionsState extends State<Subscriptions> {
             );
           }
         } else {
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.76,
-            child: const Center(
-              child: CircularProgressIndicator(
-                color: btnColor,
-              ),
-            ),
-          );
+          return const CirculaIndicator();
         }
       },
     );
