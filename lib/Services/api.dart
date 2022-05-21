@@ -183,9 +183,15 @@ class NetworkService {
         var req2 = await http.get(
             Uri.parse("$baseUrl/podcast/api/v1/listpodcasts/"),
             headers: {'Authorization': "Token $token"});
+        final request3 = await http.get(
+          Uri.parse('$baseUrl/podcast/api/v1/getAdminPlaylist'),
+          headers: {'Authorization': 'Token $token'},
+        );
         var response = convert.jsonDecode(request.body);
         var res2 = convert.jsonDecode(req2.body);
-        return {"err": false, 'msg': response, 'pod': res2};
+        var res3 = convert.jsonDecode(request3.body);
+        // print(res3);
+        return {"err": false, 'msg': response, 'pod': res2, 'playlists': res3};
       }
     } on SocketException {
       return {'err': true, 'type': 'net', 'msg': "No internet connection"};
@@ -230,7 +236,6 @@ class NetworkService {
           Uri.parse("$baseUrl/podcast/api/v1/podcast/filter/?categoty=Arts"),
           headers: {'Authorization': "Token $token"});
       var response = convert.jsonDecode(request.body);
-      print(response);
       return {'err': false, 'msg': response};
     } on SocketException {
       return {
@@ -281,6 +286,10 @@ class NetworkService {
       var request = await http.get(
           Uri.parse("$baseUrl/podcast/api/v1/podcast/$id"),
           headers: {'Authorization': "Token $token"});
+      final req2 = await http.get(
+          Uri.parse('$baseUrl/podcast/api/v1/getAdminPlaylist/'),
+          headers: {'Authorization': 'Token $token'});
+      print(req2.body);
 
       // check status code
       var response = convert.jsonDecode(request.body);
@@ -446,5 +455,96 @@ class NetworkService {
         'msg': 'Server Error! Contact System Admin'
       };
     }
+  }
+
+  Future fetchAdminPlaylist() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      final request = await http.get(
+        Uri.parse('$baseUrl/podcast/api/v1/getAdminPlaylist'),
+        headers: {'Authorization': 'Token $token'},
+      );
+
+      if (request.statusCode != 200) {
+        return {'err': true, 'type': 'tk', 'msg': 'Invalid token login again'};
+      } else {
+        final response = convert.jsonDecode(request.body);
+        return {'err': false, 'msg': response};
+      }
+    } on SocketException {
+      return {
+        'err': true,
+        'type': 'net',
+        'msg': 'Network error, check your connection'
+      };
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error, contact system admin'
+      };
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Error! Contact system admin'
+      };
+    }
+  }
+
+  // fetch categories
+  Future fetchCategories() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      final request = await http.get(
+          Uri.parse("$baseUrl/podcast/api/v1/listcategories/"),
+          headers: {'Authorization': 'Token $token'});
+      if (request.statusCode != 200) {
+        return {
+          'err': true,
+          'type': 'tk',
+          'msg': 'Invalid token! Sign in again'
+        };
+      } else {
+        final response = convert.jsonDecode(request.body);
+        return {'err': false, 'msg': response};
+      }
+    } catch (e) {}
+  }
+
+  Future filterCategories(title) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      final request = await http.get(
+        Uri.parse(
+          "$baseUrl/podcast/api/v1/podcast/filter/?category=$title",
+        ),
+        headers: {'Authorization': 'Token $token'},
+      );
+
+      print(request.body);
+
+      if (request.statusCode != 200) {
+        print(request.body);
+      } else {
+        final response = convert.jsonDecode(request.body);
+        return {'err': false, 'msg': response};
+      }
+    } on SocketException {
+      return {
+        "err": true,
+        'type': "net",
+        'msg': 'Network Error! Check Your Connection'
+      };
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact system Admin'
+      };
+    } catch (e) {}
   }
 }

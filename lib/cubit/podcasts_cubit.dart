@@ -77,4 +77,8 @@ class PodcastsCubit extends Cubit<PodcastsState> {
       }
     });
   }
+
+  void fetchRelatedPodcasts() {
+    emit(SubProcess());
+  }
 }

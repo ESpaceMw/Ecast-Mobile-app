@@ -70,5 +70,15 @@ class Repository {
     return data;
   }
 
+  Future cats() async {
+    final categories = await networkService.fetchCategories();
+    return categories;
+  }
+
+  Future filter(title) async {
+    final filteredCats = await networkService.filterCategories(title);
+    return filteredCats;
+  }
+
   Future singleEp() async {}
 }

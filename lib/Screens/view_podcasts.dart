@@ -124,6 +124,8 @@ class _ViewPodcastState extends State<ViewPodcast> {
             padding: const EdgeInsets.all(10.0),
             child: Text(
               widget.details['description'],
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
               style: infostyle,
               textAlign: TextAlign.center,
             ),
@@ -135,6 +137,29 @@ class _ViewPodcastState extends State<ViewPodcast> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return Container(
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          decoration: const BoxDecoration(
+                            color: kBackgroundColor,
+                          ),
+                          child: ListView(
+                            children: const [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Podcast Feed",
+                                  style: textStyle,
+                                ),
+                              )
+                            ],
+                          ));
+                    },
+                  );
+                },
                 child: const Icon(Icons.feed_sharp),
               ),
               const SizedBox(
@@ -260,7 +285,6 @@ class _ViewPodcastState extends State<ViewPodcast> {
           BlocBuilder<PodcastsCubit, PodcastsState>(
             builder: (context, state) {
               if (state is FetchedEpisodes) {
-                // print(state.episodes);
                 music.add(state.episodes);
                 return ListView.builder(
                   shrinkWrap: true,
@@ -271,23 +295,25 @@ class _ViewPodcastState extends State<ViewPodcast> {
                         .format(DateTime.parse(
                             state.episodes[index]['uploaded_date']))
                         .toString();
-                    return Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => BlocProvider.value(
-                                value: PodcastsCubit(repository: repository),
-                                child: ViewEp(
-                                  ep: state.episodes[index],
-                                  cover: widget.details['cover_art'],
-                                  author: widget.details['author'],
-                                  title: widget.details['title'],
-                                ),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider.value(
+                              value: PodcastsCubit(repository: repository),
+                              child: ViewEp(
+                                ep: state.episodes[index],
+                                cover: widget.details['cover_art'],
+                                author: widget.details['author'],
+                                title: widget.details['title'],
                               ),
-                            ));
-                          },
-                          child: ListTile(
+                            ),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          ListTile(
                             leading: ClipRRect(
                               borderRadius: BorderRadius.circular(
                                 6.5,
@@ -386,30 +412,30 @@ class _ViewPodcastState extends State<ViewPodcast> {
                               ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 13),
-                          child: Text(
-                            state.episodes[index]['description'],
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 13),
+                            child: Text(
+                              state.episodes[index]['description'],
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Divider(
-                            height: 10,
-                            thickness: 0.8,
-                            color: Colors.grey.shade800,
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Divider(
+                              height: 10,
+                              thickness: 0.8,
+                              color: Colors.grey.shade800,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
+                          const SizedBox(height: 10),
+                        ],
+                      ),
                     );
                   },
                 );

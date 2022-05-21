@@ -15,4 +15,28 @@ class SearchCubit extends Cubit<SearchState> {
   void prev() {
     emit(SearchInitial());
   }
+
+  void categories() {
+    emit(Searching());
+    repository.cats().then((value) {
+      if (value['err']) {
+        emit(
+          SearchError(msg: "Error fetching data"),
+        );
+      } else {
+        emit(
+          FetchedCat(
+            categories: value['msg'],
+          ),
+        );
+      }
+    });
+  }
+
+  void filterPodcasts(title) {
+    emit(Searching());
+    repository.filter(title).then((value) {
+      print(value);
+    });
+  }
 }

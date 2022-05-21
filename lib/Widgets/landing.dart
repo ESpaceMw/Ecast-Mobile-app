@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ecast/Screens/playlists_details.dart';
 import 'package:ecast/Screens/view_chart.dart';
 import 'package:ecast/Screens/wrapper.dart';
 import 'package:ecast/Services/api.dart';
@@ -299,7 +300,80 @@ class _HomeState extends State<Home> {
                                   ),
                                 );
                               }),
-                        )
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 25),
+                          child: Text(
+                            "Ecast Playlists",
+                            style: textStyle,
+                          ),
+                        ),
+                        Container(
+                            height: 500,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: state.playlists.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => PlaylistDetails(
+                                          playlists: state.playlists[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 150,
+                                    margin: const EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 10,
+                                      left: 20,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 13),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              width: size.width * 0.39,
+                                              imageUrl: state.playlists[index]
+                                                  ['cover_art'],
+                                              placeholder: (context, url) =>
+                                                  const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: btnColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 7,
+                                        ),
+                                        Text(
+                                          state.playlists[index]['title'],
+                                          style: podstyles,
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ))
                       ],
                     );
                   } else if (state is NetError) {

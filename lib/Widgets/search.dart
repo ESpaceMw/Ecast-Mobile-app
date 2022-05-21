@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecast/Screens/podcastcat.dart';
 import 'package:ecast/Screens/podcasts_list.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
@@ -21,9 +22,12 @@ class _SearchState extends State<Search> {
   final TextEditingController _searchQuery = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<SearchCubit>(context).categories();
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: ListView(
-        shrinkWrap: true,
+        // shrinkWrap: true,
+        physics: ScrollPhysics(),
         children: [
           const SizedBox(
             height: 20,
@@ -170,7 +174,7 @@ class _SearchState extends State<Search> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(
-                        bottom: 5.0,
+                        // bottom: 5.0,
                         left: 15.0,
                       ),
                       child: Text(
@@ -181,68 +185,102 @@ class _SearchState extends State<Search> {
                         ),
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(left: 7, right: 10),
-                      child: GridView(
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 2.0,
-                          crossAxisSpacing: 0,
-                          childAspectRatio: MediaQuery.of(context).size.width /
-                              (MediaQuery.of(context).size.height / 3),
-                        ),
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: btnColor,
+                    BlocConsumer<SearchCubit, SearchState>(
+                      listener: (context, state) {
+                        // TODO: implement listener
+                      },
+                      builder: (context, state) {
+                        if (state is FetchedCat) {
+                          print(state.categories);
+                          return Container(
+                            height: 300,
+                            child: GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 2.0,
+                                crossAxisSpacing: 0,
+                                childAspectRatio: MediaQuery.of(context)
+                                        .size
+                                        .width /
+                                    (MediaQuery.of(context).size.height / 2),
                               ),
+                              itemCount: state.categories.length,
+                              itemBuilder: (context, index) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            BlocProvider.value(
+                                          value: SearchCubit(
+                                              repository: repository),
+                                          child: PodcastCat(
+                                            category: state.categories[index]
+                                                ['name'],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    margin: const EdgeInsets.only(
+                                      left: 15,
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        ShaderMask(
+                                          shaderCallback: (rect) =>
+                                              LinearGradient(
+                                            begin: Alignment.bottomCenter,
+                                            end: Alignment.topCenter,
+                                            colors: [
+                                              Colors.black,
+                                              Colors.black.withOpacity(0.5),
+                                            ],
+                                          ).createShader(rect),
+                                          blendMode: BlendMode.darken,
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 13),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                width: size.width * 0.4,
+                                                imageUrl:
+                                                    state.categories[index]
+                                                        ['cover_art'],
+                                                placeholder: (context, url) =>
+                                                    const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: btnColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: size.width * 0.1,
+                                          bottom: size.width * 0.2,
+                                          child: Text(
+                                            state.categories[index]['name'],
+                                            style: textStyle,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: btnColor,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: btnColor,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                          );
+                        } else {
+                          return CircularProgressIndicator();
+                        }
+                      },
                     ),
                   ],
                 );
@@ -254,3 +292,71 @@ class _SearchState extends State<Search> {
     );
   }
 }
+
+
+
+// return Container(
+                        //   margin: const EdgeInsets.only(left: 7, right: 10),
+                        //   child: GridView(
+                        //     shrinkWrap: true,
+                        //     gridDelegate:
+                        //         SliverGridDelegateWithFixedCrossAxisCount(
+                        //       crossAxisCount: 2,
+                        //       mainAxisSpacing: 2.0,
+                        //       crossAxisSpacing: 0,
+                        //       childAspectRatio:
+                        //           MediaQuery.of(context).size.width /
+                        //               (MediaQuery.of(context).size.height / 3),
+                        //     ),
+                        //     children: [
+                        //       Padding(
+                        //         padding: const EdgeInsets.all(8.0),
+                        //         child: Container(
+                        //           decoration: const BoxDecoration(
+                        //             color: btnColor,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Padding(
+                        //         padding: const EdgeInsets.all(8.0),
+                        //         child: Container(
+                        //           decoration: const BoxDecoration(
+                        //             color: Colors.red,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Padding(
+                        //         padding: const EdgeInsets.all(8.0),
+                        //         child: Container(
+                        //           decoration: const BoxDecoration(
+                        //             color: btnColor,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Padding(
+                        //         padding: const EdgeInsets.all(8.0),
+                        //         child: Container(
+                        //           decoration: const BoxDecoration(
+                        //             color: Colors.red,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Padding(
+                        //         padding: const EdgeInsets.all(8.0),
+                        //         child: Container(
+                        //           decoration: const BoxDecoration(
+                        //             color: btnColor,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Padding(
+                        //         padding: const EdgeInsets.all(8.0),
+                        //         child: Container(
+                        //           decoration: const BoxDecoration(
+                        //             color: Colors.red,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // );
