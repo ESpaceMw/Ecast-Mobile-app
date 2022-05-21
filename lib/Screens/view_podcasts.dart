@@ -25,6 +25,8 @@ class ViewPodcast extends StatefulWidget {
 
 class _ViewPodcastState extends State<ViewPodcast> {
   late final AudioManager _audioManager;
+  List music = [];
+  List audio = [];
 
   @override
   void initState() {
@@ -199,11 +201,57 @@ class _ViewPodcastState extends State<ViewPodcast> {
           const SizedBox(
             height: 20,
           ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(18, 8, 10, 10),
-            child: Text(
-              'All episodes',
-              style: extreStyles,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 8, 10, 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'All episodes',
+                  style: extreStyles,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (music.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please wait for the episodes to load'),
+                        ),
+                      );
+                    } else {
+                      _audioManager.dispose();
+                      _audioManager.init(
+                        music[0],
+                        0,
+                        widget.details['cover_art'],
+                        widget.details['author'],
+                      );
+                      _audioManager.play();
+                      pushNewScreen(
+                        context,
+                        screen: MusicPlayer(img: widget.details['cover_art']),
+                        withNavBar: false,
+                      );
+                    }
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 5.0,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: whiteColor,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        20.0,
+                      ),
+                    ),
+                    child: const Text('Play All'),
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(
@@ -213,6 +261,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
             builder: (context, state) {
               if (state is FetchedEpisodes) {
                 // print(state.episodes);
+                music.add(state.episodes);
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const ScrollPhysics(),
@@ -308,19 +357,27 @@ class _ViewPodcastState extends State<ViewPodcast> {
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
                                 onTap: () {
+                                  if (audio.isEmpty) {
+                                    audio.add(state.episodes[index]);
+                                  } else {
+                                    audio.clear();
+                                    audio.add(state.episodes[index]);
+                                  }
+                                  audio.add(state.episodes[index]);
                                   _audioManager.dispose();
                                   _audioManager.init(
-                                      state.episodes,
-                                      index,
-                                      widget.details['cover_art'],
-                                      widget.details['author']);
+                                    audio,
+                                    index,
+                                    widget.details['cover_art'],
+                                    widget.details['author'],
+                                  );
+                                  _audioManager.play();
                                   pushNewScreen(
                                     context,
                                     screen: MusicPlayer(
                                         img: widget.details['cover_art']),
                                     withNavBar: false,
                                   );
-                                  _audioManager.play();
                                 },
                                 child: const FaIcon(
                                   FontAwesomeIcons.circlePlay,

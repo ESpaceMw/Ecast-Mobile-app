@@ -40,7 +40,7 @@ class AudioManager {
   }
 
   Future<void> _loadInitialPlaylist(source, index, cover, author) async {
-    final mediaItems = source.map<MediaItem>((podcast) {
+    final mediaItems = await source.map<MediaItem>((podcast) {
       return MediaItem(
           id: podcast['id'].toString(),
           title: podcast['name'],
