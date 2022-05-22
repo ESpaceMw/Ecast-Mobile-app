@@ -74,3 +74,12 @@ class PlaylistCreated extends UserState {
 
   PlaylistCreated({required this.msg});
 }
+
+class ResettingPassword extends UserState {}
+
+class ChangedPassword extends UserState {
+  final String msg;
+  ChangedPassword({required this.msg});
+}
+
+class ResetDone extends UserState {}

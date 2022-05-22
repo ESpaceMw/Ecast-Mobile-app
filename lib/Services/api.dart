@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class NetworkService {
   // var baseUrl = 'http://159.223.234.130';
   var baseUrl = 'http://10.0.2.2:8080';
-  // final baseUrl = 'http://192.168.0.243:8080';
+  // final baseUrl = 'http://192.168.43.141:8080';
   var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
 
 // register a new account
@@ -99,6 +99,40 @@ class NetworkService {
       return {'err': true, 'msg': 'Server error, Contact system admin'};
     } catch (e) {
       return {'err': true, 'msg': "Error, Contact system admin"};
+    }
+  }
+
+  Future resetPassword() async {
+    try {
+      final request = await http
+          .post(Uri.parse('$baseUrl/rest-auth/password/reste'), body: {
+        'email': email.text,
+      });
+      if (request.statusCode != 200) {
+        print(request.body);
+      } else {
+        final response = convert.jsonDecode(request.body);
+        print(response);
+        return {'err': false, 'msg': response};
+      }
+    } on SocketException {
+      return {
+        'err': true,
+        'type': 'net',
+        'msg': 'Network Error! Check your connection'
+      };
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact system Admin'
+      };
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Error! Contact system Admin'
+      };
     }
   }
 
@@ -286,11 +320,6 @@ class NetworkService {
       var request = await http.get(
           Uri.parse("$baseUrl/podcast/api/v1/podcast/$id"),
           headers: {'Authorization': "Token $token"});
-      final req2 = await http.get(
-          Uri.parse('$baseUrl/podcast/api/v1/getAdminPlaylist/'),
-          headers: {'Authorization': 'Token $token'});
-      print(req2.body);
-
       // check status code
       var response = convert.jsonDecode(request.body);
       return {'err': false, 'msg': response['podcast_episodes']};

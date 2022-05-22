@@ -86,7 +86,7 @@ class MyAudioHandler extends BaseAudioHandler {
       if (_playlist.length == 0) {
         print('not filled');
       } else {
-        _playlist.clear();
+        await _playlist.clear();
         final newQueue = queue.value..clear();
         queue.add(newQueue);
         _player.seek(Duration.zero);

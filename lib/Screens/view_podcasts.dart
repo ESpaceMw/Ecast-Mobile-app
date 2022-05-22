@@ -32,6 +32,10 @@ class _ViewPodcastState extends State<ViewPodcast> {
   void initState() {
     super.initState();
     _audioManager = AudioManager();
+    print(music);
+    music.clear();
+    audio.clear();
+    print(music);
   }
 
   @override
@@ -236,7 +240,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
                   style: extreStyles,
                 ),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     if (music.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -385,15 +389,13 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                 onTap: () {
                                   if (audio.isEmpty) {
                                     audio.add(state.episodes[index]);
-                                  } else {
-                                    audio.clear();
-                                    audio.add(state.episodes[index]);
                                   }
+                                  audio.clear();
                                   audio.add(state.episodes[index]);
                                   _audioManager.dispose();
                                   _audioManager.init(
                                     audio,
-                                    index,
+                                    0,
                                     widget.details['cover_art'],
                                     widget.details['author'],
                                   );

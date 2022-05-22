@@ -80,5 +80,10 @@ class Repository {
     return filteredCats;
   }
 
+  Future reset() async {
+    final data = await networkService.resetPassword();
+    return data;
+  }
+
   Future singleEp() async {}
 }

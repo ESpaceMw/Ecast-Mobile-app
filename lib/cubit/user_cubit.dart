@@ -105,4 +105,16 @@ class UserCubit extends Cubit<UserState> {
       }
     });
   }
+
+  void resetPassword() {
+    emit(ResettingPassword());
+    repository.reset().then((value) {
+      print(value);
+      if (value['err']) {
+        print(value);
+      } else {
+        emit(ResetDone());
+      }
+    });
+  }
 }

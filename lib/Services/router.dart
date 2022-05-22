@@ -59,7 +59,10 @@ class AppRouter {
         );
       case forgetPassword:
         return MaterialPageRoute(
-          builder: (_) => const ForgotPassword(),
+          builder: (_) => BlocProvider(
+            create: (context) => UserCubit(repository: repository),
+            child: const ForgotPassword(),
+          ),
         );
       case charts:
         return MaterialPageRoute(

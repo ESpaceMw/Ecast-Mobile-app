@@ -32,6 +32,7 @@ class _ViewEpState extends State<ViewEp> {
   void initState() {
     super.initState();
     _audioManager = AudioManager();
+    data.clear();
     data.add(widget.ep);
   }
 
