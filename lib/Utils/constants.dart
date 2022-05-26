@@ -31,7 +31,7 @@ String gender = 'Male';
 List<String> gvals = ['Male', 'Female', 'Non-Binary'];
 bool Playing = false;
 
-bool playAll = false;
+List<String> recentlyPlayed = [];
 
 const optStyles = TextStyle(
   fontSize: 15,

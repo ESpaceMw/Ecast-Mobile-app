@@ -36,7 +36,19 @@ class SearchCubit extends Cubit<SearchState> {
   void filterPodcasts(title) {
     emit(Searching());
     repository.filter(title).then((value) {
-      print(value);
+      if (value['err']) {
+        if (value['type'] == 'net') {
+          emit(NetError());
+        } else {
+          emit(HttpErr());
+        }
+      } else {
+        emit(
+          FetchedCat(
+            categories: value['msg'],
+          ),
+        );
+      }
     });
   }
 }

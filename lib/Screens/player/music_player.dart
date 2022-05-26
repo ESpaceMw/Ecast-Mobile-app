@@ -1,7 +1,6 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Utils/Notifiers/progressNotifier.dart';
-import 'package:ecast/Utils/Notifiers/repeat_Btn_Notifier.dart';
 import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/components/popmenu.dart';
@@ -24,18 +23,18 @@ class _MusicPlayerState extends State<MusicPlayer> {
   late final AudioManager _audioManager;
   Color bg = Colors.black87;
 
-  // _getColor() async {
-  //   var cc = await PaletteGenerator.fromImageProvider(NetworkImage(widget.img));
-  //   setState(() {
-  //     bg = cc.dominantColor!.color;
-  //   });
-  // }
+  _getColor(image) async {
+    var cc = await PaletteGenerator.fromImageProvider(NetworkImage(image));
+    setState(() {
+      bg = cc.dominantColor!.color;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    // _getColor();
     _audioManager = AudioManager();
+    _getColor(_audioManager.artWork.value);
   }
 
   @override

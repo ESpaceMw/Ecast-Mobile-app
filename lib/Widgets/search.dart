@@ -215,7 +215,7 @@ class _SearchState extends State<Search> {
                                             BlocProvider.value(
                                           value: SearchCubit(
                                               repository: repository),
-                                          child: PodcastCat(
+                                          child: FilterPodcasts(
                                             category: state.categories[index]
                                                 ['name'],
                                           ),

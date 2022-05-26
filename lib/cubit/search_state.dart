@@ -15,6 +15,10 @@ class SearchError extends SearchState {
   SearchError({required this.msg});
 }
 
+class HttpErr extends SearchState {}
+
+class NetError extends SearchState {}
+
 class FetchedCat extends SearchState {
   final List categories;
 

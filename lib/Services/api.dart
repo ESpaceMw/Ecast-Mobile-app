@@ -549,18 +549,16 @@ class NetworkService {
       final token = prefs.getString("token");
       final request = await http.get(
         Uri.parse(
-          "$baseUrl/podcast/api/v1/podcast/filter/?category=$title",
+          "$baseUrl/podcast/api/v1/podcast/filter/main?category=$title",
         ),
         headers: {'Authorization': 'Token $token'},
       );
-
-      print(request.body);
 
       if (request.statusCode != 200) {
         print(request.body);
       } else {
         final response = convert.jsonDecode(request.body);
-        return {'err': false, 'msg': response};
+        return {'err': false, 'msg': response['podcast_set']};
       }
     } on SocketException {
       return {
