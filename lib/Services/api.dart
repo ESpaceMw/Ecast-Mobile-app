@@ -615,4 +615,29 @@ class NetworkService {
       };
     }
   }
+
+  Future userPlaylist() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+    } on SocketException {
+      return {
+        'err': true,
+        'type': 'net',
+        'msg': 'Network Error! Check your connection'
+      };
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact System Admin'
+      };
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact System Admin'
+      };
+    }
+  }
 }

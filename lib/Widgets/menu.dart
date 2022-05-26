@@ -1,7 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coolicons/coolicons.dart';
 import 'package:ecast/Screens/about.dart';
-import 'package:ecast/Screens/charts_screen.dart';
+// import 'package:ecast/Screens/charts_screen.dart';
 import 'package:ecast/Screens/profile.dart';
 import 'package:ecast/Screens/wrapper.dart';
 import 'package:ecast/Services/api.dart';
@@ -9,12 +9,13 @@ import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/loader.dart';
 import 'package:ecast/Widgets/components/plan.dart';
-import 'package:ecast/cubit/charts_cubit.dart';
+// import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Repository repository = Repository(networkService: NetworkService());
 
@@ -43,10 +44,13 @@ class _MenuState extends State<Menu> {
                   margin: const EdgeInsets.only(left: 12),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
                           builder: (context) => Profile(
-                                details: state.user,
-                              )));
+                            details: state.user,
+                          ),
+                        ),
+                      );
                     },
                     child: Row(
                       children: [
@@ -114,40 +118,40 @@ class _MenuState extends State<Menu> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 30,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (context) => ChartsCubit(repository: repository),
-                    child: const ChartsScreen(),
-                  ),
-                ),
-              );
-            },
-            child: ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(15.0),
-                decoration: boxColor,
-                child: Icon(
-                  Icons.table_chart,
-                  color: iconColor,
-                  size: 23,
-                ),
-              ),
-              title: const Text(
-                "Charts",
-                style: textStyle,
-              ),
-              trailing: const FaIcon(
-                FontAwesomeIcons.angleRight,
-                size: 20,
-              ),
-            ),
-          ),
+          // const SizedBox(
+          //   height: 30,
+          // ),
+          // GestureDetector(
+          //   onTap: () {
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //         builder: (context) => BlocProvider(
+          //           create: (context) => ChartsCubit(repository: repository),
+          //           child: const ChartsScreen(),
+          //         ),
+          //       ),
+          //     );
+          //   },
+          //   child: ListTile(
+          //     leading: Container(
+          //       padding: const EdgeInsets.all(15.0),
+          //       decoration: boxColor,
+          //       child: Icon(
+          //         Icons.table_chart,
+          //         color: iconColor,
+          //         size: 23,
+          //       ),
+          //     ),
+          //     title: const Text(
+          //       "Charts",
+          //       style: textStyle,
+          //     ),
+          //     trailing: const FaIcon(
+          //       FontAwesomeIcons.angleRight,
+          //       size: 20,
+          //     ),
+          //   ),
+          // ),
           const SizedBox(
             height: 20,
           ),

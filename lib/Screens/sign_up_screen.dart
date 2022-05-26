@@ -2,6 +2,7 @@ import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -305,7 +306,7 @@ class _SignUpState extends State<SignUp> {
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton(
                                   value: gender,
-                                  hint: Text('Gender'),
+                                  hint: const Text('Gender'),
                                   onChanged: (val) {
                                     setState(() {
                                       gender = val.toString();
@@ -549,7 +550,44 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             const SizedBox(
-                              height: 20,
+                              height: 10,
+                            ),
+                            Wrap(
+                              children: [
+                                const Text("By signing Up, you agree to"),
+                                GestureDetector(
+                                  onTap: () async {
+                                    await launchUrl(
+                                      Uri.parse(
+                                          'https://ecast.espacemw.com/terms'),
+                                    );
+                                  },
+                                  child: const Text(
+                                    ' Terms of Service',
+                                    style: TextStyle(
+                                      color: btnColor,
+                                    ),
+                                  ),
+                                ),
+                                const Text(" and "),
+                                GestureDetector(
+                                  onTap: () async {
+                                    await launchUrl(
+                                      Uri.parse(
+                                          'https://ecast.espacemw.com/policy'),
+                                    );
+                                  },
+                                  child: const Text(
+                                    'Privacy Policy',
+                                    style: TextStyle(
+                                      color: btnColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
                             ),
                             GestureDetector(
                               onTap: () {
@@ -571,7 +609,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             const SizedBox(
-                              height: 20,
+                              height: 10,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
