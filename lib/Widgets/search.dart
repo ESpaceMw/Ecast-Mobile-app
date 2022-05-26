@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecast/Screens/genres_list.dart';
 import 'package:ecast/Screens/podcastcat.dart';
 import 'package:ecast/Screens/podcasts_list.dart';
 import 'package:ecast/Screens/view_podcasts.dart';
@@ -308,17 +309,41 @@ class _SearchState extends State<Search> {
                     const SizedBox(
                       height: 30,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(
+                    Padding(
+                      padding: const EdgeInsets.only(
                         // bottom: 5.0,
                         left: 15.0,
+                        right: 15.0,
                       ),
-                      child: Text(
-                        "All Genres",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Top Genres",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => BlocProvider.value(
+                                    value: SearchCubit(repository: repository),
+                                    child: const GenresList(),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'View All',
+                              style: TextStyle(
+                                color: btnColor,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     BlocConsumer<SearchCubit, SearchState>(
@@ -329,18 +354,9 @@ class _SearchState extends State<Search> {
                         if (state is FetchedCat) {
                           return Container(
                             height: 300,
-                            child: GridView.builder(
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 2.0,
-                                crossAxisSpacing: 0,
-                                childAspectRatio: MediaQuery.of(context)
-                                        .size
-                                        .width /
-                                    (MediaQuery.of(context).size.height / 2),
-                              ),
+                            child: ListView.builder(
                               itemCount: state.categories.length,
+                              scrollDirection: Axis.horizontal,
                               itemBuilder: (context, index) {
                                 return GestureDetector(
                                   onTap: () {
@@ -399,7 +415,7 @@ class _SearchState extends State<Search> {
                                         ),
                                         Positioned(
                                           left: size.width * 0.1,
-                                          bottom: size.width * 0.2,
+                                          bottom: size.width * 0.5,
                                           child: Text(
                                             state.categories[index]['name'],
                                             style: textStyle,

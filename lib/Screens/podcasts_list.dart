@@ -67,12 +67,14 @@ class Podcasts extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
                             builder: (context) => BlocProvider.value(
-                                  value: PodcastsCubit(repository: repository),
-                                  child:
-                                      ViewPodcast(details: state.arts[index]),
-                                )));
+                              value: PodcastsCubit(repository: repository),
+                              child: ViewPodcast(details: state.arts[index]),
+                            ),
+                          ),
+                        );
                       },
                       child: Container(
                         width: 200,
