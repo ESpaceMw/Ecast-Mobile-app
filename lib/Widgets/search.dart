@@ -1,13 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Screens/podcastcat.dart';
 import 'package:ecast/Screens/podcasts_list.dart';
+import 'package:ecast/Screens/view_podcasts.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Widgets/Errors/httpex.dart';
+import 'package:ecast/Widgets/Errors/socketerr.dart';
+import 'package:ecast/Widgets/components/indicator.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/search_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 Repository repository = Repository(networkService: NetworkService());
 
@@ -27,7 +32,7 @@ class _SearchState extends State<Search> {
     return Scaffold(
       body: ListView(
         // shrinkWrap: true,
-        physics: ScrollPhysics(),
+        physics: const ScrollPhysics(),
         children: [
           const SizedBox(
             height: 20,
@@ -54,7 +59,12 @@ class _SearchState extends State<Search> {
                 border: InputBorder.none,
               ),
               onFieldSubmitted: (String text) {
-                BlocProvider.of<SearchCubit>(context).prev();
+                if (text.isEmpty) {
+                  BlocProvider.of<SearchCubit>(context).prev();
+                } else {
+                  recentlyPlayed.add(text);
+                  BlocProvider.of<SearchCubit>(context).searchPodcast(text);
+                }
               },
             ),
           ),
@@ -66,21 +76,147 @@ class _SearchState extends State<Search> {
               // TODO: implement listener
             },
             builder: (context, state) {
-              if (state is Searching) {
+              if (state is SearchMode) {
                 return SafeArea(
                   child: ListView(
                     shrinkWrap: true,
-                    children: const [
+                    children: [
                       Padding(
-                        padding: EdgeInsets.only(left: 11, top: 2.0),
-                        child: Text(
-                          'Recent Searches',
-                          style: info,
+                        padding: const EdgeInsets.only(left: 11, top: 2.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    FocusScope.of(context).unfocus();
+                                    BlocProvider.of<SearchCubit>(context)
+                                        .prev();
+                                    _searchQuery.clear();
+                                  },
+                                  child: const Icon(
+                                    Icons.arrow_back,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                const Text(
+                                  'Recent Searches',
+                                  style: info,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: recentlyPlayed.length,
+                              itemBuilder: (context, index) {
+                                if (recentlyPlayed.isEmpty) {
+                                  return Container(
+                                      child: const Text(
+                                    "No recent searches",
+                                    style: textStyle,
+                                  ));
+                                } else {
+                                  return Container(
+                                    child: ListTile(
+                                      title: Text(recentlyPlayed[index]),
+                                      trailing: GestureDetector(
+                                        onTap: () {
+                                          recentlyPlayed.removeAt(index);
+                                        },
+                                        child: const FaIcon(
+                                            FontAwesomeIcons.xmark),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                            )
+                          ],
                         ),
                       )
                     ],
                   ),
                 );
+              } else if (state is Searching) {
+                return Container(
+                  height: size.height,
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      color: btnColor,
+                    ),
+                  ),
+                );
+              } else if (state is SearchResults) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        BlocProvider.of<SearchCubit>(context).prev();
+                        _searchQuery.clear();
+                      },
+                      child: const Icon(Icons.arrow_back),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.results.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => BlocProvider.value(
+                                  value: PodcastsCubit(repository: repository),
+                                  child: ViewPodcast(
+                                      details: state.results[index]),
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                              child: ListTile(
+                            leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.12,
+                                  imageUrl: state.results[index]['cover_art']),
+                            ),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  state.results[index]['title'],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  state.results[index]['author'],
+                                  style: const TextStyle(fontSize: 12),
+                                )
+                              ],
+                            ),
+                          )),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              } else if (state is HttpErr) {
+                return const HttpExc(msg: "Server Error! Contact System Admin");
+              } else if (state is NetError) {
+                return const SocketErr(
+                    msg: "Network Error! Check your connection");
               } else {
                 return ListView(
                   shrinkWrap: true,
@@ -191,7 +327,6 @@ class _SearchState extends State<Search> {
                       },
                       builder: (context, state) {
                         if (state is FetchedCat) {
-                          print(state.categories);
                           return Container(
                             height: 300,
                             child: GridView.builder(
@@ -278,7 +413,11 @@ class _SearchState extends State<Search> {
                             ),
                           );
                         } else {
-                          return CircularProgressIndicator();
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: btnColor,
+                            ),
+                          );
                         }
                       },
                     ),

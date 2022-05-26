@@ -85,5 +85,10 @@ class Repository {
     return data;
   }
 
+  Future search(title) async {
+    final data = await networkService.searchPodcast(title);
+    return data;
+  }
+
   Future singleEp() async {}
 }

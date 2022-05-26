@@ -9,11 +9,12 @@ class SearchCubit extends Cubit<SearchState> {
   SearchCubit({required this.repository}) : super(SearchInitial());
 
   void searchOption() {
-    emit(Searching());
+    emit(SearchMode());
   }
 
   void prev() {
     emit(SearchInitial());
+    categories();
   }
 
   void categories() {
@@ -46,6 +47,25 @@ class SearchCubit extends Cubit<SearchState> {
         emit(
           FetchedCat(
             categories: value['msg'],
+          ),
+        );
+      }
+    });
+  }
+
+  void searchPodcast(title) {
+    emit(Searching());
+    repository.search(title).then((value) {
+      if (value['err']) {
+        if (value['type'] == 'net') {
+          emit(NetError());
+        } else {
+          emit(HttpErr());
+        }
+      } else {
+        emit(
+          SearchResults(
+            results: value['msg'],
           ),
         );
       }

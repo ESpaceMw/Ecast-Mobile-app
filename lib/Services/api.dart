@@ -572,6 +572,47 @@ class NetworkService {
         'type': 'http',
         'msg': 'Server Error! Contact system Admin'
       };
-    } catch (e) {}
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact system Admin'
+      };
+    }
+  }
+
+  Future searchPodcast(title) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      final request = await http.get(
+        Uri.parse('$baseUrl/podcast/api/v1/search/podcast?term=$title'),
+        headers: {'Authorization': 'Token $token'},
+      );
+      if (request.statusCode != 200) {
+        print(request.body);
+      } else {
+        final response = convert.jsonDecode(request.body);
+        return {'err': false, 'msg': response};
+      }
+    } on SocketException {
+      return {
+        'err': true,
+        'type': 'net',
+        'msg': 'Network Error! Check your Connection'
+      };
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact system admin'
+      };
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact system admin'
+      };
+    }
   }
 }

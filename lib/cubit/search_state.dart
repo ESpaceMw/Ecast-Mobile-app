@@ -17,10 +17,17 @@ class SearchError extends SearchState {
 
 class HttpErr extends SearchState {}
 
+class SearchMode extends SearchState {}
+
 class NetError extends SearchState {}
 
 class FetchedCat extends SearchState {
   final List categories;
 
   FetchedCat({required this.categories});
+}
+
+class SearchResults extends SearchState {
+  final List results;
+  SearchResults({required this.results});
 }
