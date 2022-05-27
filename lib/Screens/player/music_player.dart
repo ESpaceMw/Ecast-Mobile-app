@@ -34,11 +34,12 @@ class _MusicPlayerState extends State<MusicPlayer> {
   void initState() {
     super.initState();
     _audioManager = AudioManager();
-    _getColor(_audioManager.artWork.value);
+    // _getColor(_audioManager.artWork.value);
   }
 
   @override
   Widget build(BuildContext context) {
+    _getColor(_audioManager.artWork.value);
     return Scaffold(
       backgroundColor: bg,
       body: ListView(
