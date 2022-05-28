@@ -1,6 +1,7 @@
 import 'package:ecast/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -11,11 +12,26 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   void delay() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final isLoggedIn = prefs.getBool("loggedin");
     await Future.delayed(
-        const Duration(seconds: 3),
-        () => {
-              Navigator.pushReplacementNamed(context, wrapper),
-            });
+      const Duration(seconds: 3),
+      () => {
+        if (isLoggedIn != null)
+          {
+            if (isLoggedIn)
+              {Navigator.pushReplacementNamed(context, home)}
+            else
+              {
+                Navigator.pushReplacementNamed(context, wrapper),
+              }
+          }
+        else
+          {
+            Navigator.pushReplacementNamed(context, wrapper),
+          }
+      },
+    );
   }
 
   @override

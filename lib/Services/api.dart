@@ -9,8 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class NetworkService {
   // var baseUrl = 'http://159.223.234.130';
   var baseUrl = 'http://10.0.2.2:8080';
-  // final baseUrl = 'http://192.168.43.141:8080';
-  var url = 'https://jsonplaceholder.typicode.com/photos/?_limit=16';
 
 // register a new account
   Future signup() async {
@@ -401,9 +399,8 @@ class NetworkService {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
-      // await http.get(url)
       final request = await http.get(
-        Uri.parse('$baseUrl/'),
+        Uri.parse('$baseUrl/podcast/api/v1/podcast/user/playlist_view'),
         headers: {'Authorization': 'Token $token'},
       );
 
@@ -417,6 +414,7 @@ class NetworkService {
         };
       } else {
         final response = convert.jsonDecode(request.body);
+        print(response);
         return {'err': false, 'msg': response};
       }
     } on SocketException {
@@ -441,19 +439,24 @@ class NetworkService {
   }
 
   //Create user playlist
-  Future createPlaylist(title) async {
+  Future createPlaylist() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
       final request = await http.post(
-        Uri.parse("$baseUrl/"),
+        Uri.parse("$baseUrl/podcast/api/v1/podcast/user/create_playlist/"),
         headers: {
           'Authorization': 'Token $token',
         },
         body: {
-          'podcast_title': title,
+          'title': playlistName.text,
+          'description': 'This is a user playlist',
+          'public': true,
+          'cover_art': '$baseUrl/media/artwork/0_2q-4eButWdj5ZDTE.jpg'
         },
       );
+
+      print(request.body);
 
       if (request.statusCode == 401) {
         return {
@@ -463,6 +466,7 @@ class NetworkService {
         };
       } else {
         final response = convert.jsonDecode(request.body);
+        // print(response);
         return {'err': false, 'msg': response};
       }
     } on SocketException {
@@ -472,6 +476,7 @@ class NetworkService {
         'msg': "Network Error! Check your Connection"
       };
     } on HttpException {
+      print(HttpException);
       return {
         'err': true,
         'type': 'http',
@@ -540,7 +545,25 @@ class NetworkService {
         final response = convert.jsonDecode(request.body);
         return {'err': false, 'msg': response};
       }
-    } catch (e) {}
+    } on SocketException {
+      return {
+        'err': true,
+        'type': 'net',
+        'msg': 'Network Error! Check Your Connection',
+      };
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact system Admin',
+      };
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact system Admin',
+      };
+    }
   }
 
   Future filterCategories(title) async {

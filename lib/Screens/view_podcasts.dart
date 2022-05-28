@@ -289,7 +289,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
           BlocBuilder<PodcastsCubit, PodcastsState>(
             builder: (context, state) {
               if (state is FetchedEpisodes) {
-                music.add(state.episodes);
+                // music.add(state.episodes);
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const ScrollPhysics(),
@@ -387,15 +387,10 @@ class _ViewPodcastState extends State<ViewPodcast> {
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
                                 onTap: () {
-                                  if (audio.isEmpty) {
-                                    audio.add(state.episodes[index]);
-                                  }
-                                  audio.clear();
-                                  audio.add(state.episodes[index]);
                                   _audioManager.dispose();
                                   _audioManager.init(
-                                    audio,
-                                    0,
+                                    state.episodes,
+                                    index,
                                     widget.details['cover_art'],
                                     widget.details['author'],
                                   );

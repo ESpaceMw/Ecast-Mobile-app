@@ -52,15 +52,7 @@ class _LibraryState extends State<Library> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        backgroundColor: kBackgroundColor,
-                        builder: (context) {
-                          return PlaylistInput(size: size);
-                        });
-                  },
+                  onTap: () {},
                   child: const FaIcon(
                     FontAwesomeIcons.plus,
                   ),

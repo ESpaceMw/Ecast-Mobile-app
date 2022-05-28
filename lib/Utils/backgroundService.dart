@@ -66,6 +66,12 @@ class MyAudioHandler extends BaseAudioHandler {
   }
 
   @override
+  Future<void> skipToQueueItem(int index) async {
+    // final newPlaylist = _playlist[index];
+    // final newQueue = queue.value..
+  }
+
+  @override
   Future<void> play() => _player.play();
 
   @override
@@ -81,6 +87,14 @@ class MyAudioHandler extends BaseAudioHandler {
   Future<void> skipToPrevious() => _player.seekToPrevious();
 
   @override
+  Future<void> stop() async {
+    playbackState.add(playbackState.value
+        .copyWith(processingState: AudioProcessingState.idle));
+    await playbackState.firstWhere(
+        (state) => state.processingState == AudioProcessingState.idle);
+  }
+
+  @override
   Future customAction(String name, [Map<String, dynamic>? extras]) async {
     if (name == 'clear') {
       if (_playlist.length == 0) {
@@ -89,6 +103,7 @@ class MyAudioHandler extends BaseAudioHandler {
         await _playlist.clear();
         final newQueue = queue.value..clear();
         queue.add(newQueue);
+        await _player.stop();
         _player.seek(Duration.zero);
       }
     }

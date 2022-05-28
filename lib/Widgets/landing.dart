@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -109,9 +110,10 @@ class _HomeState extends State<Home> {
               BlocConsumer<ChartsCubit, ChartsState>(
                 listener: (context, state) {
                   if (state is Exception) {
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => const Wrapper()),
-                      (route) => false,
+                    pushNewScreen(
+                      context,
+                      screen: const Wrapper(),
+                      withNavBar: false,
                     );
                   }
                 },
@@ -198,7 +200,10 @@ class _HomeState extends State<Home> {
                           height: 30,
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          padding: EdgeInsets.symmetric(
+                            horizontal:
+                                MediaQuery.of(context).size.width * 0.06,
+                          ),
                           child: Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(10.0),
@@ -207,7 +212,7 @@ class _HomeState extends State<Home> {
                               borderRadius: BorderRadius.circular(15.0),
                             ),
                             child: Wrap(
-                              direction: Axis.vertical,
+                              // direction: Axis.vertical,
                               children: [
                                 Row(children: [
                                   const SizedBox(
@@ -220,51 +225,53 @@ class _HomeState extends State<Home> {
                                   const SizedBox(
                                     width: 20,
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'Listen to live Podcast broadcasts',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      const Text(
-                                        'and radio stations',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Container(
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[900],
-                                          borderRadius:
-                                              BorderRadius.circular(30.0),
-                                        ),
-                                        child: const Padding(
-                                          padding: EdgeInsets.only(
-                                            left: 25,
-                                            right: 25,
-                                            top: 3,
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Text(
+                                          'Listen to live Podcast broadcasts',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
                                           ),
-                                          child: Text(
-                                            "Listen Live Now",
-                                            style: TextStyle(
-                                              color: whiteColor,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 13,
+                                        ),
+                                        const Text(
+                                          'and radio stations',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[900],
+                                            borderRadius:
+                                                BorderRadius.circular(30.0),
+                                          ),
+                                          child: const Padding(
+                                            padding: EdgeInsets.only(
+                                              left: 25,
+                                              right: 25,
+                                              top: 3,
+                                            ),
+                                            child: Text(
+                                              "Listen Live Now",
+                                              style: TextStyle(
+                                                color: whiteColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 13,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      )
-                                    ],
+                                        )
+                                      ],
+                                    ),
                                   )
                                 ])
                               ],

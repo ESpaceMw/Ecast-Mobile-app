@@ -65,8 +65,8 @@ class Repository {
     return playlist;
   }
 
-  Future createPlaylist(title) async {
-    final data = await networkService.createPlaylist(title);
+  Future createPlaylist() async {
+    final data = await networkService.createPlaylist();
     return data;
   }
 

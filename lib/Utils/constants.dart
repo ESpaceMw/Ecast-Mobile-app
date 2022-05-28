@@ -117,6 +117,7 @@ const forgetPassword = "/forgotpassword";
 const charts = '/charts';
 const podcats = '/podcasts';
 const ep = '/ep';
+const playlistInput = '/add_playlist';
 
 List<String> options = [
   'Note',

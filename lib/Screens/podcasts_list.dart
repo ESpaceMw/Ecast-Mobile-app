@@ -54,6 +54,7 @@ class Podcasts extends StatelessWidget {
               // TODO: implement listener
             }, builder: (context, state) {
               if (state is Pod) {
+                print(state.arts);
                 return GridView.builder(
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

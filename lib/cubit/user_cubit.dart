@@ -87,9 +87,9 @@ class UserCubit extends Cubit<UserState> {
     });
   }
 
-  void newPlaylist(title) async {
+  void newPlaylist() async {
     emit(CreatingPlaylist());
-    repository.createPlaylist(title).then((value) {
+    repository.createPlaylist().then((value) {
       if (value['err']) {
         if (value['type'] == 'http') {
           emit(HttpError(msg: value['msg']));

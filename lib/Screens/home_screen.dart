@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Screens/player/music_player.dart';
-import 'package:ecast/Screens/screen_options.dart';
 import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/bottom_nav_options.dart';

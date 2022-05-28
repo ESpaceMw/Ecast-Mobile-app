@@ -1,6 +1,5 @@
 import 'package:ecast/Utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Wrapper extends StatefulWidget {
   const Wrapper({Key? key}) : super(key: key);
@@ -10,19 +9,8 @@ class Wrapper extends StatefulWidget {
 }
 
 class _WrapperState extends State<Wrapper> {
-  // ignore: todo
-  // TODO: look for an alternative , clean way
-  _log() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var log = prefs.getBool("loggedin");
-    if (log == true) {
-      Navigator.pushReplacementNamed(context, home);
-    }
-  }
-
   @override
   void initState() {
-    _log();
     super.initState();
   }
 

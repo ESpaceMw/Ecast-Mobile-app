@@ -23,12 +23,12 @@ class _MusicPlayerState extends State<MusicPlayer> {
   late final AudioManager _audioManager;
   Color bg = Colors.black87;
 
-  _getColor(image) async {
-    var cc = await PaletteGenerator.fromImageProvider(NetworkImage(image));
-    setState(() {
-      bg = cc.dominantColor!.color;
-    });
-  }
+  // _getColor(image) async {
+  //   var cc = await PaletteGenerator.fromImageProvider(NetworkImage(image));
+  //   setState(() {
+  //     bg = cc.dominantColor!.color;
+  //   });
+  // }
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    _getColor(_audioManager.artWork.value);
+    // _getColor(_audioManager.artWork.value);
     return Scaffold(
       backgroundColor: bg,
       body: ListView(

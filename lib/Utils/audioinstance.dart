@@ -36,6 +36,7 @@ class AudioManager {
   }
 
   void dispose() {
+    _audioHandler.stop();
     _audioHandler.customAction('clear');
   }
 

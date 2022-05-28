@@ -10,6 +10,7 @@ import 'package:ecast/Screens/wrapper.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Widgets/components/playlistinput.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
@@ -76,6 +77,13 @@ class AppRouter {
           builder: (_) => BlocProvider.value(
             value: PodcastsCubit(repository: repository),
             child: const Podcasts(),
+          ),
+        );
+      case playlistInput:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: UserCubit(repository: repository),
+            child: const CreatePlaylist(),
           ),
         );
       default:

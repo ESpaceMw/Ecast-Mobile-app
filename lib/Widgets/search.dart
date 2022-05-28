@@ -8,7 +8,6 @@ import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/Errors/httpex.dart';
 import 'package:ecast/Widgets/Errors/socketerr.dart';
-import 'package:ecast/Widgets/components/indicator.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/search_cubit.dart';
 import 'package:flutter/material.dart';
