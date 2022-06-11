@@ -25,17 +25,13 @@ class ViewPodcast extends StatefulWidget {
 
 class _ViewPodcastState extends State<ViewPodcast> {
   late final AudioManager _audioManager;
-  List music = [];
   List audio = [];
 
   @override
   void initState() {
     super.initState();
     _audioManager = AudioManager();
-    print(music);
-    music.clear();
     audio.clear();
-    print(music);
   }
 
   @override
@@ -67,12 +63,12 @@ class _ViewPodcastState extends State<ViewPodcast> {
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.4,
                     width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage('assets/images/img_7.jpg'),
+                        image: NetworkImage(widget.details['header_image']),
                         fit: BoxFit.cover,
-                        colorFilter:
-                            ColorFilter.mode(Colors.black45, BlendMode.darken),
+                        colorFilter: const ColorFilter.mode(
+                            Colors.black45, BlendMode.darken),
                       ),
                     ),
                   ),
@@ -88,7 +84,11 @@ class _ViewPodcastState extends State<ViewPodcast> {
                         top: 10,
                       ),
                       child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
+                        onTap: () {
+                          Navigator.pop(context);
+                          BlocProvider.of<PodcastsCubit>(context)
+                              .fetchPodcasts();
+                        },
                         child: const Icon(Icons.arrow_back),
                       ),
                     ),
@@ -230,57 +230,11 @@ class _ViewPodcastState extends State<ViewPodcast> {
           const SizedBox(
             height: 20,
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18, 8, 10, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'All episodes',
-                  style: extreStyles,
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    if (music.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Please wait for the episodes to load'),
-                        ),
-                      );
-                    } else {
-                      _audioManager.dispose();
-                      _audioManager.init(
-                        music[0],
-                        0,
-                        widget.details['cover_art'],
-                        widget.details['author'],
-                      );
-                      _audioManager.play();
-                      pushNewScreen(
-                        context,
-                        screen: MusicPlayer(img: widget.details['cover_art']),
-                        withNavBar: false,
-                      );
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 5.0,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: whiteColor,
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        20.0,
-                      ),
-                    ),
-                    child: const Text('Play All'),
-                  ),
-                ),
-              ],
+          const Padding(
+            padding: EdgeInsets.fromLTRB(18, 8, 10, 10),
+            child: Text(
+              'All episodes',
+              style: extreStyles,
             ),
           ),
           const SizedBox(
@@ -289,7 +243,6 @@ class _ViewPodcastState extends State<ViewPodcast> {
           BlocBuilder<PodcastsCubit, PodcastsState>(
             builder: (context, state) {
               if (state is FetchedEpisodes) {
-                // music.add(state.episodes);
                 return ListView.builder(
                   shrinkWrap: true,
                   physics: const ScrollPhysics(),
@@ -386,8 +339,9 @@ class _ViewPodcastState extends State<ViewPodcast> {
                             trailing: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
-                                onTap: () {
+                                onTap: () async {
                                   _audioManager.dispose();
+                                  // _audioManager = AudioManager();
                                   _audioManager.init(
                                     state.episodes,
                                     index,

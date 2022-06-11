@@ -379,47 +379,26 @@ class _SearchState extends State<Search> {
                                     ),
                                     child: Stack(
                                       children: [
-                                        ShaderMask(
-                                          shaderCallback: (rect) =>
-                                              LinearGradient(
-                                            begin: Alignment.bottomCenter,
-                                            end: Alignment.topCenter,
-                                            colors: [
-                                              Colors.black,
-                                              Colors.black.withOpacity(0.5),
-                                            ],
-                                          ).createShader(rect),
-                                          blendMode: BlendMode.darken,
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.only(top: 13),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              child: CachedNetworkImage(
-                                                width: size.width * 0.4,
-                                                imageUrl:
-                                                    state.categories[index]
-                                                        ['cover_art'],
-                                                placeholder: (context, url) =>
-                                                    const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color: btnColor,
-                                                  ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 13),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              width: size.width * 0.4,
+                                              imageUrl: state.categories[index]
+                                                  ['cover_art'],
+                                              placeholder: (context, url) =>
+                                                  const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: btnColor,
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                        Positioned(
-                                          left: size.width * 0.1,
-                                          bottom: size.width * 0.5,
-                                          child: Text(
-                                            state.categories[index]['name'],
-                                            style: textStyle,
-                                          ),
-                                        )
                                       ],
                                     ),
                                   ),

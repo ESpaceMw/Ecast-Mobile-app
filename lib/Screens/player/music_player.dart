@@ -23,8 +23,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
   late final AudioManager _audioManager;
   Color bg = Colors.black87;
 
-  // _getColor(image) async {
-  //   var cc = await PaletteGenerator.fromImageProvider(NetworkImage(image));
+  // _getColor() async {
+  //   var cc = await PaletteGenerator.fromImageProvider(NetworkImage(widget.img));
   //   setState(() {
   //     bg = cc.dominantColor!.color;
   //   });
@@ -34,7 +34,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
   void initState() {
     super.initState();
     _audioManager = AudioManager();
-    // _getColor(_audioManager.artWork.value);
+    // _getColor();
   }
 
   @override
@@ -51,11 +51,16 @@ class _MusicPlayerState extends State<MusicPlayer> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(Icons.arrow_back),
+                    Container(
+                      margin: const EdgeInsets.only(
+                        left: 10,
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const FaIcon(FontAwesomeIcons.angleDown),
+                      ),
                     ),
                     const Popmenu(),
                   ],

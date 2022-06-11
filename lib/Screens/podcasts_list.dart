@@ -22,7 +22,7 @@ class Podcasts extends StatelessWidget {
           right: 15,
         ),
         child: ListView(
-          shrinkWrap: true,
+          // shrinkWrap: true,
           children: [
             const SizedBox(
               height: 10,
@@ -54,7 +54,6 @@ class Podcasts extends StatelessWidget {
               // TODO: implement listener
             }, builder: (context, state) {
               if (state is Pod) {
-                print(state.arts);
                 return GridView.builder(
                   shrinkWrap: true,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

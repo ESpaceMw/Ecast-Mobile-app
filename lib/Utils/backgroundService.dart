@@ -26,6 +26,7 @@ class MyAudioHandler extends BaseAudioHandler {
     _notifyAudioHandlerAboutPlaybackEvents();
     _listenForDurationChanges();
     _listenForCurrentIndexStream();
+    _listenForSequenceStateChanges();
   }
 
   Future<void> _loadEmptyPlaylist() async {
@@ -67,8 +68,17 @@ class MyAudioHandler extends BaseAudioHandler {
 
   @override
   Future<void> skipToQueueItem(int index) async {
-    // final newPlaylist = _playlist[index];
-    // final newQueue = queue.value..
+    if (index < 0 || index >= queue.value.length) return;
+    _player.seek(Duration.zero, index: index);
+  }
+
+  void _listenForSequenceStateChanges() {
+    _player.sequenceStateStream.listen((SequenceState? sequenceState) {
+      final sequence = sequenceState?.effectiveSequence;
+      if (sequence == null || sequence.isEmpty) return;
+      final items = sequence.map((source) => source.tag as MediaItem);
+      queue.add(items.toList());
+    });
   }
 
   @override
@@ -87,14 +97,6 @@ class MyAudioHandler extends BaseAudioHandler {
   Future<void> skipToPrevious() => _player.seekToPrevious();
 
   @override
-  Future<void> stop() async {
-    playbackState.add(playbackState.value
-        .copyWith(processingState: AudioProcessingState.idle));
-    await playbackState.firstWhere(
-        (state) => state.processingState == AudioProcessingState.idle);
-  }
-
-  @override
   Future customAction(String name, [Map<String, dynamic>? extras]) async {
     if (name == 'clear') {
       if (_playlist.length == 0) {
@@ -103,10 +105,17 @@ class MyAudioHandler extends BaseAudioHandler {
         await _playlist.clear();
         final newQueue = queue.value..clear();
         queue.add(newQueue);
-        await _player.stop();
-        _player.seek(Duration.zero);
+        // await _player.stop();
+        // super.stop();
+        // _player.seek(Duration.zero);
       }
     }
+  }
+
+  @override
+  Future<void> stop() async {
+    await _player.stop();
+    return super.stop();
   }
 
   @override

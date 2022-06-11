@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:ecast/Utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -7,10 +6,10 @@ import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NetworkService {
-  // var baseUrl = 'http://159.223.234.130';
-  var baseUrl = 'http://10.0.2.2:8080';
+  var baseUrl = 'http://167.99.86.191';
+  // var baseUrl = 'http://10.0.2.2:8080';
 
-// register a new account
+// register a new accounton
   Future signup() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();

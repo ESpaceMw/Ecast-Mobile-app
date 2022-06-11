@@ -16,11 +16,14 @@ class AudioManager {
   final isFirstSongNotifier = ValueNotifier<bool>(true);
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final repeatNotifier = RepeatBtnNotifier();
+  final playlistNotifier = ValueNotifier<List<String>>([]);
   final progressNotifier = ProgressNotifier();
   final artWork = ValueNotifier<String>("");
   final isPlaying = ValueNotifier<bool>(false);
+  // final bgColor = ValueNotifier()
 
   void _init() async {
+    _listenToChangesInPlaylist();
     _listenPlaybackState();
     _listenToTotalDuration();
     _listenToBufferedPosition();
@@ -55,6 +58,21 @@ class AudioManager {
 
     _audioHandler.addQueueItems(mediaItems);
     _audioHandler.skipToQueueItem(index);
+  }
+
+  void _listenToChangesInPlaylist() {
+    _audioHandler.queue.listen((playlist) {
+      if (playlist.isEmpty) {
+        playlistNotifier.value = [];
+        CurrentSongTitle.value = '';
+        CurrentArtist.value = '';
+        artWork.value = '';
+      } else {
+        final newList = playlist.map((item) => item.title).toList();
+        playlistNotifier.value = newList;
+      }
+      _updateSkipButtons();
+    });
   }
 
   void _playbackState() {
@@ -137,12 +155,14 @@ class AudioManager {
     _audioHandler.mediaItem.listen((event) {
       CurrentArtist.value = event?.artist ?? '';
     });
+    _updateSkipButtons();
   }
 
   void _listenToArtChange() {
     _audioHandler.mediaItem.listen((event) {
       artWork.value = event!.extras!['art'] ?? '';
     });
+    _updateSkipButtons();
   }
 
   void _updateSkipButtons() {
