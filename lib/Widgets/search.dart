@@ -32,7 +32,6 @@ class _SearchState extends State<Search> {
     return Scaffold(
       body: ListView(
         // shrinkWrap: true,
-        physics: const ScrollPhysics(),
         children: [
           const SizedBox(
             height: 20,
@@ -221,93 +220,93 @@ class _SearchState extends State<Search> {
                 return ListView(
                   shrinkWrap: true,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => BlocProvider.value(
-                                value: PodcastsCubit(repository: repository),
-                                child: const Podcasts()),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: 80,
-                        margin: const EdgeInsets.only(left: 10, right: 10),
-                        decoration: BoxDecoration(
-                          color: btnColor,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'All Podcasts',
-                            style: textStyle,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 5.0,
-                        left: 15.0,
-                      ),
-                      child: Text(
-                        "Your Top Genres",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Navigator.of(context).push(
+                    //       MaterialPageRoute(
+                    //         builder: (context) => BlocProvider.value(
+                    //             value: PodcastsCubit(repository: repository),
+                    //             child: const Podcasts()),
+                    //       ),
+                    //     );
+                    //   },
+                    //   child: Container(
+                    //     width: MediaQuery.of(context).size.width * 0.9,
+                    //     height: 80,
+                    //     margin: const EdgeInsets.only(left: 10, right: 10),
+                    //     decoration: BoxDecoration(
+                    //       color: btnColor,
+                    //       borderRadius: BorderRadius.circular(10.0),
+                    //     ),
+                    //     child: const Center(
+                    //       child: Text(
+                    //         'All Podcasts',
+                    //         style: textStyle,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 30,
+                    // ),
+                    // const Padding(
+                    //   padding: EdgeInsets.only(
+                    //     bottom: 5.0,
+                    //     left: 15.0,
+                    //   ),
+                    //   child: Text(
+                    //     "Your Top Genres",
+                    //     style: TextStyle(
+                    //       fontSize: 20,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 5,
                     ),
-                    Container(
-                      height: 120,
-                      margin: const EdgeInsets.only(left: 7, right: 10),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            Container(
-                              width: 120,
-                              decoration: const BoxDecoration(
-                                color: btnColor,
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            Container(
-                              width: 120,
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            Container(
-                              width: 120,
-                              decoration: const BoxDecoration(
-                                color: btnColor,
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            Container(
-                              width: 120,
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    // Container(
+                    //   height: 120,
+                    //   margin: const EdgeInsets.only(left: 7, right: 10),
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(8.0),
+                    //     child: ListView(
+                    //       scrollDirection: Axis.horizontal,
+                    //       children: [
+                    //         Container(
+                    //           width: 120,
+                    //           decoration: const BoxDecoration(
+                    //             color: btnColor,
+                    //           ),
+                    //         ),
+                    //         const SizedBox(width: 15),
+                    //         Container(
+                    //           width: 120,
+                    //           decoration: const BoxDecoration(
+                    //             color: Colors.red,
+                    //           ),
+                    //         ),
+                    //         const SizedBox(width: 15),
+                    //         Container(
+                    //           width: 120,
+                    //           decoration: const BoxDecoration(
+                    //             color: btnColor,
+                    //           ),
+                    //         ),
+                    //         const SizedBox(width: 15),
+                    //         Container(
+                    //           width: 120,
+                    //           decoration: const BoxDecoration(
+                    //             color: Colors.red,
+                    //           ),
+                    //         )
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 30,
+                    // ),
                     Padding(
                       padding: const EdgeInsets.only(
                         // bottom: 5.0,
@@ -318,7 +317,7 @@ class _SearchState extends State<Search> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            "Top Genres",
+                            " Genres",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -351,60 +350,60 @@ class _SearchState extends State<Search> {
                       },
                       builder: (context, state) {
                         if (state is FetchedCat) {
-                          return Container(
-                            height: 300,
-                            child: ListView.builder(
-                              itemCount: state.categories.length,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            BlocProvider.value(
-                                          value: SearchCubit(
-                                              repository: repository),
-                                          child: FilterPodcasts(
-                                            category: state.categories[index]
-                                                ['name'],
-                                          ),
+                          return GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 2.0,
+                              crossAxisSpacing: 0,
+                            ),
+                            itemCount: state.categories.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => BlocProvider.value(
+                                        value:
+                                            SearchCubit(repository: repository),
+                                        child: FilterPodcasts(
+                                          category: state.categories[index]
+                                              ['name'],
                                         ),
                                       ),
-                                    );
-                                  },
-                                  child: Container(
-                                    margin: const EdgeInsets.only(
-                                      left: 15,
                                     ),
-                                    child: Stack(
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 13),
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: CachedNetworkImage(
-                                              width: size.width * 0.4,
-                                              imageUrl: state.categories[index]
-                                                  ['cover_art'],
-                                              placeholder: (context, url) =>
-                                                  const Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: btnColor,
-                                                ),
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.only(
+                                    left: 15,
+                                  ),
+                                  child: Stack(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 13),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: CachedNetworkImage(
+                                            width: size.width * 0.4,
+                                            imageUrl: state.categories[index]
+                                                ['cover_art'],
+                                            placeholder: (context, url) =>
+                                                const Center(
+                                              child: CircularProgressIndicator(
+                                                color: btnColor,
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                              );
+                            },
                           );
                         } else {
                           return const Center(
