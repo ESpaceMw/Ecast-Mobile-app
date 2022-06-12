@@ -16,6 +16,7 @@ final GlobalKey<State> keyLoader = GlobalKey<State>();
 
 final TextEditingController email = TextEditingController();
 final TextEditingController password = TextEditingController();
+DateTime pickedDate = DateTime.now();
 final TextEditingController username = TextEditingController();
 final TextEditingController confirmed = TextEditingController();
 final TextEditingController firstname = TextEditingController();
@@ -31,7 +32,7 @@ String gender = 'Male';
 List<String> gvals = ['Male', 'Female', 'Non-Binary'];
 bool Playing = false;
 
-List<String> recentlyPlayed = [];
+List recentlyPlayed = [];
 
 const optStyles = TextStyle(
   fontSize: 15,

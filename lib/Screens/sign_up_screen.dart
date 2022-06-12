@@ -2,6 +2,7 @@ import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SignUp extends StatefulWidget {
@@ -246,43 +247,63 @@ class _SignUpState extends State<SignUp> {
                             const SizedBox(
                               height: 20,
                             ),
-                            TextFormField(
-                              validator: (value) {
-                                if (value == '') {
-                                  return 'Please Enter your Email';
-                                }
-                                return null;
+                            InkWell(
+                              onTap: () {
+                                showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1960),
+                                  lastDate: DateTime(2030),
+                                ).then((value) {
+                                  // print(value);
+                                  final newDate =
+                                      DateTime.parse(value.toString());
+                                  var birthday =
+                                      "${newDate.year}-${newDate.month}-${newDate.day}";
+                                  birthdate.text = birthday;
+                                  print(birthdate.text);
+                                });
                               },
-                              controller: birthdate,
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.date_range,
-                                  color: whiteColor,
-                                ),
-                                hintText: "yyyy-mm-dd",
-                                labelText: "Date of Birth",
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: whiteColor,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.white,
-                                    width: 1.0,
-                                  ),
-                                ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: errorColor,
-                                    width: 2,
-                                  ),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: errorColor,
-                                    width: 2,
+                              child: IgnorePointer(
+                                child: TextFormField(
+                                  validator: (value) {
+                                    if (value == '') {
+                                      return 'Please Enter your Email';
+                                    }
+                                    return null;
+                                  },
+                                  controller: birthdate,
+                                  decoration: const InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.date_range,
+                                      color: whiteColor,
+                                    ),
+                                    hintText: "yyyy-mm-dd",
+                                    labelText: "Date of Birth",
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: whiteColor,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Colors.white,
+                                        width: 1.0,
+                                      ),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: errorColor,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: errorColor,
+                                        width: 2,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),

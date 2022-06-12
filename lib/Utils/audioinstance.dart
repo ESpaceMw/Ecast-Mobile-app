@@ -160,7 +160,7 @@ class AudioManager {
 
   void _listenToArtChange() {
     _audioHandler.mediaItem.listen((event) {
-      artWork.value = event!.extras!['art'] ?? '';
+      artWork.value = event?.extras!['art'] ?? '';
     });
     _updateSkipButtons();
   }

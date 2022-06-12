@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Utils/Notifiers/progressNotifier.dart';
@@ -7,6 +8,7 @@ import 'package:ecast/Widgets/components/popmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MusicPlayer extends StatefulWidget {
   final String img;
@@ -23,23 +25,35 @@ class _MusicPlayerState extends State<MusicPlayer> {
   late final AudioManager _audioManager;
   Color bg = Colors.black87;
 
-  // _getColor() async {
-  //   var cc = await PaletteGenerator.fromImageProvider(NetworkImage(widget.img));
-  //   setState(() {
-  //     bg = cc.dominantColor!.color;
-  //   });
-  // }
+  _getColor() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (widget.img == '') {
+      final bgColor = prefs.getString("color");
+      Color newBgColor = jsonDecode(bgColor!);
+      setState(() {
+        bg = newBgColor;
+      });
+    } else {
+      var cc =
+          await PaletteGenerator.fromImageProvider(NetworkImage(widget.img));
+      setState(() {
+        bg = cc.dominantColor!.color;
+      });
+      Map dt = {'ck': cc.dominantColor!.color};
+      var color = jsonEncode(dt);
+      prefs.setString("color", color);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _audioManager = AudioManager();
-    // _getColor();
+    _getColor();
   }
 
   @override
   Widget build(BuildContext context) {
-    // _getColor(_audioManager.artWork.value);
     return Scaffold(
       backgroundColor: bg,
       body: ListView(

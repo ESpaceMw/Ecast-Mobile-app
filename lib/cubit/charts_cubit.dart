@@ -8,9 +8,11 @@ class ChartsCubit extends Cubit<ChartsState> {
   final Repository repository;
 
   ChartsCubit({required this.repository}) : super(ChartsInitial());
+
   void charts() async {
     emit(ChartsLoading());
     repository.fetchCharts().then((value) {
+      // print(value);
       if (value['err']) {
         if (value['type'] == 'net') {
           emit(NetError(msg: value['msg']));

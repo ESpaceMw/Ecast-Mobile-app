@@ -9,6 +9,7 @@ class PlaylistDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // print(playlists);
     return Scaffold(
       body: SizedBox(
         child: Padding(
@@ -29,33 +30,40 @@ class PlaylistDetails extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Wrap(
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(
-                      10.0,
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl: playlists['cover_art'],
-                      placeholder: (context, url) => const Center(
-                        child: CircularProgressIndicator(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: CachedNetworkImage(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          imageUrl: playlists['cover_art'],
+                          placeholder: (context, url) => const Center(
+                            child: CircularProgressIndicator(
+                              color: btnColor,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Flexible(
+                      child: Text(
                         playlists['title'],
-                        style: titleStyles,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ],
-                  )
-                ],
-              )
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

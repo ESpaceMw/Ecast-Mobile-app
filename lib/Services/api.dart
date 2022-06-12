@@ -85,6 +85,7 @@ class NetworkService {
         // ignore: non_constant_identifier_names
         prefs.setBool("loggedin", true);
         prefs.setString("token", res['key']);
+        prefs.setString("recent", '');
         return {'err': false, 'msg': "Login Successfully"};
       }
     } on SocketException {
@@ -164,8 +165,11 @@ class NetworkService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
       var request = await http.get(
-          Uri.parse('$baseUrl/podcast/api/v1/follow/show_following'),
-          headers: {'Authorization': 'Token $token'});
+        Uri.parse('$baseUrl/podcast/api/v1/follow/show_following'),
+        headers: {
+          'Authorization': 'Token $token',
+        },
+      );
       if (request.statusCode != 200) {
         return {'err': true, 'type': 'tk', 'msg': "Invalid token"};
       } else {
@@ -198,8 +202,9 @@ class NetworkService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var token = prefs.getString("token");
       final request = await http.get(
-          Uri.parse("$baseUrl/podcast/api/v1/podcast/chats/"),
-          headers: {'Authorization': "Token $token"});
+        Uri.parse("$baseUrl/podcast/api/v1/podcast/chats/"),
+        headers: {'Authorization': "Token $token"},
+      );
       if (request.statusCode == 400 ||
           request.statusCode == 403 ||
           request.statusCode == 401) {
@@ -211,18 +216,30 @@ class NetworkService {
           'msg': 'Your session has expired'
         };
       } else {
+        var recent;
         var req2 = await http.get(
             Uri.parse("$baseUrl/podcast/api/v1/listpodcasts/"),
             headers: {'Authorization': "Token $token"});
+        final data = prefs.getString("recent");
         final request3 = await http.get(
           Uri.parse('$baseUrl/podcast/api/v1/getAdminPlaylist'),
           headers: {'Authorization': 'Token $token'},
         );
         var response = convert.jsonDecode(request.body);
-        var res2 = convert.jsonDecode(req2.body);
         var res3 = convert.jsonDecode(request3.body);
-        // print(res3);
-        return {"err": false, 'msg': response, 'pod': res2, 'playlists': res3};
+        var res2 = convert.jsonDecode(req2.body);
+        if (data == null) {
+          recent = res2;
+          recent.shuffle();
+        } else {
+          recent = convert.jsonDecode(data);
+        }
+        return {
+          "err": false,
+          'msg': response,
+          'pod': recent,
+          'playlists': res3
+        };
       }
     } on SocketException {
       return {'err': true, 'type': 'net', 'msg': "No internet connection"};
@@ -230,7 +247,7 @@ class NetworkService {
       return {
         'err': true,
         'type': 'http',
-        'msg': 'Server error, contact system admin'
+        'msg': 'Server error, contact system admins'
       };
     } catch (e) {
       return {
@@ -534,6 +551,7 @@ class NetworkService {
       final request = await http.get(
           Uri.parse("$baseUrl/podcast/api/v1/listcategories/"),
           headers: {'Authorization': 'Token $token'});
+      // print(request.body);
       if (request.statusCode != 200) {
         return {
           'err': true,

@@ -12,6 +12,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
 
 final Repository repository = Repository(networkService: NetworkService());
 
@@ -103,9 +105,10 @@ class _ViewPodcastState extends State<ViewPodcast> {
                   child: CachedNetworkImage(
                     width: MediaQuery.of(context).size.width * 0.5,
                     imageUrl: widget.details['cover_art'],
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(
-                      color: btnColor,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(
+                        color: btnColor,
+                      ),
                     ),
                   ),
                 ),
@@ -340,8 +343,12 @@ class _ViewPodcastState extends State<ViewPodcast> {
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
                                 onTap: () async {
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  recentlyPlayed.add(widget.details);
+                                  var data = convert.jsonEncode(recentlyPlayed);
+                                  prefs.setString("recent", data);
                                   _audioManager.dispose();
-                                  // _audioManager = AudioManager();
                                   _audioManager.init(
                                     state.episodes,
                                     index,

@@ -50,6 +50,7 @@ class _SubscriptionsState extends State<Subscriptions> {
               ),
               itemCount: state.subs.length,
               itemBuilder: (context, index) {
+                print(state.subs);
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
@@ -64,21 +65,21 @@ class _SubscriptionsState extends State<Subscriptions> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 13),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CachedNetworkImage(
-                              imageUrl: 'http://10.0.2.2:8080' +
-                                  state.subs[index]['cover_art'],
-                              placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(
-                                  color: btnColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 13),
+                        //   child: ClipRRect(
+                        //     borderRadius: BorderRadius.circular(10),
+                        //     child: CachedNetworkImage(
+                        //       imageUrl: 'http://10.0.2.2:8080' +
+                        //           state.subs[index]['cover_art'],
+                        //       placeholder: (context, url) => const Center(
+                        //         child: CircularProgressIndicator(
+                        //           color: btnColor,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(
                           height: 7,
                         ),
