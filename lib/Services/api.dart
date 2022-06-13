@@ -216,11 +216,11 @@ class NetworkService {
           'msg': 'Your session has expired'
         };
       } else {
-        var recent;
+        var recent = [];
         var req2 = await http.get(
             Uri.parse("$baseUrl/podcast/api/v1/listpodcasts/"),
             headers: {'Authorization': "Token $token"});
-        final data = prefs.getString("recent");
+        // final data = prefs.getString("recent");
         final request3 = await http.get(
           Uri.parse('$baseUrl/podcast/api/v1/getAdminPlaylist'),
           headers: {'Authorization': 'Token $token'},
@@ -228,12 +228,12 @@ class NetworkService {
         var response = convert.jsonDecode(request.body);
         var res3 = convert.jsonDecode(request3.body);
         var res2 = convert.jsonDecode(req2.body);
-        if (data == null) {
+        // if (data == null) {
           recent = res2;
           recent.shuffle();
-        } else {
-          recent = convert.jsonDecode(data);
-        }
+        // } else {
+        //   recent = convert.jsonDecode(data);
+        // }
         return {
           "err": false,
           'msg': response,
@@ -613,6 +613,7 @@ class NetworkService {
         'msg': 'Server Error! Contact system Admin'
       };
     } catch (e) {
+      print(e);
       return {
         'err': true,
         'type': 'http',

@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ecast/Models/charts.dart';
 import 'package:ecast/Screens/view_chart.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/Errors/httpex.dart';

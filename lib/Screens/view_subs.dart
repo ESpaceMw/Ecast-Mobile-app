@@ -252,7 +252,7 @@ class _SubsState extends State<Subs> {
                                 value: PodcastsCubit(repository: repository),
                                 child: ViewEp(
                                   ep: state.episodes[index],
-                                  cover: 'http://10.0.2.2:8080' +
+                                  cover: 'http://167.99.86.191' +
                                       widget.details['cover_art'],
                                   author: widget.details['author'],
                                   title: widget.details['title'],
@@ -267,7 +267,7 @@ class _SubsState extends State<Subs> {
                               ),
                               child: CachedNetworkImage(
                                 width: MediaQuery.of(context).size.width * 0.1,
-                                imageUrl: 'http://10.0.2.2:8080' +
+                                imageUrl: 'http://167.99.86.191' +
                                     widget.details['cover_art'],
                                 placeholder: (context, url) =>
                                     const CircularProgressIndicator(
@@ -337,10 +337,11 @@ class _SubsState extends State<Subs> {
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
                                 onTap: () {
+                                  _audioManager.dispose();
                                   _audioManager.init(
                                       state.episodes,
                                       index,
-                                      'http://10.0.2.2:8080' +
+                                      'http://167.99.86.191' +
                                           widget.details['cover_art'],
                                       widget.details['author']);
                                   pushNewScreen(

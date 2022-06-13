@@ -150,8 +150,24 @@ class FilterPodcasts extends StatelessWidget {
                         ]),
                         itemExtent: 2,
                       );
+                    } else if (state is Searching) {
+                      return SliverFixedExtentList(
+                        delegate: SliverChildListDelegate([
+                          const Center(
+                            child: CircularProgressIndicator(
+                              color: btnColor,
+                            ),
+                          )
+                        ]),
+                        itemExtent: 100,
+                      );
                     } else {
-                      return const CirculaIndicator();
+                      return SliverFixedExtentList(
+                        delegate: SliverChildListDelegate([
+                          const CirculaIndicator(),
+                        ]),
+                        itemExtent: 100,
+                      );
                     }
                   }
                 },

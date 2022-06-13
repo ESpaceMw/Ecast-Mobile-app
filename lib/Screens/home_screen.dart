@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late final AudioManager _audioManager;
   String _currentPage = 'page1';
   List<String> pageKeys = ['page1', 'page2', 'page3', 'page4'];
-  Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
+  final Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
     'page1': GlobalKey<NavigatorState>(),
     'page2': GlobalKey<NavigatorState>(),
     'page3': GlobalKey<NavigatorState>(),
@@ -292,17 +292,3 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 }
-
-// BottomNavigationBar(
-//           type: BottomNavigationBarType.fixed,
-//           items: bottomTabs,
-//           elevation: 10.5,
-//           onTap: (int index) {
-//             _selectTab(pageKeys[index], index);
-//           },
-//           showUnselectedLabels: false,
-//           selectedItemColor: btnColor,
-//           unselectedItemColor: whiteColor,
-//           currentIndex: _selectedIndex,
-//           backgroundColor: kBackgroundColor,
-//         ),

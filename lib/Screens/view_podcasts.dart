@@ -343,11 +343,11 @@ class _ViewPodcastState extends State<ViewPodcast> {
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
                                 onTap: () async {
-                                  SharedPreferences prefs =
-                                      await SharedPreferences.getInstance();
-                                  recentlyPlayed.add(widget.details);
-                                  var data = convert.jsonEncode(recentlyPlayed);
-                                  prefs.setString("recent", data);
+                                  // SharedPreferences prefs =
+                                  //     await SharedPreferences.getInstance();
+                                  // recentlyPlayed.add(widget.details);
+                                  // var data = convert.jsonEncode(recentlyPlayed);
+                                  // prefs.setString("recent", data);
                                   _audioManager.dispose();
                                   _audioManager.init(
                                     state.episodes,

@@ -41,6 +41,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
       });
       Map dt = {'ck': cc.dominantColor!.color};
       var color = jsonEncode(dt);
+      print(color);
       prefs.setString("color", color);
     }
   }
@@ -88,8 +89,9 @@ class _MusicPlayerState extends State<MusicPlayer> {
                   builder: (_, artwork, __) {
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
-                      child: Material(
-                        elevation: 10.0,
+                      child: Card(
+                        elevation: 80.0,
+                        shadowColor: Colors.black87,
                         child: CachedNetworkImage(
                           width: MediaQuery.of(context).size.width * 0.8,
                           imageUrl: artwork.toString(),
