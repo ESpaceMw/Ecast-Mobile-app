@@ -59,6 +59,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
                     colors: [
                       Colors.black87,
                       kBackgroundColor,
+                      Colors.transparent,
                     ],
                   ).createShader(rect),
                   blendMode: BlendMode.overlay,
@@ -144,6 +145,12 @@ class _ViewPodcastState extends State<ViewPodcast> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
+                child: const FaIcon(FontAwesomeIcons.circleInfo),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
                     context: context,
@@ -220,6 +227,14 @@ class _ViewPodcastState extends State<ViewPodcast> {
                       ),
                     ),
                   ),
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              GestureDetector(
+                child: const FaIcon(
+                  FontAwesomeIcons.handHoldingDollar,
                 ),
               ),
               const SizedBox(
