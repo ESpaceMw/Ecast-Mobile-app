@@ -83,3 +83,11 @@ class ChangedPassword extends UserState {
 }
 
 class ResetDone extends UserState {}
+
+class Followed extends UserState {
+  final bool following;
+
+  Followed({required this.following});
+}
+
+class CheckingStatus extends UserState {}

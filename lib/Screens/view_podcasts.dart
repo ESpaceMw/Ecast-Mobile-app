@@ -6,14 +6,13 @@ import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert' as convert;
 
 final Repository repository = Repository(networkService: NetworkService());
 
@@ -38,6 +37,8 @@ class _ViewPodcastState extends State<ViewPodcast> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<UserCubit>(context).showFollowing(widget.details['id']);
+
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(widget.details['id']);
     return Scaffold(
       backgroundColor: Colors.black87,
@@ -52,27 +53,15 @@ class _ViewPodcastState extends State<ViewPodcast> {
                     bottomRight: Radius.circular(5.5),
                   ),
                 ),
-                child: ShaderMask(
-                  shaderCallback: (rect) => const LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.center,
-                    colors: [
-                      Colors.black87,
-                      kBackgroundColor,
-                      Colors.transparent,
-                    ],
-                  ).createShader(rect),
-                  blendMode: BlendMode.overlay,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(widget.details['header_image']),
-                        fit: BoxFit.cover,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.black45, BlendMode.darken),
-                      ),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(widget.details['header_image']),
+                      fit: BoxFit.cover,
+                      colorFilter: const ColorFilter.mode(
+                          Colors.black45, BlendMode.darken),
                     ),
                   ),
                 ),
@@ -179,56 +168,99 @@ class _ViewPodcastState extends State<ViewPodcast> {
               const SizedBox(
                 width: 20,
               ),
-              BlocListener<PodcastsCubit, PodcastsState>(
-                listener: (context, state) {
-                  // if (state is PodCastsLoading) {
-                  //   showDialog(
-                  //       context: context,
-                  //       builder: (context) {
-                  //         return SimpleDialog(
-                  //           children: [
-                  //             Row(
-                  //               children: const [
-                  //                 Text('Please wait'),
-                  //                 CircularProgressIndicator(),
-                  //               ],
-                  //             )
-                  //           ],
-                  //         );
-                  //       });
-                  // }
-
-                  if (state is PodcastSubscripted) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(state.msg)));
+              BlocConsumer<UserCubit, UserState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  if (state is Followed) {
+                    if (state.following) {
+                      return GestureDetector(
+                        onTap: () => BlocProvider.of<PodcastsCubit>(context)
+                            .unsubscribe(widget.details['id']),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 35, right: 35, top: 5, bottom: 5),
+                          decoration: BoxDecoration(
+                            color: btnColor,
+                            borderRadius: BorderRadius.circular(
+                              20.8,
+                            ),
+                          ),
+                          child: const Text(
+                            "Subscribed",
+                            style: TextStyle(
+                              color: whiteColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return GestureDetector(
+                        onTap: () => BlocProvider.of<PodcastsCubit>(context)
+                            .subscribe(widget.details['id']),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 35, right: 35, top: 5, bottom: 5),
+                          decoration: BoxDecoration(
+                            color: btnColor,
+                            borderRadius: BorderRadius.circular(
+                              20.8,
+                            ),
+                          ),
+                          child: const Text(
+                            "Subscribe",
+                            style: TextStyle(
+                              color: whiteColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: btnColor,
+                      ),
+                    );
                   }
                 },
-                child: GestureDetector(
-                  onTap: () {
-                    BlocProvider.of<PodcastsCubit>(context)
-                        .subscribe(widget.details['id'].toString());
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        left: 35, right: 35, top: 5, bottom: 5),
-                    decoration: BoxDecoration(
-                      color: btnColor,
-                      borderRadius: BorderRadius.circular(
-                        20.8,
-                      ),
-                    ),
-                    child: const Text(
-                      "Subscribe",
-                      style: TextStyle(
-                        color: whiteColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-                ),
               ),
+              // BlocListener<PodcastsCubit, PodcastsState>(
+              //   listener: (context, state) {
+              //     // if (state is PodCastsLoading) {
+              //     //   showDialog(
+              //     //       context: context,
+              //     //       builder: (context) {
+              //     //         return SimpleDialog(
+              //     //           children: [
+              //     //             Row(
+              //     //               children: const [
+              //     //                 Text('Please wait'),
+              //     //                 CircularProgressIndicator(),
+              //     //               ],
+              //     //             )
+              //     //           ],
+              //     //         );
+              //     //       });
+              //     // }
+
+              //     if (state is PodcastSubscripted) {
+              //       Navigator.pop(context);
+              //       ScaffoldMessenger.of(context)
+              //           .showSnackBar(SnackBar(content: Text(state.msg)));
+              //     }
+              //   },
+              //   child: GestureDetector(
+              //     onTap: () {
+              //       BlocProvider.of<PodcastsCubit>(context)
+              //           .subscribe(widget.details['id'].toString());
+              //     },
+              //     child:
+              //   ),
+              // ),
               const SizedBox(
                 width: 20,
               ),

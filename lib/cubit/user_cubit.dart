@@ -30,11 +30,22 @@ class UserCubit extends Cubit<UserState> {
     repository.SignUp().then((value) {
       // final bool err? = value['err'];
       // bool exists = value.containsKey('err');
-      print(value);
+      // print(value);
       if (value['err']) {
         emit(LoginError(error: value['msg']));
       } else {
         emit(RegistrationDone(msg: value['msg']));
+      }
+    });
+  }
+
+  void showFollowing(id) {
+    emit(CheckingStatus());
+    repository.following(id).then((value) {
+      if (value['err']) {
+        emit(LoginError(error: value['msg']));
+      } else {
+        emit(Followed(following: value['msg']));
       }
     });
   }
@@ -110,7 +121,6 @@ class UserCubit extends Cubit<UserState> {
   void resetPassword() {
     emit(ResettingPassword());
     repository.reset().then((value) {
-      print(value);
       if (value['err']) {
         print(value);
       } else {

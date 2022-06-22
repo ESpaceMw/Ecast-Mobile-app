@@ -90,5 +90,10 @@ class Repository {
     return data;
   }
 
+  Future following(id) async {
+    final data = await networkService.showFollowing(id);
+    return data;
+  }
+
   Future singleEp() async {}
 }

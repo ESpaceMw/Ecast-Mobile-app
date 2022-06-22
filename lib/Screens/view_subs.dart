@@ -4,6 +4,7 @@ import 'package:ecast/Screens/view_ep.dart';
 import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -30,6 +31,7 @@ class _SubsState extends State<Subs> {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(widget.details['id']);
+    BlocProvider.of<UserCubit>(context).showFollowing(widget.details['id']);
     return Scaffold(
       backgroundColor: Colors.black87,
       body: ListView(
@@ -43,26 +45,16 @@ class _SubsState extends State<Subs> {
                     bottomRight: Radius.circular(5.5),
                   ),
                 ),
-                child: ShaderMask(
-                  shaderCallback: (rect) => const LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.center,
-                    colors: [
-                      Colors.black87,
-                      kBackgroundColor,
-                    ],
-                  ).createShader(rect),
-                  blendMode: BlendMode.overlay,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/img_7.jpg'),
-                        fit: BoxFit.cover,
-                        colorFilter:
-                            ColorFilter.mode(Colors.black45, BlendMode.darken),
-                      ),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage('http://167.99.86.191' +
+                          widget.details['header_image']),
+                      fit: BoxFit.cover,
+                      colorFilter: const ColorFilter.mode(
+                          Colors.black45, BlendMode.darken),
                     ),
                   ),
                 ),
@@ -77,7 +69,11 @@ class _SubsState extends State<Subs> {
                         top: 10,
                       ),
                       child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
+                        onTap: () {
+                          Navigator.pop(context);
+                          BlocProvider.of<PodcastsCubit>(context)
+                              .fetchPodcasts();
+                        },
                         child: const Icon(Icons.arrow_back),
                       ),
                     ),
@@ -92,10 +88,11 @@ class _SubsState extends State<Subs> {
                   child: CachedNetworkImage(
                     width: MediaQuery.of(context).size.width * 0.5,
                     imageUrl:
-                        'http://10.0.2.2:8080' + widget.details['cover_art'],
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(
-                      color: btnColor,
+                        'http://167.99.86.191' + widget.details['cover_art'],
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(
+                        color: btnColor,
+                      ),
                     ),
                   ),
                 ),
@@ -110,40 +107,19 @@ class _SubsState extends State<Subs> {
           Text(
             widget.details['author'],
             style: const TextStyle(
-              color: Colors.blue,
+              color: Colors.grey,
             ),
             textAlign: TextAlign.center,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10.0),
             child: Text(
               widget.details['description'],
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
               style: infostyle,
               textAlign: TextAlign.center,
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
-                "153 listeners",
-                style: TextStyle(
-                  color: Colors.blue,
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                "130 episodes",
-                style: TextStyle(
-                  color: Colors.blue,
-                ),
-              ),
-            ],
           ),
           const SizedBox(
             height: 15,
@@ -152,70 +128,116 @@ class _SubsState extends State<Subs> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
+                child: const FaIcon(FontAwesomeIcons.circleInfo),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return Container(
+                          height: MediaQuery.of(context).size.height * 0.8,
+                          decoration: const BoxDecoration(
+                            color: kBackgroundColor,
+                          ),
+                          child: ListView(
+                            children: const [
+                              Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Podcast Feed",
+                                  style: textStyle,
+                                ),
+                              )
+                            ],
+                          ));
+                    },
+                  );
+                },
                 child: const Icon(Icons.feed_sharp),
               ),
               const SizedBox(
                 width: 20,
               ),
-              BlocListener<PodcastsCubit, PodcastsState>(
+              BlocConsumer<UserCubit, UserState>(
                 listener: (context, state) {
-                  if (state is SubProcess) {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return SimpleDialog(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    CircularProgressIndicator(),
-                                    Text('Please wait'),
-                                  ],
-                                ),
-                              )
-                            ],
-                          );
-                        });
-                  }
-
-                  if (state is Unsubscribed) {
-                    Navigator.pop(context);
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(state.msg)));
+                  // TODO: implement listener
+                },
+                builder: (context, state) {
+                  if (state is Followed) {
+                    if (state.following == true) {
+                      return GestureDetector(
+                        onTap: () => BlocProvider.of<PodcastsCubit>(context)
+                            .unsubscribe(widget.details['id']),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 35, right: 35, top: 5, bottom: 5),
+                          decoration: BoxDecoration(
+                            color: btnColor,
+                            borderRadius: BorderRadius.circular(
+                              20.8,
+                            ),
+                          ),
+                          child: const Text(
+                            "Subscribed",
+                            style: TextStyle(
+                              color: whiteColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return GestureDetector(
+                        onTap: () => BlocProvider.of<PodcastsCubit>(context)
+                            .subscribe(widget.details['id']),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 35, right: 35, top: 5, bottom: 5),
+                          decoration: BoxDecoration(
+                            color: btnColor,
+                            borderRadius: BorderRadius.circular(
+                              20.8,
+                            ),
+                          ),
+                          child: const Text(
+                            "Subscribe",
+                            style: TextStyle(
+                              color: whiteColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: btnColor,
+                      ),
+                    );
                   }
                 },
-                child: GestureDetector(
-                  onTap: () {
-                    BlocProvider.of<PodcastsCubit>(context)
-                        .unsubscribe(widget.details['id'].toString());
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        left: 35, right: 35, top: 8, bottom: 8),
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.circular(
-                        20.8,
-                      ),
-                    ),
-                    child: const Text(
-                      "UnSubscribe",
-                      style: TextStyle(
-                        color: whiteColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                  ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              GestureDetector(
+                child: const FaIcon(
+                  FontAwesomeIcons.handHoldingDollar,
                 ),
               ),
               const SizedBox(
                 width: 20,
               ),
-              const Icon(Icons.share)
+              GestureDetector(
+                child: const Icon(Icons.share),
+              )
             ],
           ),
           const SizedBox(
@@ -229,7 +251,7 @@ class _SubsState extends State<Subs> {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 10,
           ),
           BlocBuilder<PodcastsCubit, PodcastsState>(
             builder: (context, state) {
@@ -243,24 +265,26 @@ class _SubsState extends State<Subs> {
                         .format(DateTime.parse(
                             state.episodes[index]['uploaded_date']))
                         .toString();
-                    return Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => BlocProvider.value(
-                                value: PodcastsCubit(repository: repository),
-                                child: ViewEp(
-                                  ep: state.episodes[index],
-                                  cover: 'http://167.99.86.191' +
-                                      widget.details['cover_art'],
-                                  author: widget.details['author'],
-                                  title: widget.details['title'],
-                                ),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider.value(
+                              value: PodcastsCubit(repository: repository),
+                              child: ViewEp(
+                                ep: state.episodes[index],
+                                cover: 'http://167.99.86.191' +
+                                    widget.details['cover_art'],
+                                author: widget.details['author'],
+                                title: widget.details['title'],
                               ),
-                            ));
-                          },
-                          child: ListTile(
+                            ),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          ListTile(
                             leading: ClipRRect(
                               borderRadius: BorderRadius.circular(
                                 6.5,
@@ -285,7 +309,7 @@ class _SubsState extends State<Subs> {
                                         height: 20,
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.5,
+                                                0.52,
                                         child: Marquee(
                                           startPadding: 10.0,
                                           blankSpace: 20.0,
@@ -300,13 +324,12 @@ class _SubsState extends State<Subs> {
                                           velocity: 50.0,
                                           pauseAfterRound:
                                               const Duration(seconds: 1),
-                                          // numberOfRounds: 3,
                                         )),
                                     const SizedBox(
                                       height: 2,
                                     ),
                                     Text(
-                                      'Published on $date',
+                                      date,
                                       style: const TextStyle(
                                         fontSize: 10,
                                         color: Colors.grey,
@@ -315,63 +338,75 @@ class _SubsState extends State<Subs> {
                                   ],
                                 ),
                                 const SizedBox(
-                                  width: 15,
+                                  width: 30,
                                 ),
-                                const Flexible(child: Icon(Icons.download)),
+                                const Flexible(
+                                  child: FaIcon(
+                                    FontAwesomeIcons.circleArrowDown,
+                                    size: 20,
+                                  ),
+                                ),
                                 const SizedBox(
                                   width: 15,
                                 ),
-                                // SingleChildScrollView(
-                                //   scrollDirection: Axis.horizontal,
-                                //   child: Text(
-                                //     state.episodes[index]['runtime'],
-                                //     style: const TextStyle(
-                                //       fontSize: 11,
-                                //       color: Colors.grey,
-                                //     ),
-                                //   ),
-                                // )
                               ],
                             ),
                             trailing: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  // SharedPreferences prefs =
+                                  //     await SharedPreferences.getInstance();
+                                  // recentlyPlayed.add(widget.details);
+                                  // var data = convert.jsonEncode(recentlyPlayed);
+                                  // prefs.setString("recent", data);
                                   _audioManager.dispose();
                                   _audioManager.init(
-                                      state.episodes,
-                                      index,
-                                      'http://167.99.86.191' +
-                                          widget.details['cover_art'],
-                                      widget.details['author']);
+                                    state.episodes,
+                                    index,
+                                    'http://167.99.86.191' +
+                                        widget.details['cover_art'],
+                                    widget.details['author'],
+                                  );
+                                  _audioManager.play();
                                   pushNewScreen(
                                     context,
                                     screen: MusicPlayer(
                                         img: widget.details['cover_art']),
                                     withNavBar: false,
                                   );
-                                  _audioManager.play();
                                 },
-                                child: const FaIcon(FontAwesomeIcons.play),
+                                child: const FaIcon(
+                                  FontAwesomeIcons.circlePlay,
+                                  size: 22,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                            left: 8,
-                            right: 8,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 13),
+                            child: Text(
+                              state.episodes[index]['description'],
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
-                          child: Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: Colors.grey,
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Divider(
+                              height: 10,
+                              thickness: 0.8,
+                              color: Colors.grey.shade800,
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                      ],
+                          const SizedBox(height: 10),
+                        ],
+                      ),
                     );
                   },
                 );
@@ -387,6 +422,5 @@ class _SubsState extends State<Subs> {
         ],
       ),
     );
-    ;
   }
 }

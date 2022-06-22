@@ -17,7 +17,7 @@ class PodcastsCubit extends Cubit<PodcastsState> {
         emit(PodcastsLoaded(subs: value['msg']));
       }
     });
-  }  
+  }
 
   void fetchPodcasts() {
     emit(PodCastsLoading());

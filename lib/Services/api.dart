@@ -110,7 +110,7 @@ class NetworkService {
         print(request.body);
       } else {
         final response = convert.jsonDecode(request.body);
-        print(response);
+        // print(response);
         return {'err': false, 'msg': response};
       }
     } on SocketException {
@@ -229,8 +229,8 @@ class NetworkService {
         var res3 = convert.jsonDecode(request3.body);
         var res2 = convert.jsonDecode(req2.body);
         // if (data == null) {
-          recent = res2;
-          recent.shuffle();
+        recent = res2;
+        recent.shuffle();
         // } else {
         //   recent = convert.jsonDecode(data);
         // }
@@ -265,7 +265,6 @@ class NetworkService {
       var request = await http.get(Uri.parse("$baseUrl/rest-auth/user"),
           headers: {'Authorization': 'Token $token'});
       var response = convert.jsonDecode(request.body);
-      print(token);
       return {'err': false, 'msg': response};
     } on SocketException {
       return {'err': true, 'msg': "The internet and i are not talking"};
@@ -343,6 +342,36 @@ class NetworkService {
       return {"err": true, 'msg': 'Server Error, contact system admin'};
     } catch (e) {
       return {"err": true, 'msg': 'Server Error, contact system admin'};
+    }
+  }
+
+  Future showFollowing(id) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      final request = await http.get(
+          Uri.parse("$baseUrl/podcast/api/v1/podcast/check_following/$id"),
+          headers: {'Authorization': 'Token $token'});
+      if (request.statusCode == 200) {
+        final response = convert.jsonDecode(request.body);
+        return {'err': false, 'msg': response['subscribed']};
+      } else {
+        return {'err': true, 'type': 'tk', 'msg': 'invalid Token'};
+      }
+    } on SocketException {
+      return {'err': true, 'type': 'net', 'msg': 'No Network Connection'};
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error Contact system Admin'
+      };
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error Contact system Admin'
+      };
     }
   }
 
@@ -430,7 +459,6 @@ class NetworkService {
         };
       } else {
         final response = convert.jsonDecode(request.body);
-        print(response);
         return {'err': false, 'msg': response};
       }
     } on SocketException {
@@ -472,7 +500,7 @@ class NetworkService {
         },
       );
 
-      print(request.body);
+      // print(request.body);
 
       if (request.statusCode == 401) {
         return {
@@ -492,7 +520,6 @@ class NetworkService {
         'msg': "Network Error! Check your Connection"
       };
     } on HttpException {
-      print(HttpException);
       return {
         'err': true,
         'type': 'http',
@@ -551,7 +578,7 @@ class NetworkService {
       final request = await http.get(
           Uri.parse("$baseUrl/podcast/api/v1/listcategories/"),
           headers: {'Authorization': 'Token $token'});
-      // print(request.body);
+
       if (request.statusCode != 200) {
         return {
           'err': true,
@@ -595,7 +622,7 @@ class NetworkService {
       );
 
       if (request.statusCode != 200) {
-        print(request.body);
+        // print(request.body);
       } else {
         final response = convert.jsonDecode(request.body);
         return {'err': false, 'msg': response['podcast_set']};
@@ -613,7 +640,6 @@ class NetworkService {
         'msg': 'Server Error! Contact system Admin'
       };
     } catch (e) {
-      print(e);
       return {
         'err': true,
         'type': 'http',

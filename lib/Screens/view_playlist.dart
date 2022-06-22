@@ -9,6 +9,7 @@ class ViewPlaylist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(details);
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(left: 10.0, top: 8.0),

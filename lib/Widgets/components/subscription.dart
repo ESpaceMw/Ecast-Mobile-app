@@ -5,6 +5,7 @@ import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/components/indicator.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,14 +51,29 @@ class _SubscriptionsState extends State<Subscriptions> {
               ),
               itemCount: state.subs.length,
               itemBuilder: (context, index) {
-                print(state.subs);
                 return GestureDetector(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => BlocProvider.value(
-                              value: PodcastsCubit(repository: repository),
-                              child: Subs(details: state.subs[index]),
-                            )));
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => MultiBlocProvider(
+                          providers: [
+                            BlocProvider.value(
+                                value: PodcastsCubit(repository: repository)),
+                            BlocProvider.value(
+                              value: UserCubit(repository: repository),
+                            )
+                          ],
+                          child: Subs(
+                            details: state.subs[index],
+                          ),
+                        ),
+                      ),
+                    );
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //     builder: (context) => BlocProvider.value(
+                    //           value: PodcastsCubit(repository: repository),
+                    //           child:
+                    //         )));
                   },
                   child: Container(
                     width: 200,

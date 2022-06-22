@@ -42,107 +42,80 @@ class _HomeState extends State<Home> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
+          color: Colors.black54,
           width: double.infinity,
           child: Column(
             children: [
-              Stack(
-                children: [
-                  ShaderMask(
-                    shaderCallback: (rect) => LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.center,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black,
-                        Colors.black.withOpacity(0.7),
-                      ],
-                    ).createShader(rect),
-                    blendMode: BlendMode.darken,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/ob.jpg'),
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                              Colors.black45, BlendMode.dstATop),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(
+                        top: 10,
+                        left: 12,
+                      ),
+                      child: Text(
+                        message,
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(
-                            top: 10,
-                            left: 12,
-                          ),
-                          child: Text(
-                            message,
-                            style: const TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                    GestureDetector(
+                      onTap: () {
+                        // showModalBottomSheet(
+                        //     context: context,
+                        //     builder: (BuildContext context) {
+                        //       return Container(
+                        //         decoration: BoxDecoration(
+                        //             borderRadius:
+                        //                 BorderRadius.circular(10.0)),
+                        //         height: MediaQuery.of(context).size.height *
+                        //             0.5,
+                        //       );
+                        //     });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(
+                          top: 10,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            // showModalBottomSheet(
-                            //     context: context,
-                            //     builder: (BuildContext context) {
-                            //       return Container(
-                            //         decoration: BoxDecoration(
-                            //             borderRadius:
-                            //                 BorderRadius.circular(10.0)),
-                            //         height: MediaQuery.of(context).size.height *
-                            //             0.5,
-                            //       );
-                            //     });
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(
-                              top: 10,
-                            ),
-                            child: const FaIcon(
-                              FontAwesomeIcons.bell,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  BlocConsumer<ChartsCubit, ChartsState>(
-                    listener: (context, state) {
-                      if (state is Exception) {
-                        pushNewScreen(
-                          context,
-                          screen: const Wrapper(),
-                          withNavBar: false,
-                        );
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is ChartsLoaded) {
-                        return data(size: size, state: state);
-                      } else if (state is NetError) {
-                        return SocketError(
-                          state: state,
-                        );
-                      } else if (state is HttpError) {
-                        return HttpError(state: state);
-                      } else {
-                        return const CirculaIndicator();
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ],
+                        child: const FaIcon(
+                          FontAwesomeIcons.bell,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              BlocConsumer<ChartsCubit, ChartsState>(
+                listener: (context, state) {
+                  if (state is Exception) {
+                    pushNewScreen(
+                      context,
+                      screen: const Wrapper(),
+                      withNavBar: false,
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state is ChartsLoaded) {
+                    return data(size: size, state: state);
+                  } else if (state is NetError) {
+                    return SocketError(
+                      state: state,
+                    );
+                  } else if (state is HttpError) {
+                    return HttpError(state: state);
+                  } else {
+                    return const CirculaIndicator();
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 20,
               ),
             ],
           ),
@@ -271,7 +244,7 @@ class data extends StatelessWidget {
         Container(
             height: 320.0,
             margin: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * 0.11,
+              top: MediaQuery.of(context).size.height * 0.05,
             ),
             child: CarouselSlider.builder(
               itemCount: state.charts.length,
@@ -297,11 +270,16 @@ class data extends StatelessWidget {
                           const BorderRadius.all(Radius.circular(10.0)),
                       child: Stack(
                         children: <Widget>[
-                          Image.network(
-                            state.charts[index]['header_image'],
+                          CachedNetworkImage(
+                            imageUrl: state.charts[index]['header_image'],
                             fit: BoxFit.cover,
                             width: size.width * 0.7,
                             height: size.height,
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                color: btnColor,
+                              ),
+                            ),
                           ),
                           Positioned(
                             bottom: 0.0,
@@ -398,3 +376,29 @@ class data extends StatelessWidget {
     );
   }
 }
+
+
+// ShaderMask(
+//                     shaderCallback: (rect) => LinearGradient(
+//                       begin: Alignment.bottomCenter,
+//                       end: Alignment.center,
+//                       colors: [
+//                         Colors.transparent,
+//                         Colors.black,
+//                         Colors.black.withOpacity(0.7),
+//                       ],
+//                     ).createShader(rect),
+//                     blendMode: BlendMode.darken,
+//                     child: Container(
+//                       height: MediaQuery.of(context).size.height,
+//                       width: MediaQuery.of(context).size.width,
+//                       decoration: const BoxDecoration(
+//                         image: DecorationImage(
+//                           image: AssetImage('assets/images/ob.jpg'),
+//                           fit: BoxFit.cover,
+//                           colorFilter: ColorFilter.mode(
+//                               Colors.black45, BlendMode.dstATop),
+//                         ),
+//                       ),
+//                     ),
+//                   ),

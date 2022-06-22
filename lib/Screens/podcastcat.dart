@@ -8,6 +8,7 @@ import 'package:ecast/Widgets/Errors/socketerr.dart';
 import 'package:ecast/Widgets/components/indicator.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/search_cubit.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -73,15 +74,20 @@ class FilterPodcasts extends StatelessWidget {
                           (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => BlocProvider.value(
-                                      value: PodcastsCubit(repository: repo),
-                                      child: ViewPodcast(
-                                          details: state.categories[index]),
-                                    ),
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => MultiBlocProvider(
+                                    providers: [
+                                      BlocProvider.value(
+                                          value:
+                                              PodcastsCubit(repository: repo)),
+                                      BlocProvider.value(
+                                        value: UserCubit(repository: repo),
+                                      )
+                                    ],
+                                    child: ViewPodcast(
+                                        details: state.categories[index]),
                                   ),
-                                );
+                                ));
                               },
                               child: Container(
                                 width: 200,
@@ -134,15 +140,7 @@ class FilterPodcasts extends StatelessWidget {
                       );
                     }
                   } else {
-                    if (state is NetError) {
-                      return SliverFixedExtentList(
-                        delegate: SliverChildListDelegate([
-                          const SocketErr(
-                              msg: "Network Error! Check your connection")
-                        ]),
-                        itemExtent: 2,
-                      );
-                    } else if (state is HttpErr) {
+                    if (state is HttpErr) {
                       return SliverFixedExtentList(
                         delegate: SliverChildListDelegate([
                           const HttpExc(
