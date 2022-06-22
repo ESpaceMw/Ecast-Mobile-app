@@ -173,24 +173,49 @@ class _ViewPodcastState extends State<ViewPodcast> {
                 builder: (context, state) {
                   if (state is Followed) {
                     if (state.following) {
-                      return GestureDetector(
-                        onTap: () => BlocProvider.of<PodcastsCubit>(context)
-                            .unsubscribe(widget.details['id']),
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              left: 35, right: 35, top: 5, bottom: 5),
-                          decoration: BoxDecoration(
-                            color: btnColor,
-                            borderRadius: BorderRadius.circular(
-                              20.8,
+                      return BlocListener<PodcastsCubit, PodcastsState>(
+                        listener: (context, state) {
+                          if (state is SubProcess) {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return SimpleDialog(
+                                    children: [
+                                      Row(
+                                        children: const [
+                                          Text('Please wait'),
+                                          CircularProgressIndicator(),
+                                        ],
+                                      )
+                                    ],
+                                  );
+                                });
+                          }
+                          if (state is PodcastSubscripted) {
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(state.msg)));
+                          }
+                        },
+                        child: GestureDetector(
+                          onTap: () => BlocProvider.of<PodcastsCubit>(context)
+                              .unsubscribe(widget.details['id']),
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                left: 35, right: 35, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              color: btnColor,
+                              borderRadius: BorderRadius.circular(
+                                20.8,
+                              ),
                             ),
-                          ),
-                          child: const Text(
-                            "Subscribed",
-                            style: TextStyle(
-                              color: whiteColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                            child: const Text(
+                              "Subscribed",
+                              style: TextStyle(
+                                color: whiteColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),

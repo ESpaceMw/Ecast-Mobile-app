@@ -14,6 +14,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void delay() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final isLoggedIn = prefs.getBool("loggedin");
+    final recent = prefs.getString("recent");
+    if (recent == null) {
+      prefs.setString("recent", "");
+    }
     await Future.delayed(
       const Duration(seconds: 3),
       () => {

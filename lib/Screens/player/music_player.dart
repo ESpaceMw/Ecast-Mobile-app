@@ -28,8 +28,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
   _getColor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (widget.img == '') {
-      final bgColor = prefs.getString("color");
-      Color newBgColor = jsonDecode(bgColor!);
+      final bgColor = prefs.getInt("color");
+      Color newBgColor = Color(bgColor!);
       setState(() {
         bg = newBgColor;
       });
@@ -39,10 +39,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
       setState(() {
         bg = cc.dominantColor!.color;
       });
-      // Map dt = {'ck': cc.dominantColor!.color};
-      // var color = jsonEncode(dt);
-      // print(color);
-      // prefs.setString("color", color);
+      prefs.setInt("color", cc.dominantColor!.color.value);
     }
   }
 

@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecast/Screens/view_ep.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:marquee/marquee.dart';
 
@@ -73,6 +76,20 @@ class PlaylistDetails extends StatelessWidget {
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return GestureDetector(
+                      onTap: () {
+                        print('hello');
+                        // MaterialPageRoute(
+                        //         builder: (context) => BlocProvider.value(
+                        //           value: PodcastsCubit(repository: repository),
+                        //           child: ViewEp(
+                        //             ep: playlists['episodes'][index],
+                        //             cover: playlists['cover_art'],
+                        //             author: widget.details['author'],
+                        //             title: widget.details['title'],
+                        //           ),
+                        //         ),
+                        //       ),
+                      },
                       child: Column(
                         children: [
                           ListTile(

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Screens/view_podcasts.dart';
 import 'package:ecast/Widgets/landing.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,16 +27,31 @@ class RecentlyPlayed extends StatelessWidget {
             } else {
               return GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => BlocProvider.value(
-                        value: PodcastsCubit(repository: repos),
-                        child: ViewPodcast(
-                          details: state.podcasts[index],
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider.value(
+                          value: PodcastsCubit(repository: repos),
                         ),
+                        BlocProvider.value(
+                          value: UserCubit(repository: repos),
+                        )
+                      ],
+                      child: ViewPodcast(
+                        details: state.podcasts[index],
                       ),
                     ),
-                  );
+                  ));
+                  // Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: (context) => BlocProvider.value(
+                  //       value: PodcastsCubit(repository: repos),
+                  //       child: ViewPodcast(
+                  //         details: state.podcasts[index],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // );
                 },
                 child: Container(
                   margin: const EdgeInsets.only(left: 20),

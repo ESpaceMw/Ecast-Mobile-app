@@ -33,6 +33,13 @@ Repository repos = Repository(networkService: NetworkService());
 
 class _HomeState extends State<Home> {
   @override
+  void initState() {
+    // TODO: implement initState
+    print(Colors.black.value.runtimeType);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     BlocProvider.of<ChartsCubit>(context).charts();
     DateTime now = DateTime.now();
