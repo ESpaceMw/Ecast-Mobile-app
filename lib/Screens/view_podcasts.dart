@@ -13,6 +13,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
 
 final Repository repository = Repository(networkService: NetworkService());
 
@@ -53,15 +55,27 @@ class _ViewPodcastState extends State<ViewPodcast> {
                     bottomRight: Radius.circular(5.5),
                   ),
                 ),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(widget.details['header_image']),
-                      fit: BoxFit.cover,
-                      colorFilter: const ColorFilter.mode(
-                          Colors.black45, BlendMode.darken),
+                child: ShaderMask(
+                  shaderCallback: (rect) => const LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.center,
+                    colors: [
+                      Colors.black87,
+                      kBackgroundColor,
+                      Colors.transparent,
+                    ],
+                  ).createShader(rect),
+                  blendMode: BlendMode.overlay,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(widget.details['header_image']),
+                        fit: BoxFit.cover,
+                        colorFilter: const ColorFilter.mode(
+                            Colors.black45, BlendMode.darken),
+                      ),
                     ),
                   ),
                 ),
@@ -176,30 +190,31 @@ class _ViewPodcastState extends State<ViewPodcast> {
                       return BlocListener<PodcastsCubit, PodcastsState>(
                         listener: (context, state) {
                           if (state is SubProcess) {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return SimpleDialog(
-                                    children: [
-                                      Row(
-                                        children: const [
-                                          Text('Please wait'),
-                                          CircularProgressIndicator(),
-                                        ],
-                                      )
-                                    ],
-                                  );
-                                });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Colors.black45,
+                                duration: Duration(
+                                  milliseconds: 30,
+                                ),
+                                content: Text(
+                                  'Perfoming Operation! Please wait....',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: whiteColor,
+                                  ),
+                                ),
+                              ),
+                            );
                           }
-                          if (state is PodcastSubscripted) {
-                            Navigator.pop(context);
+                          if (state is Unsubscribed) {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(state.msg)));
+                            Navigator.pop(context);
                           }
                         },
                         child: GestureDetector(
                           onTap: () => BlocProvider.of<PodcastsCubit>(context)
-                              .unsubscribe(widget.details['id']),
+                              .unsubscribe(widget.details['id'].toString()),
                           child: Container(
                             padding: const EdgeInsets.only(
                                 left: 35, right: 35, top: 5, bottom: 5),
@@ -221,24 +236,52 @@ class _ViewPodcastState extends State<ViewPodcast> {
                         ),
                       );
                     } else {
-                      return GestureDetector(
-                        onTap: () => BlocProvider.of<PodcastsCubit>(context)
-                            .subscribe(widget.details['id']),
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              left: 35, right: 35, top: 5, bottom: 5),
-                          decoration: BoxDecoration(
-                            color: btnColor,
-                            borderRadius: BorderRadius.circular(
-                              20.8,
+                      return BlocListener<PodcastsCubit, PodcastsState>(
+                        listener: (context, state) {
+                          if (state is SubProcess) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                duration: Duration(
+                                  milliseconds: 30,
+                                ),
+                                backgroundColor: Colors.black45,
+                                content: Text(
+                                  'Perfoming Operation! Please wait....',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: whiteColor,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+
+                          if (state is PodcastSubscripted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(state.msg)));
+                            // Navigator.pop(context);
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: GestureDetector(
+                          onTap: () => BlocProvider.of<PodcastsCubit>(context)
+                              .subscribe(widget.details['id'].toString()),
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                left: 35, right: 35, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              color: btnColor,
+                              borderRadius: BorderRadius.circular(
+                                20.8,
+                              ),
                             ),
-                          ),
-                          child: const Text(
-                            "Subscribe",
-                            style: TextStyle(
-                              color: whiteColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                            child: const Text(
+                              "Subscribe",
+                              style: TextStyle(
+                                color: whiteColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),
@@ -253,39 +296,6 @@ class _ViewPodcastState extends State<ViewPodcast> {
                   }
                 },
               ),
-              // BlocListener<PodcastsCubit, PodcastsState>(
-              //   listener: (context, state) {
-              //     // if (state is PodCastsLoading) {
-              //     //   showDialog(
-              //     //       context: context,
-              //     //       builder: (context) {
-              //     //         return SimpleDialog(
-              //     //           children: [
-              //     //             Row(
-              //     //               children: const [
-              //     //                 Text('Please wait'),
-              //     //                 CircularProgressIndicator(),
-              //     //               ],
-              //     //             )
-              //     //           ],
-              //     //         );
-              //     //       });
-              //     // }
-
-              //     if (state is PodcastSubscripted) {
-              //       Navigator.pop(context);
-              //       ScaffoldMessenger.of(context)
-              //           .showSnackBar(SnackBar(content: Text(state.msg)));
-              //     }
-              //   },
-              //   child: GestureDetector(
-              //     onTap: () {
-              //       BlocProvider.of<PodcastsCubit>(context)
-              //           .subscribe(widget.details['id'].toString());
-              //     },
-              //     child:
-              //   ),
-              // ),
               const SizedBox(
                 width: 20,
               ),
@@ -415,11 +425,11 @@ class _ViewPodcastState extends State<ViewPodcast> {
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
                                 onTap: () async {
-                                  // SharedPreferences prefs =
-                                  //     await SharedPreferences.getInstance();
-                                  // recentlyPlayed.add(widget.details);
-                                  // var data = convert.jsonEncode(recentlyPlayed);
-                                  // prefs.setString("recent", data);
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  recentlyPlayed.add(widget.details);
+                                  var data = convert.jsonEncode(recentlyPlayed);
+                                  prefs.setString("recent", data);
                                   _audioManager.dispose();
                                   _audioManager.init(
                                     state.episodes,

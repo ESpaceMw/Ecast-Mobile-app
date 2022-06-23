@@ -1,19 +1,34 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecast/Screens/player/music_player.dart';
 import 'package:ecast/Screens/view_ep.dart';
+import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:marquee/marquee.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-class PlaylistDetails extends StatelessWidget {
+class PlaylistDetails extends StatefulWidget {
   final dynamic playlists;
   const PlaylistDetails({Key? key, required this.playlists}) : super(key: key);
 
   @override
+  State<PlaylistDetails> createState() => _PlaylistDetailsState();
+}
+
+class _PlaylistDetailsState extends State<PlaylistDetails> {
+  late final AudioManager _audioManager;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _audioManager = AudioManager();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print(playlists);
     return Scaffold(
       body: SizedBox(
         child: Padding(
@@ -44,7 +59,7 @@ class PlaylistDetails extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                         child: CachedNetworkImage(
                           width: MediaQuery.of(context).size.width * 0.5,
-                          imageUrl: playlists['cover_art'],
+                          imageUrl: widget.playlists['cover_art'],
                           placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(
                               color: btnColor,
@@ -58,7 +73,7 @@ class PlaylistDetails extends StatelessWidget {
                     ),
                     Flexible(
                       child: Text(
-                        playlists['title'],
+                        widget.playlists['title'],
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -72,7 +87,7 @@ class PlaylistDetails extends StatelessWidget {
                 height: 10,
               ),
               ListView.builder(
-                  itemCount: playlists['episodes'].length,
+                  itemCount: widget.playlists['episodes'].length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return GestureDetector(
@@ -96,7 +111,7 @@ class PlaylistDetails extends StatelessWidget {
                             leading: ClipRRect(
                               child: CachedNetworkImage(
                                 width: MediaQuery.of(context).size.width * 0.1,
-                                imageUrl: playlists['cover_art'],
+                                imageUrl: widget.playlists['cover_art'],
                                 placeholder: (context, url) => const Center(
                                   child: CircularProgressIndicator(
                                     color: btnColor,
@@ -115,7 +130,8 @@ class PlaylistDetails extends StatelessWidget {
                                   child: Marquee(
                                     startPadding: 10.0,
                                     blankSpace: 20.0,
-                                    text: playlists['episodes'][index]['name'],
+                                    text: widget.playlists['episodes'][index]
+                                        ['name'],
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 13,
@@ -138,20 +154,20 @@ class PlaylistDetails extends StatelessWidget {
                                   // recentlyPlayed.add(widget.details);
                                   // var data = convert.jsonEncode(recentlyPlayed);
                                   // prefs.setString("recent", data);
-                                  // _audioManager.dispose();
-                                  // _audioManager.init(
-                                  //   state.episodes,
-                                  //   index,
-                                  //   widget.details['cover_art'],
-                                  //   widget.details['author'],
-                                  // );
-                                  // _audioManager.play();
-                                  // pushNewScreen(
-                                  //   context,
-                                  //   screen: MusicPlayer(
-                                  //       img: widget.details['cover_art']),
-                                  //   withNavBar: false,
-                                  // );
+                                  _audioManager.dispose();
+                                  _audioManager.init(
+                                    widget.playlists['episodes'],
+                                    index,
+                                    widget.playlists['cover_art'],
+                                    'Ecast',
+                                  );
+                                  _audioManager.play();
+                                  pushNewScreen(
+                                    context,
+                                    screen: MusicPlayer(
+                                        img: widget.playlists['cover_art']),
+                                    withNavBar: false,
+                                  );
                                 },
                                 child: const FaIcon(
                                   FontAwesomeIcons.circlePlay,
@@ -163,7 +179,8 @@ class PlaylistDetails extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 13),
                             child: Text(
-                              playlists['episodes'][index]['description'],
+                              widget.playlists['episodes'][index]
+                                  ['description'],
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.start,

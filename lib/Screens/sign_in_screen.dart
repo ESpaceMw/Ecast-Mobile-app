@@ -213,8 +213,8 @@ class _SignInState extends State<SignIn> {
                               children: [
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                        context, forgetPassword);
+                                    // Navigator.pushNamed(
+                                    //     context, forgetPassword);
                                   },
                                   child: const Text(
                                     'Forgot Password?',

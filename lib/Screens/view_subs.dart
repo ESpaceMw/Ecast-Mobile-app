@@ -11,6 +11,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert' as convert;
 
 class Subs extends StatefulWidget {
   final dynamic details;
@@ -45,16 +47,30 @@ class _SubsState extends State<Subs> {
                     bottomRight: Radius.circular(5.5),
                   ),
                 ),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage('http://167.99.86.191' +
-                          widget.details['header_image']),
-                      fit: BoxFit.cover,
-                      colorFilter: const ColorFilter.mode(
-                          Colors.black45, BlendMode.darken),
+                child: ShaderMask(
+                  shaderCallback: (rect) => const LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.center,
+                    colors: [
+                      Colors.black87,
+                      kBackgroundColor,
+                      Colors.transparent,
+                    ],
+                  ).createShader(rect),
+                  blendMode: BlendMode.overlay,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          'http://167.99.86.191' +
+                              widget.details['header_image'],
+                        ),
+                        fit: BoxFit.cover,
+                        colorFilter: const ColorFilter.mode(
+                            Colors.black45, BlendMode.darken),
+                      ),
                     ),
                   ),
                 ),
@@ -163,53 +179,98 @@ class _SubsState extends State<Subs> {
                 width: 20,
               ),
               BlocConsumer<UserCubit, UserState>(
-                listener: (context, state) {
-                  // TODO: implement listener
-                },
+                listener: (context, state) {},
                 builder: (context, state) {
                   if (state is Followed) {
-                    if (state.following == true) {
-                      return GestureDetector(
-                        onTap: () => BlocProvider.of<PodcastsCubit>(context)
-                            .unsubscribe(widget.details['id']),
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              left: 35, right: 35, top: 5, bottom: 5),
-                          decoration: BoxDecoration(
-                            color: btnColor,
-                            borderRadius: BorderRadius.circular(
-                              20.8,
+                    if (state.following) {
+                      return BlocListener<PodcastsCubit, PodcastsState>(
+                        listener: (context, state) {
+                          if (state is SubProcess) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Colors.black45,
+                                content: Text(
+                                  'Perfoming Operation! Please wait....',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: whiteColor,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          if (state is Unsubscribed) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(state.msg)));
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: GestureDetector(
+                          onTap: () => BlocProvider.of<PodcastsCubit>(context)
+                              .unsubscribe(widget.details['id'].toString()),
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                left: 35, right: 35, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              color: btnColor,
+                              borderRadius: BorderRadius.circular(
+                                20.8,
+                              ),
                             ),
-                          ),
-                          child: const Text(
-                            "Subscribed",
-                            style: TextStyle(
-                              color: whiteColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                            child: const Text(
+                              "Subscribed",
+                              style: TextStyle(
+                                color: whiteColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),
                       );
                     } else {
-                      return GestureDetector(
-                        onTap: () => BlocProvider.of<PodcastsCubit>(context)
-                            .subscribe(widget.details['id']),
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              left: 35, right: 35, top: 5, bottom: 5),
-                          decoration: BoxDecoration(
-                            color: btnColor,
-                            borderRadius: BorderRadius.circular(
-                              20.8,
+                      return BlocListener<PodcastsCubit, PodcastsState>(
+                        listener: (context, state) {
+                          if (state is SubProcess) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Colors.black45,
+                                content: Text(
+                                  'Perfoming Operation! Please wait....',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: whiteColor,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+
+                          if (state is PodcastSubscripted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(state.msg)));
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: GestureDetector(
+                          onTap: () => BlocProvider.of<PodcastsCubit>(context)
+                              .subscribe(widget.details['id'].toString()),
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                left: 35, right: 35, top: 5, bottom: 5),
+                            decoration: BoxDecoration(
+                              color: btnColor,
+                              borderRadius: BorderRadius.circular(
+                                20.8,
+                              ),
                             ),
-                          ),
-                          child: const Text(
-                            "Subscribe",
-                            style: TextStyle(
-                              color: whiteColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                            child: const Text(
+                              "Subscribe",
+                              style: TextStyle(
+                                color: whiteColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ),
@@ -355,11 +416,11 @@ class _SubsState extends State<Subs> {
                               padding: const EdgeInsets.all(8.0),
                               child: GestureDetector(
                                 onTap: () async {
-                                  // SharedPreferences prefs =
-                                  //     await SharedPreferences.getInstance();
-                                  // recentlyPlayed.add(widget.details);
-                                  // var data = convert.jsonEncode(recentlyPlayed);
-                                  // prefs.setString("recent", data);
+                                  SharedPreferences prefs =
+                                      await SharedPreferences.getInstance();
+                                  recentlyPlayed.add(widget.details);
+                                  var data = convert.jsonEncode(recentlyPlayed);
+                                  prefs.setString("recent", data);
                                   _audioManager.dispose();
                                   _audioManager.init(
                                     state.episodes,

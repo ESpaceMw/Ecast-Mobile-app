@@ -423,6 +423,7 @@ class NetworkService {
           body: {
             'podcast_id': id,
           });
+      print(request.body);
       if (request.statusCode != 200) {
         return {'err': true, 'type': 'tk', 'msg': "Error"};
       } else {
@@ -436,7 +437,9 @@ class NetworkService {
         'type': 'http',
         'msg': 'Server Error, contact system admin'
       };
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 
   // Fetch user playlist

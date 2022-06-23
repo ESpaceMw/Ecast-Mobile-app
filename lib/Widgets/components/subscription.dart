@@ -3,6 +3,8 @@ import 'package:ecast/Screens/view_subs.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Widgets/Errors/httpex.dart';
+import 'package:ecast/Widgets/Errors/socketerr.dart';
 import 'package:ecast/Widgets/components/indicator.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
@@ -39,6 +41,14 @@ class _SubscriptionsState extends State<Subscriptions> {
                   "No subscriptions available",
                   style: textStyle,
                 )));
+          } else if (state is NetError) {
+            return const SocketErr(
+              msg: "Network Error",
+            );
+          } else if (state is HttpError) {
+            return const HttpExc(
+              msg: "Server Error contact system Admin",
+            );
           } else {
             return GridView.builder(
               shrinkWrap: true,
@@ -69,11 +79,6 @@ class _SubscriptionsState extends State<Subscriptions> {
                         ),
                       ),
                     );
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //     builder: (context) => BlocProvider.value(
-                    //           value: PodcastsCubit(repository: repository),
-                    //           child:
-                    //         )));
                   },
                   child: Container(
                     width: 200,

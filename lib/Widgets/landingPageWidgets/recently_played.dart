@@ -42,16 +42,6 @@ class RecentlyPlayed extends StatelessWidget {
                       ),
                     ),
                   ));
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) => BlocProvider.value(
-                  //       value: PodcastsCubit(repository: repos),
-                  //       child: ViewPodcast(
-                  //         details: state.podcasts[index],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // );
                 },
                 child: Container(
                   margin: const EdgeInsets.only(left: 20),

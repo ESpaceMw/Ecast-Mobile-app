@@ -1,3 +1,4 @@
+import 'package:ecast/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -8,18 +9,17 @@ class HttpExc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height * 0.8,
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SvgPicture.asset(
-              'assets/images/server_down.svg',
-              width: MediaQuery.of(context).size.width * 0.5,
-            ),
             const SizedBox(height: 10),
-            Text(msg),
+            Text(
+              msg,
+              style: textStyle,
+            ),
             const SizedBox(
               height: 10,
             ),
