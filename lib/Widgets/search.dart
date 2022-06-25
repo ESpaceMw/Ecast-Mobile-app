@@ -40,7 +40,7 @@ class _SearchState extends State<Search> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 margin: const EdgeInsets.only(left: 10, right: 10),
                 decoration: const BoxDecoration(
-                  color: kBackgroundColor,
+                  color: Colors.black54,
                   borderRadius: BorderRadius.all(
                     Radius.circular(
                       10.8,

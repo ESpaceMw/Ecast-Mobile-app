@@ -35,7 +35,6 @@ class _SubsState extends State<Subs> {
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(widget.details['id']);
     BlocProvider.of<UserCubit>(context).showFollowing(widget.details['id']);
     return Scaffold(
-      backgroundColor: Colors.black87,
       body: ListView(
         children: [
           Stack(

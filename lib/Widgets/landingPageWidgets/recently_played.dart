@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Screens/view_podcasts.dart';
+import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/landing.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
@@ -48,7 +49,13 @@ class RecentlyPlayed extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
+                      width: MediaQuery.of(context).size.width * 0.23,
                       imageUrl: state.podcasts[index]['cover_art'],
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(
+                          color: btnColor,
+                        ),
+                      ),
                     ),
                   ),
                 ),

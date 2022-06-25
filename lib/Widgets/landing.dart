@@ -33,13 +33,6 @@ Repository repos = Repository(networkService: NetworkService());
 
 class _HomeState extends State<Home> {
   @override
-  void initState() {
-    // TODO: implement initState
-    print(Colors.black.value.runtimeType);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     BlocProvider.of<ChartsCubit>(context).charts();
     DateTime now = DateTime.now();
@@ -49,7 +42,7 @@ class _HomeState extends State<Home> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Container(
-          color: Colors.black54,
+          color: scaffoldColor,
           width: double.infinity,
           child: Column(
             children: [
@@ -79,7 +72,7 @@ class _HomeState extends State<Home> {
                         //       return Container(
                         //         decoration: BoxDecoration(
                         //             borderRadius:
-                        //                 BorderRadius.circular(10.0)),
+                        //                 BorderRadius.Receircular(10.0)),
                         //         height: MediaQuery.of(context).size.height *
                         //             0.5,
                         //       );

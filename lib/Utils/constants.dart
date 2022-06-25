@@ -3,11 +3,12 @@ import 'package:ecast/Services/repos/repo.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-const kBackgroundColor = Color(0xFF101010);
+const kBackgroundColor = Color(0xFF181818);
 const kPrimaryColor = Color(0xFFFFBD73);
 const btnColor = Color(0xFF2AB7B1);
 const whiteColor = Colors.white;
 const errorColor = Colors.red;
+const scaffoldColor = Color(0xFF101010);
 const selectedIten = Color(0xFF5ED0FB);
 final codeColor = Colors.grey[900];
 const recColor = Color(0xFF1A1A1A);

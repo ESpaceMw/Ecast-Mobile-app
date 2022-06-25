@@ -4,6 +4,7 @@ import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +17,6 @@ class ViewChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
       body: ListView(
         children: [
           const SizedBox(
@@ -88,16 +88,30 @@ class ViewChart extends StatelessWidget {
                       ),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => BlocProvider.value(
-                                value: PodcastsCubit(repository: repo),
-                                child: ViewPodcast(
-                                  details: chartDetails['podcasts'][index],
-                                ),
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider.value(
+                                    value: PodcastsCubit(repository: repo)),
+                                BlocProvider.value(
+                                  value: UserCubit(repository: repo),
+                                )
+                              ],
+                              child: ViewPodcast(
+                                details: chartDetails['podcasts'][index],
                               ),
                             ),
-                          );
+                          ));
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (_) => BlocProvider.value(
+                          //       value: PodcastsCubit(repository: repo),
+                          //       child: ViewPodcast(
+                          //         details: chartDetails['podcasts'][index],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // );
                         },
                         child: ListTile(
                           leading: ClipRRect(

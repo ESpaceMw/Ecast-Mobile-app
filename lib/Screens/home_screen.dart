@@ -254,7 +254,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       selectedItemColor: btnColor,
                       unselectedItemColor: whiteColor,
                       currentIndex: _selectedIndex,
-                      backgroundColor: kBackgroundColor,
+                      backgroundColor: Colors.black54,
                     ),
                   ],
                 ),
@@ -271,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 selectedItemColor: btnColor,
                 unselectedItemColor: whiteColor,
                 currentIndex: _selectedIndex,
-                backgroundColor: kBackgroundColor,
+                backgroundColor: Colors.black54,
               );
             }
           },

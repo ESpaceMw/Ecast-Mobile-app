@@ -43,7 +43,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
 
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(widget.details['id']);
     return Scaffold(
-      backgroundColor: Colors.black87,
+      // backgroundColor: Colors.black87,
       body: ListView(
         children: [
           Stack(
