@@ -95,5 +95,10 @@ class Repository {
     return data;
   }
 
+  Future fetchChartsData() async {
+    final data = await networkService.fetchChartsData();
+    return data;
+  }
+
   Future singleEp() async {}
 }

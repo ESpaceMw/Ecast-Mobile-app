@@ -27,8 +27,25 @@ class ChartsCubit extends Cubit<ChartsState> {
             charts: value['msg'],
             podcasts: value['pod'],
             playlists: value['playlists'],
+            data: value['podcasts'],
           ),
         );
+      }
+    });
+  }
+
+  void fetchCharts() {
+    emit(ChartsLoading());
+    repository.fetchChartsData().then((value) {
+      print(value);
+      if (value['err']) {
+        if (value['type'] == 'net') {
+          emit(NetError(msg: value['msg']));
+        } else {
+          emit(HttpError(msg: value['msg']));
+        }
+      } else {
+        emit(Charts(charts: value['msg']));
       }
     });
   }

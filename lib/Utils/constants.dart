@@ -121,11 +121,7 @@ const podcats = '/podcasts';
 const ep = '/ep';
 const playlistInput = '/add_playlist';
 
-List<String> options = [
-  'Note',
-  'Download'
-      'Details'
-];
+List<String> options = ['Cast', 'Download'];
 
 List genres = [
   {'art_url': '', 'title': 'Arts'},

@@ -18,7 +18,7 @@ class RecentlyPlayed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 180,
       child: ListView.builder(
           itemCount: state.podcasts.length,
           scrollDirection: Axis.horizontal,
@@ -49,7 +49,7 @@ class RecentlyPlayed extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
-                      width: MediaQuery.of(context).size.width * 0.23,
+                      width: MediaQuery.of(context).size.width * 0.32,
                       imageUrl: state.podcasts[index]['cover_art'],
                       placeholder: (context, url) => const Center(
                         child: CircularProgressIndicator(

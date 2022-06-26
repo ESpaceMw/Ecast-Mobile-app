@@ -1,35 +1,44 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:ecast/Screens/playlists_details.dart';
+import 'package:ecast/Screens/view_podcasts.dart';
+import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/cubit/podcasts_cubit.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class EcastPlaylist extends StatelessWidget {
-  const EcastPlaylist({
-    Key? key,
-    required this.state,
-    required this.size,
-  }) : super(key: key);
+class Recommended extends StatelessWidget {
+  const Recommended(
+      {Key? key, required this.state, required this.size, required this.repos})
+      : super(key: key);
 
   final state;
   final Size size;
+  final Repository repos;
 
   @override
   Widget build(BuildContext context) {
+    // prin()
     return Container(
-        height: 230,
+        height: 227,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: state.playlists.length,
+          itemCount: state.data.length,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => PlaylistDetails(
-                      playlists: state.playlists[index],
-                    ),
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(
+                          value: PodcastsCubit(repository: repos)),
+                      BlocProvider.value(
+                        value: UserCubit(repository: repos),
+                      )
+                    ],
+                    child: ViewPodcast(details: state.data[index]),
                   ),
-                );
+                ));
               },
               child: Container(
                 width: 150,
@@ -48,7 +57,7 @@ class EcastPlaylist extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                         child: CachedNetworkImage(
                           width: size.width * 0.39,
-                          imageUrl: state.playlists[index]['cover_art'],
+                          imageUrl: state.data[index]['cover_art'],
                           placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(
                               color: btnColor,
@@ -61,7 +70,7 @@ class EcastPlaylist extends StatelessWidget {
                       height: 7,
                     ),
                     Text(
-                      state.playlists[index]['title'],
+                      state.data[index]['title'],
                       style: podstyles,
                       textAlign: TextAlign.start,
                     ),

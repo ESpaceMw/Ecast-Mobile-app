@@ -217,6 +217,7 @@ class NetworkService {
         };
       } else {
         var recent = [];
+        var podcasts = [];
         var req2 = await http.get(
             Uri.parse("$baseUrl/podcast/api/v1/listpodcasts/"),
             headers: {'Authorization': "Token $token"});
@@ -228,6 +229,9 @@ class NetworkService {
         var response = convert.jsonDecode(request.body);
         var res3 = convert.jsonDecode(request3.body);
         var res2 = convert.jsonDecode(req2.body);
+        podcasts = res2;
+        podcasts.shuffle();
+        podcasts.shuffle();
         if (data == null || data == '') {
           recent = res2;
           recent.shuffle();
@@ -238,7 +242,8 @@ class NetworkService {
           "err": false,
           'msg': response,
           'pod': recent,
-          'playlists': res3
+          'playlists': res3,
+          'podcasts': podcasts,
         };
       }
     } on SocketException {
@@ -254,6 +259,42 @@ class NetworkService {
         'err': true,
         'type': 'http',
         'msg': 'Server error, contact system admin'
+      };
+    }
+  }
+
+  Future fetchChartsData() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      final request = await http.get(
+          Uri.parse("$baseUrl/podcast/api/v1/podcast/chats/"),
+          headers: {'Authorization': 'Token $token'});
+      print(request.body);
+      if (request.statusCode == 200) {
+        final response = convert.jsonDecode(request.body);
+        return {'err': false, 'msg': response};
+      } else {
+        return {'err': true, 'type': 'token', 'msg': 'Invalid Token'};
+      }
+    } on SocketException {
+      return {
+        "err": true,
+        "type": "net",
+        "msg": "No internet Connetion",
+      };
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact System Admin',
+      };
+    } catch (e) {
+      print(e);
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact System Admin',
       };
     }
   }

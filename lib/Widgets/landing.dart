@@ -11,8 +11,10 @@ import 'package:ecast/Utils/logic.dart';
 import 'package:ecast/Widgets/Errors/socketerr.dart';
 import 'package:ecast/Widgets/components/indicator.dart';
 import 'package:ecast/Widgets/landingPageWidgets/ecast_playlists.dart';
+import 'package:ecast/Widgets/landingPageWidgets/originals.dart';
 import 'package:ecast/Widgets/landingPageWidgets/radio_button.dart';
 import 'package:ecast/Widgets/landingPageWidgets/recently_played.dart';
+import 'package:ecast/Widgets/landingPageWidgets/recommended.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
 import 'package:flutter/material.dart';
@@ -357,13 +359,20 @@ class data extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: Text('Jump Back In', style: textStyle),
         ),
-        const SizedBox(
-          height: 12,
+        RecentlyPlayed(
+          state: state,
         ),
-        RecentlyPlayed(state: state),
-        const SizedBox(
-          height: 20,
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: Text(
+            "Recommended Podcasts",
+            style: textStyle,
+          ),
         ),
+        Recommended(state: state, size: size, repos: repos),
+        // const SizedBox(
+        //   height: 10,
+        // ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: Text(
@@ -371,7 +380,15 @@ class data extends StatelessWidget {
             style: textStyle,
           ),
         ),
-        EcastPlaylist(state: state, size: size)
+        EcastPlaylist(state: state, size: size),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: Text(
+            "Ecast Originals",
+            style: textStyle,
+          ),
+        ),
+        Originals(state: state, size: size, repos: repos)
       ],
     );
   }

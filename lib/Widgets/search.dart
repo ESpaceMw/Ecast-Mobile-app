@@ -152,68 +152,78 @@ class _SearchState extends State<Search> {
                       ),
                     );
                   } else if (state is SearchResults) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                            BlocProvider.of<SearchCubit>(context).prev();
-                            _searchQuery.clear();
-                          },
-                          child: const Icon(Icons.arrow_back),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: state.results.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => BlocProvider.value(
-                                      value:
-                                          PodcastsCubit(repository: repository),
-                                      child: ViewPodcast(
-                                          details: state.results[index]),
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                  child: ListTile(
-                                leading: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.12,
-                                      imageUrl: state.results[index]
-                                          ['cover_art']),
-                                ),
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      state.results[index]['title'],
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
+                    if (state.results.isEmpty) {
+                      return Container(
+                          child: const Text(
+                        "That podcast does not exists",
+                        style: textStyle,
+                      ));
+                    } else {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              FocusScope.of(context).unfocus();
+                              BlocProvider.of<SearchCubit>(context).prev();
+                              _searchQuery.clear();
+                            },
+                            child: const Icon(Icons.arrow_back),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: state.results.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => BlocProvider.value(
+                                        value: PodcastsCubit(
+                                            repository: repository),
+                                        child: ViewPodcast(
+                                            details: state.results[index]),
                                       ),
                                     ),
-                                    Text(
-                                      state.results[index]['author'],
-                                      style: const TextStyle(fontSize: 12),
-                                    )
-                                  ],
-                                ),
-                              )),
-                            );
-                          },
-                        ),
-                      ],
-                    );
+                                  );
+                                },
+                                child: Container(
+                                    child: ListTile(
+                                  leading: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.12,
+                                        imageUrl: state.results[index]
+                                            ['cover_art']),
+                                  ),
+                                  title: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        state.results[index]['title'],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        state.results[index]['author'],
+                                        style: const TextStyle(fontSize: 12),
+                                      )
+                                    ],
+                                  ),
+                                )),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    }
                   } else if (state is HttpErr) {
                     return const HttpExc(
                         msg: "Server Error! Contact System Admin");

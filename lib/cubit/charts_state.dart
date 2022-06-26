@@ -11,9 +11,22 @@ class ChartsLoaded extends ChartsState {
   final List charts;
   final List podcasts;
   final List playlists;
+  final List data;
 
-  ChartsLoaded(
-      {required this.charts, required this.podcasts, required this.playlists});
+  ChartsLoaded({
+    required this.charts,
+    required this.data,
+    required this.podcasts,
+    required this.playlists,
+  });
+}
+
+class Charts extends ChartsState {
+  final List charts;
+
+  Charts({
+    required this.charts,
+  });
 }
 
 class NetError extends ChartsState {

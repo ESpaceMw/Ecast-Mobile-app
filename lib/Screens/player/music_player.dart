@@ -1,10 +1,15 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Utils/Notifiers/progressNotifier.dart';
+import 'package:ecast/Utils/Notifiers/repeat_Btn_Notifier.dart';
 import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/Widgets/Errors/httpex.dart';
+import 'package:ecast/Widgets/Errors/socketerr.dart';
 import 'package:ecast/Widgets/components/popmenu.dart';
+import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +27,8 @@ class MusicPlayer extends StatefulWidget {
 
 class _MusicPlayerState extends State<MusicPlayer> {
   late final AudioManager _audioManager;
-  Color bg = Colors.black87;
+  Color bg = Color(0xFF101010);
+  String dropDownvalue = "1x";
 
   _getColor() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -51,24 +57,27 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    _audioManager.play();
+    BlocProvider.of<ChartsCubit>(context).charts();
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [
-              Colors.transparent,
-              Colors.black54.withOpacity(
-                0.5,
-              ),
-              bg,
-            ]),
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+          colors: [
+            scaffoldColor,
+            scaffoldColor,
+            bg,
+          ],
+          tileMode: TileMode.repeated,
+        ),
       ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: ListView(
           children: [
             Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -172,27 +181,27 @@ class _MusicPlayerState extends State<MusicPlayer> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // ValueListenableBuilder(
-                    //     valueListenable: _audioManager.repeatNotifier,
-                    //     builder: (context, state, child) {
-                    //       Icon icon =
-                    //           const Icon(Icons.repeat, color: Colors.grey);
-                    //       switch (state) {
-                    //         case RepeatState.off:
-                    //           icon = const Icon(Icons.repeat, color: Colors.grey);
-                    //           break;
-                    //         case RepeatState.repeatSong:
-                    //           icon = const Icon(Icons.repeat_one);
-                    //           break;
-                    //         case RepeatState.repeatPlaylist:
-                    //           icon = const Icon(Icons.repeat);
-                    //           break;
-                    //       }
-                    //       return IconButton(
-                    //         icon: icon,
-                    //         onPressed: _audioManager.repeat,
-                    //       );
-                    //     }),
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        value: dropDownvalue,
+                        // dropdownColor: whiteColor,
+                        onChanged: (String? value) {
+                          setState(() {
+                            dropDownvalue = value!;
+                          });
+                        },
+                        items: <String>['1x', '2x', '3x']
+                            .map<DropdownMenuItem<String>>((String speed) {
+                          return DropdownMenuItem<String>(
+                            value: speed,
+                            child: Text(speed),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     ValueListenableBuilder<bool>(
                         valueListenable: _audioManager.isFirstSongNotifier,
                         builder: (_, isfirst, __) {
@@ -256,9 +265,141 @@ class _MusicPlayerState extends State<MusicPlayer> {
                               FontAwesomeIcons.angleRight,
                             ),
                           );
-                        })
+                        }),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    ValueListenableBuilder<RepeatState>(
+                      valueListenable: _audioManager.repeatNotifier,
+                      builder: (context, value, child) {
+                        Icon icon;
+                        switch (value) {
+                          case RepeatState.off:
+                            icon = const Icon(Icons.repeat, color: Colors.grey);
+                            break;
+                          case RepeatState.repeatSong:
+                            icon = const Icon(Icons.repeat_one);
+                            break;
+                          case RepeatState.repeatPlaylist:
+                            icon = const Icon(Icons.repeat);
+                            break;
+                        }
+                        return IconButton(
+                          icon: icon,
+                          onPressed: _audioManager.repeat,
+                        );
+                      },
+                    ),
                   ],
-                )
+                ),
+                Container(
+                  height: 600,
+                  // decoration: BoxDecoration(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
+                    child: DraggableScrollableSheet(
+                      initialChildSize: 0.9,
+                      builder: (BuildContext context,
+                          ScrollController scrollcontroller) {
+                        return Container(
+                          decoration: BoxDecoration(
+                              color: kBackgroundColor,
+                              borderRadius: const BorderRadius.horizontal(
+                                left: Radius.circular(10.0),
+                                right: Radius.circular(10.0),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(
+                                    0.4,
+                                  ),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ]),
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CustomScrollView(
+                                slivers: [
+                                  SliverFixedExtentList(
+                                      delegate: SliverChildListDelegate([
+                                        const Text(
+                                          'Top Charts',
+                                          style: podstyles,
+                                        ),
+                                      ]),
+                                      itemExtent: 50),
+                                  BlocBuilder<ChartsCubit, ChartsState>(
+                                    builder: (context, state) {
+                                      if (state is Charts) {
+                                        return SliverList(
+                                          delegate: SliverChildBuilderDelegate(
+                                            (context, index) {
+                                              return ListTile(
+                                                  trailing: ClipRRect(
+                                                      child: CachedNetworkImage(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.5,
+                                                imageUrl: state.charts[index]
+                                                    ['header_image'],
+                                                placeholder: (context, url) =>
+                                                    const Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: btnColor,
+                                                  ),
+                                                ),
+                                              )));
+                                            },
+                                            childCount: state.charts.length,
+                                          ),
+                                        );
+                                      } else {
+                                        if (state is ChartsLoading) {
+                                          return SliverFixedExtentList(
+                                            delegate: SliverChildListDelegate([
+                                              const Center(
+                                                child:
+                                                    CircularProgressIndicator(
+                                                        color: btnColor),
+                                              ),
+                                            ]),
+                                            itemExtent: 100,
+                                          );
+                                        } else if (state is NetError) {
+                                          return SliverFixedExtentList(
+                                            delegate: SliverChildListDelegate([
+                                              SocketErr(
+                                                msg: state.msg,
+                                              )
+                                            ]),
+                                            itemExtent: 100,
+                                          );
+                                        } else {
+                                          return SliverFixedExtentList(
+                                              delegate:
+                                                  SliverChildListDelegate([
+                                                const HttpExc(
+                                                    msg:
+                                                        "Server Error! Contact System Admin"),
+                                              ]),
+                                              itemExtent: 100);
+                                        }
+                                      }
+                                    },
+                                  )
+                                ],
+                              )),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ],
             ),
           ],
