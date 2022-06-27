@@ -44,6 +44,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
 
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(widget.details['id']);
     final size = MediaQuery.of(context).size;
+    print(widget.details);
     return Scaffold(
       body: ListView(
         children: [
@@ -144,6 +145,71 @@ class _ViewPodcastState extends State<ViewPodcast> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (context) {
+                                return ClipRRect(
+                                  borderRadius: const BorderRadius.horizontal(
+                                    left: Radius.circular(10.0),
+                                    right: Radius.circular(10.0),
+                                  ),
+                                  child: Container(
+                                    height: size.height * 0.7,
+                                    decoration: const BoxDecoration(
+                                      color: scaffoldColor,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: ListView(
+                                        children: [
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 130.0,
+                                            ),
+                                            child: Divider(
+                                                color: Colors.grey,
+                                                height: 10,
+                                                thickness: 2),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Text(
+                                                "About",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 18,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 8.0),
+                                              Text(
+                                                widget.details['title'],
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 18,
+                                                ),
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        },
                         child: const FaIcon(FontAwesomeIcons.circleInfo),
                       ),
                       const SizedBox(
@@ -302,146 +368,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (BuildContext context) {
-                                return ClipRRect(
-                                  borderRadius: const BorderRadius.horizontal(
-                                    left: Radius.circular(10.0),
-                                    right: Radius.circular(10.0),
-                                  ),
-                                  child: Container(
-                                    height: size.height * 0.34,
-                                    decoration: BoxDecoration(
-                                        color: scaffoldColor,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black54.withOpacity(0.5),
-                                            spreadRadius: 5,
-                                            blurRadius: 7,
-                                          )
-                                        ]),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: ListView(
-                                        children: [
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 130.0,
-                                            ),
-                                            child: Divider(
-                                                color: Colors.grey,
-                                                height: 10,
-                                                thickness: 2),
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          const Text(
-                                            "SUPPORT THE AUTHOR",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey[700],
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                10.0,
-                                              ),
-                                            ),
-                                            width: size.width * 0.9,
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: const Text(
-                                              "TNM MPAMBA",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 17,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey[700],
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                10.0,
-                                              ),
-                                            ),
-                                            width: size.width * 0.9,
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: const Text(
-                                              "AIRTEL MONEY",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 17,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey[700],
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                10.0,
-                                              ),
-                                            ),
-                                            width: size.width * 0.9,
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: const Text(
-                                              "MO 626",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 17,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.grey[700],
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                10.0,
-                                              ),
-                                            ),
-                                            width: size.width * 0.9,
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: const Text(
-                                              "PAYPAL",
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 17,
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              });
+                          donations(context, size);
                         },
                         child: const FaIcon(
                           FontAwesomeIcons.handHoldingDollar,
@@ -651,5 +578,139 @@ class _ViewPodcastState extends State<ViewPodcast> {
         ],
       ),
     );
+  }
+
+  Future<dynamic> donations(BuildContext context, Size size) {
+    return showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return ClipRRect(
+            borderRadius: const BorderRadius.horizontal(
+              left: Radius.circular(10.0),
+              right: Radius.circular(10.0),
+            ),
+            child: Container(
+              height: size.height * 0.34,
+              decoration: BoxDecoration(color: scaffoldColor, boxShadow: [
+                BoxShadow(
+                  color: Colors.black54.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                )
+              ]),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ListView(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 130.0,
+                      ),
+                      child:
+                          Divider(color: Colors.grey, height: 10, thickness: 2),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    const Text(
+                      "SUPPORT THE AUTHOR",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[700],
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
+                      ),
+                      width: size.width * 0.9,
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text(
+                        "TNM MPAMBA",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[700],
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
+                      ),
+                      width: size.width * 0.9,
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text(
+                        "AIRTEL MONEY",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[700],
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
+                      ),
+                      width: size.width * 0.9,
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text(
+                        "MO 626",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[700],
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
+                      ),
+                      width: size.width * 0.9,
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text(
+                        "PAYPAL",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }
