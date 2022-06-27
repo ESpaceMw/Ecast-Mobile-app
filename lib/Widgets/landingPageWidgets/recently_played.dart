@@ -26,6 +26,7 @@ class RecentlyPlayed extends StatelessWidget {
             if (state.podcasts.isEmpty) {
               return const Text("No recent plays");
             } else {
+              print(state.podcasts[index]);
               return GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(

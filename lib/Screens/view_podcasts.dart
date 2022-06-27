@@ -43,6 +43,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
     BlocProvider.of<UserCubit>(context).showFollowing(widget.details['id']);
 
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(widget.details['id']);
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: ListView(
         children: [
@@ -55,27 +56,15 @@ class _ViewPodcastState extends State<ViewPodcast> {
                     bottomRight: Radius.circular(5.5),
                   ),
                 ),
-                child: ShaderMask(
-                  shaderCallback: (rect) => const LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.center,
-                    colors: [
-                      Colors.black87,
-                      kBackgroundColor,
-                      Colors.transparent,
-                    ],
-                  ).createShader(rect),
-                  blendMode: BlendMode.overlay,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.34,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(widget.details['header_image']),
-                        fit: BoxFit.cover,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.black45, BlendMode.darken),
-                      ),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.34,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(widget.details['header_image']),
+                      fit: BoxFit.cover,
+                      colorFilter: const ColorFilter.mode(
+                          Colors.black45, BlendMode.darken),
                     ),
                   ),
                 ),
@@ -312,6 +301,148 @@ class _ViewPodcastState extends State<ViewPodcast> {
                         width: 20,
                       ),
                       GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.transparent,
+                              builder: (BuildContext context) {
+                                return ClipRRect(
+                                  borderRadius: const BorderRadius.horizontal(
+                                    left: Radius.circular(10.0),
+                                    right: Radius.circular(10.0),
+                                  ),
+                                  child: Container(
+                                    height: size.height * 0.34,
+                                    decoration: BoxDecoration(
+                                        color: scaffoldColor,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black54.withOpacity(0.5),
+                                            spreadRadius: 5,
+                                            blurRadius: 7,
+                                          )
+                                        ]),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: ListView(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 130.0,
+                                            ),
+                                            child: Divider(
+                                                color: Colors.grey,
+                                                height: 10,
+                                                thickness: 2),
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          const Text(
+                                            "SUPPORT THE AUTHOR",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[700],
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                10.0,
+                                              ),
+                                            ),
+                                            width: size.width * 0.9,
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: const Text(
+                                              "TNM MPAMBA",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[700],
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                10.0,
+                                              ),
+                                            ),
+                                            width: size.width * 0.9,
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: const Text(
+                                              "AIRTEL MONEY",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[700],
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                10.0,
+                                              ),
+                                            ),
+                                            width: size.width * 0.9,
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: const Text(
+                                              "MO 626",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[700],
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                10.0,
+                                              ),
+                                            ),
+                                            width: size.width * 0.9,
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: const Text(
+                                              "PAYPAL",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              });
+                        },
                         child: const FaIcon(
                           FontAwesomeIcons.handHoldingDollar,
                         ),
@@ -351,6 +482,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                 .toString();
                             return GestureDetector(
                               onTap: () {
+                                // print(widget.details);
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => BlocProvider.value(

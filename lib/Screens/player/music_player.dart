@@ -27,7 +27,7 @@ class MusicPlayer extends StatefulWidget {
 
 class _MusicPlayerState extends State<MusicPlayer> {
   late final AudioManager _audioManager;
-  Color bg = Color(0xFF101010);
+  Color bg = const Color(0xFF101010);
   String dropDownvalue = "1x";
 
   _getColor() async {
@@ -57,7 +57,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    _audioManager.play();
+    // _audioManager.play();
     BlocProvider.of<ChartsCubit>(context).charts();
     return Container(
       decoration: BoxDecoration(

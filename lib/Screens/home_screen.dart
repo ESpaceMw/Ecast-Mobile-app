@@ -4,7 +4,9 @@ import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Widgets/bottom_nav_options.dart';
 import 'package:ecast/Widgets/components/tab_navigator.dart';
+import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:marquee/marquee.dart';
@@ -86,7 +88,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ? GestureDetector(
                                     onTap: () {
                                       pushNewScreen(context,
-                                          screen: const MusicPlayer(img: ''));
+                                          screen: BlocProvider.value(
+                                            value: ChartsCubit(
+                                                repository: repository),
+                                            child: const MusicPlayer(img: ''),
+                                          ));
                                     },
                                     child: Container(
                                       color: Colors.grey[900],
