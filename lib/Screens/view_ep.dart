@@ -5,6 +5,7 @@ import 'package:ecast/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ViewEp extends StatefulWidget {
   final dynamic ep;
@@ -199,26 +200,34 @@ class _ViewEpState extends State<ViewEp> {
                     ),
                   ),
                   Row(
-                    children: const [
-                      Icon(
+                    children: [
+                      const Icon(
                         Icons.playlist_add,
                         size: 30,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
-                      FaIcon(
+                      const FaIcon(
                         FontAwesomeIcons.circleArrowDown,
                         // size: 20,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
-                      Icon(
-                        Icons.share,
-                        size: 26,
+                      GestureDetector(
+                        onTap: () {
+                          Share.share(
+                            "ecast.espacemw.com/${widget.title}",
+                            subject: "My Podcast",
+                          );
+                        },
+                        child: const Icon(
+                          Icons.share,
+                          size: 26,
+                        ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                     ],

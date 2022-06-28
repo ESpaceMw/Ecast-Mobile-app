@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:share_plus/share_plus.dart';
 import 'dart:convert' as convert;
 
 final Repository repository = Repository(networkService: NetworkService());
@@ -45,7 +46,6 @@ class _ViewPodcastState extends State<ViewPodcast> {
 
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(widget.details['id']);
     final size = MediaQuery.of(context).size;
-    print(widget.details);
     return Scaffold(
       body: ListView(
         children: [
@@ -147,282 +147,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              builder: (context) {
-                                return ClipRRect(
-                                  borderRadius: const BorderRadius.horizontal(
-                                    left: Radius.circular(10.0),
-                                    right: Radius.circular(10.0),
-                                  ),
-                                  child: Container(
-                                    height: size.height * 0.7,
-                                    decoration: const BoxDecoration(
-                                      color: scaffoldColor,
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: ListView(
-                                        children: [
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 130.0,
-                                            ),
-                                            child: Divider(
-                                                color: Colors.grey,
-                                                height: 10,
-                                                thickness: 2),
-                                          ),
-                                          const SizedBox(
-                                            height: 8,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              const Text(
-                                                "About",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 8.0),
-                                              Text(
-                                                widget.details['title'],
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 18,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          const Text(
-                                            "Description",
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              color: Color(0xFFE2E2E2),
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 17,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            widget.details['description'],
-                                          ),
-                                          const SizedBox(
-                                            height: 16,
-                                          ),
-                                          const Text(
-                                            'Links',
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              color: Color(0xFFE2E2E2),
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 17,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 15,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.globe,
-                                                size: 30,
-                                                color: Colors.grey[600],
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                "https://www.${widget.details["author"]}.com/podcast",
-                                                style: const TextStyle(
-                                                  color: btnColor,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 15,
-                                          ),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                FaIcon(
-                                                  FontAwesomeIcons
-                                                      .facebookSquare,
-                                                  size: 30,
-                                                  color: Colors.grey[600],
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                const Text(
-                                                  "https://www.facebook.com/",
-                                                  style: TextStyle(
-                                                    color: btnColor,
-                                                  ),
-                                                ),
-                                                Text(widget.details['author'],
-                                                    style: const TextStyle(
-                                                      color: btnColor,
-                                                    ))
-                                              ]),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                FaIcon(
-                                                  FontAwesomeIcons.instagram,
-                                                  size: 30,
-                                                  color: Colors.grey[600],
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                const Text(
-                                                  "https://www.instagram.com/",
-                                                  style: TextStyle(
-                                                    color: btnColor,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  widget.details['author'],
-                                                  style: const TextStyle(
-                                                    color: btnColor,
-                                                  ),
-                                                )
-                                              ]),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                FaIcon(
-                                                  FontAwesomeIcons.twitter,
-                                                  size: 30,
-                                                  color: Colors.grey[600],
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                const Text(
-                                                  "https://www.twitter.com/",
-                                                  style: TextStyle(
-                                                    color: btnColor,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  widget.details['author'],
-                                                  style: const TextStyle(
-                                                    color: btnColor,
-                                                  ),
-                                                )
-                                              ]),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                FaIcon(
-                                                  FontAwesomeIcons.linkedin,
-                                                  size: 30,
-                                                  color: Colors.grey[600],
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                const Text(
-                                                  "https://www.twitter.com/",
-                                                  style: TextStyle(
-                                                    color: btnColor,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  widget.details['author'],
-                                                  style: const TextStyle(
-                                                    color: btnColor,
-                                                  ),
-                                                )
-                                              ]),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          const Text(
-                                            'More Info',
-                                            style: TextStyle(
-                                              color: Color(0xFFE2E2E2),
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 17,
-                                            ),
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.locationDot,
-                                                color: Colors.grey[600],
-                                                size: 30,
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              const Text(
-                                                'Country',
-                                              )
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.circleInfo,
-                                                color: Colors.grey[600],
-                                                size: 30,
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              const Text(
-                                                'Joined July 1, 2022',
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              });
+                          about(context, size);
                         },
                         child: const FaIcon(FontAwesomeIcons.circleInfo),
                       ),
@@ -592,6 +317,12 @@ class _ViewPodcastState extends State<ViewPodcast> {
                         width: 20,
                       ),
                       GestureDetector(
+                        onTap: () {
+                          Share.share(
+                            "ecast.espacemw.com/${widget.details['title']}",
+                            subject: "My Podcast",
+                          );
+                        },
                         child: const Icon(Icons.share),
                       )
                     ],
@@ -623,7 +354,6 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                 .toString();
                             return GestureDetector(
                               onTap: () {
-                                // print(widget.details);
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (context) => BlocProvider.value(
@@ -792,6 +522,266 @@ class _ViewPodcastState extends State<ViewPodcast> {
         ],
       ),
     );
+  }
+
+  Future<dynamic> about(BuildContext context, Size size) {
+    return showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) {
+          return ClipRRect(
+            borderRadius: const BorderRadius.horizontal(
+              left: Radius.circular(10.0),
+              right: Radius.circular(10.0),
+            ),
+            child: Container(
+              height: size.height * 0.7,
+              decoration: const BoxDecoration(
+                color: scaffoldColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ListView(
+                  children: [
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 130.0,
+                      ),
+                      child:
+                          Divider(color: Colors.grey, height: 10, thickness: 2),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "About",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(width: 8.0),
+                        Text(
+                          widget.details['title'],
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      "Description",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Color(0xFFE2E2E2),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      widget.details['description'],
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const Text(
+                      'Links',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Color(0xFFE2E2E2),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.globe,
+                          size: 30,
+                          color: Colors.grey[600],
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "https://www.${widget.details["author"]}.com/podcast",
+                          style: const TextStyle(
+                            color: btnColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      FaIcon(
+                        FontAwesomeIcons.facebookSquare,
+                        size: 30,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        "https://www.facebook.com/",
+                        style: TextStyle(
+                          color: btnColor,
+                        ),
+                      ),
+                      Text(widget.details['author'],
+                          style: const TextStyle(
+                            color: btnColor,
+                          ))
+                    ]),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      FaIcon(
+                        FontAwesomeIcons.instagram,
+                        size: 30,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        "https://www.instagram.com/",
+                        style: TextStyle(
+                          color: btnColor,
+                        ),
+                      ),
+                      Text(
+                        widget.details['author'],
+                        style: const TextStyle(
+                          color: btnColor,
+                        ),
+                      )
+                    ]),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      FaIcon(
+                        FontAwesomeIcons.twitter,
+                        size: 30,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        "https://www.twitter.com/",
+                        style: TextStyle(
+                          color: btnColor,
+                        ),
+                      ),
+                      Text(
+                        widget.details['author'],
+                        style: const TextStyle(
+                          color: btnColor,
+                        ),
+                      )
+                    ]),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      FaIcon(
+                        FontAwesomeIcons.linkedin,
+                        size: 30,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        "https://www.twitter.com/",
+                        style: TextStyle(
+                          color: btnColor,
+                        ),
+                      ),
+                      Text(
+                        widget.details['author'],
+                        style: const TextStyle(
+                          color: btnColor,
+                        ),
+                      )
+                    ]),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'More Info',
+                      style: TextStyle(
+                        color: Color(0xFFE2E2E2),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.locationDot,
+                          color: Colors.grey[600],
+                          size: 30,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Country',
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.circleInfo,
+                          color: Colors.grey[600],
+                          size: 30,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Joined July 1, 2022',
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   Future<dynamic> donations(BuildContext context, Size size) {

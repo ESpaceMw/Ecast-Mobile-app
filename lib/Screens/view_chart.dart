@@ -36,12 +36,17 @@ class ViewChart extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipRRect(
+            padding: const EdgeInsets.all(13.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: recColor,
+                borderRadius: BorderRadius.circular(
+                  10.0,
+                ),
+              ),
+              child: Row(
+                children: [
+                  ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: CachedNetworkImage(
                       width: MediaQuery.of(context).size.width * 0.5,
@@ -53,20 +58,20 @@ class ViewChart extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Flexible(
-                  child: Text(
-                    chartDetails['name'],
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Flexible(
+                    child: Text(
+                      chartDetails['name'],
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           const SizedBox(

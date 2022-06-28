@@ -20,49 +20,57 @@ class ViewPlaylist extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              Wrap(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.1),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: CachedNetworkImage(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              imageUrl: details['cover_art'],
-                              placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(
-                                  color: btnColor,
+              Container(
+                decoration: BoxDecoration(
+                  color: recColor,
+                  borderRadius: BorderRadius.circular(
+                    10.0,
+                  ),
+                ),
+                child: Wrap(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.1),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: CachedNetworkImage(
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                imageUrl: details['cover_art'],
+                                placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator(
+                                    color: btnColor,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 15.0,
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                details['playlist_title'],
-                                style: titleStyles,
-                                textAlign: TextAlign.start,
-                              ),
-                            ],
+                          const SizedBox(
+                            width: 15.0,
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  details['playlist_title'],
+                                  style: titleStyles,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 20,

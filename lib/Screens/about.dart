@@ -1,6 +1,7 @@
 import 'package:ecast/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class About extends StatefulWidget {
   const About({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class _AboutState extends State<About> {
   @override
   void initState() {
     super.initState();
+    // _getPackgeInfo();
   }
 
   @override
@@ -47,6 +49,12 @@ class _AboutState extends State<About> {
                   style: textStyle,
                 ),
               ),
+              const Text(
+                '1.0.0',
+                style: TextStyle(
+                  fontSize: 13,
+                ),
+              ),
               const SizedBox(
                 height: 25,
               ),
@@ -70,7 +78,7 @@ class _AboutState extends State<About> {
                       ),
                     ),
                     Text(
-                      "Stuff the helped in developement",
+                      "Stuff that helped during development",
                       style: TextStyle(
                         fontSize: 13,
                       ),
