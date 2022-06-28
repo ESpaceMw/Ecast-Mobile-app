@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:coolicons/coolicons.dart';
 import 'package:ecast/Screens/player/music_player.dart';
 import 'package:ecast/Screens/view_ep.dart';
 import 'package:ecast/Services/api.dart';
@@ -200,6 +201,219 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 18,
                                                 ),
+                                              )
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          const Text(
+                                            "Description",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: Color(0xFFE2E2E2),
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            widget.details['description'],
+                                          ),
+                                          const SizedBox(
+                                            height: 16,
+                                          ),
+                                          const Text(
+                                            'Links',
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: Color(0xFFE2E2E2),
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              FaIcon(
+                                                FontAwesomeIcons.globe,
+                                                size: 30,
+                                                color: Colors.grey[600],
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                "https://www.${widget.details["author"]}.com/podcast",
+                                                style: const TextStyle(
+                                                  color: btnColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                FaIcon(
+                                                  FontAwesomeIcons
+                                                      .facebookSquare,
+                                                  size: 30,
+                                                  color: Colors.grey[600],
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                const Text(
+                                                  "https://www.facebook.com/",
+                                                  style: TextStyle(
+                                                    color: btnColor,
+                                                  ),
+                                                ),
+                                                Text(widget.details['author'],
+                                                    style: const TextStyle(
+                                                      color: btnColor,
+                                                    ))
+                                              ]),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                FaIcon(
+                                                  FontAwesomeIcons.instagram,
+                                                  size: 30,
+                                                  color: Colors.grey[600],
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                const Text(
+                                                  "https://www.instagram.com/",
+                                                  style: TextStyle(
+                                                    color: btnColor,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  widget.details['author'],
+                                                  style: const TextStyle(
+                                                    color: btnColor,
+                                                  ),
+                                                )
+                                              ]),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                FaIcon(
+                                                  FontAwesomeIcons.twitter,
+                                                  size: 30,
+                                                  color: Colors.grey[600],
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                const Text(
+                                                  "https://www.twitter.com/",
+                                                  style: TextStyle(
+                                                    color: btnColor,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  widget.details['author'],
+                                                  style: const TextStyle(
+                                                    color: btnColor,
+                                                  ),
+                                                )
+                                              ]),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                FaIcon(
+                                                  FontAwesomeIcons.linkedin,
+                                                  size: 30,
+                                                  color: Colors.grey[600],
+                                                ),
+                                                const SizedBox(
+                                                  width: 10,
+                                                ),
+                                                const Text(
+                                                  "https://www.twitter.com/",
+                                                  style: TextStyle(
+                                                    color: btnColor,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  widget.details['author'],
+                                                  style: const TextStyle(
+                                                    color: btnColor,
+                                                  ),
+                                                )
+                                              ]),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          const Text(
+                                            'More Info',
+                                            style: TextStyle(
+                                              color: Color(0xFFE2E2E2),
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              FaIcon(
+                                                FontAwesomeIcons.locationDot,
+                                                color: Colors.grey[600],
+                                                size: 30,
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              const Text(
+                                                'Country',
+                                              )
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              FaIcon(
+                                                FontAwesomeIcons.circleInfo,
+                                                color: Colors.grey[600],
+                                                size: 30,
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              const Text(
+                                                'Joined July 1, 2022',
                                               )
                                             ],
                                           )
