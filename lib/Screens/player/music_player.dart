@@ -44,7 +44,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
       setState(() {
         bg = cc.dominantColor!.color;
       });
-      prefs.setInt("color", cc.dominantColor!.color.value);
+      prefs.setInt("color", bg.value);
     }
   }
 
@@ -57,8 +57,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    // _audioManager.play();
-    BlocProvider.of<ChartsCubit>(context).charts();
+    _audioManager.play();
+    // BlocProvider.of<ChartsCubit>(context).fetchCharts();
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -292,114 +292,119 @@ class _MusicPlayerState extends State<MusicPlayer> {
                     ),
                   ],
                 ),
-                Container(
-                  height: 600,
-                  // decoration: BoxDecoration(),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                    ),
-                    child: DraggableScrollableSheet(
-                      initialChildSize: 0.9,
-                      builder: (BuildContext context,
-                          ScrollController scrollcontroller) {
-                        return Container(
-                          decoration: BoxDecoration(
-                              color: kBackgroundColor,
-                              borderRadius: const BorderRadius.horizontal(
-                                left: Radius.circular(10.0),
-                                right: Radius.circular(10.0),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(
-                                    0.4,
-                                  ),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ]),
-                          child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CustomScrollView(
-                                slivers: [
-                                  SliverFixedExtentList(
-                                      delegate: SliverChildListDelegate([
-                                        const Text(
-                                          'Top Charts',
-                                          style: podstyles,
-                                        ),
-                                      ]),
-                                      itemExtent: 50),
-                                  BlocBuilder<ChartsCubit, ChartsState>(
-                                    builder: (context, state) {
-                                      if (state is Charts) {
-                                        return SliverList(
-                                          delegate: SliverChildBuilderDelegate(
-                                            (context, index) {
-                                              return ListTile(
-                                                  trailing: ClipRRect(
-                                                      child: CachedNetworkImage(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.5,
-                                                imageUrl: state.charts[index]
-                                                    ['header_image'],
-                                                placeholder: (context, url) =>
-                                                    const Center(
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                    color: btnColor,
-                                                  ),
-                                                ),
-                                              )));
-                                            },
-                                            childCount: state.charts.length,
-                                          ),
-                                        );
-                                      } else {
-                                        if (state is ChartsLoading) {
-                                          return SliverFixedExtentList(
-                                            delegate: SliverChildListDelegate([
-                                              const Center(
-                                                child:
-                                                    CircularProgressIndicator(
-                                                        color: btnColor),
-                                              ),
-                                            ]),
-                                            itemExtent: 100,
-                                          );
-                                        } else if (state is NetError) {
-                                          return SliverFixedExtentList(
-                                            delegate: SliverChildListDelegate([
-                                              SocketErr(
-                                                msg: state.msg,
-                                              )
-                                            ]),
-                                            itemExtent: 100,
-                                          );
-                                        } else {
-                                          return SliverFixedExtentList(
-                                              delegate:
-                                                  SliverChildListDelegate([
-                                                const HttpExc(
-                                                    msg:
-                                                        "Server Error! Contact System Admin"),
-                                              ]),
-                                              itemExtent: 100);
-                                        }
-                                      }
-                                    },
-                                  )
-                                ],
-                              )),
-                        );
-                      },
-                    ),
-                  ),
+                const SizedBox(
+                  height: 20,
                 ),
+                // Container(
+                //   height: 400,
+                //   child: Padding(
+                //     padding: const EdgeInsets.symmetric(
+                //       horizontal: 10,
+                //     ),
+                //     child: DraggableScrollableSheet(
+                //       initialChildSize: 0.9,
+                //       builder: (BuildContext context,
+                //           ScrollController scrollcontroller) {
+                //         return Container(
+                //           decoration: BoxDecoration(
+                //             color: kBackgroundColor,
+                //             borderRadius: const BorderRadius.horizontal(
+                //               left: Radius.circular(10.0),
+                //               right: Radius.circular(10.0),
+                //             ),
+                //             boxShadow: [
+                //               BoxShadow(
+                //                 color: Colors.grey.withOpacity(
+                //                   0.4,
+                //                 ),
+                //                 spreadRadius: 5,
+                //                 blurRadius: 7,
+                //                 offset: const Offset(0, 2),
+                //               ),
+                //             ],
+                //           ),
+                //           child: CustomScrollView(
+                //             slivers: [
+                //               SliverFixedExtentList(
+                //                   delegate: SliverChildListDelegate([
+                //                     const Text(
+                //                       'Top Charts',
+                //                       style: podstyles,
+                //                     ),
+                //                   ]),
+                //                   itemExtent: 50),
+                //               BlocBuilder<ChartsCubit, ChartsState>(
+                //                 builder: (context, state) {
+                //                   if (state is Charts) {
+                //                     return SliverList(
+                //                       delegate: SliverChildBuilderDelegate(
+                //                         (context, index) {
+                //                           return ListTile(
+                //                               leading: ClipRRect(
+                //                                   borderRadius:
+                //                                       BorderRadius.circular(
+                //                                           10.0),
+                //                                   child: CachedNetworkImage(
+                //                                     width:
+                //                                         MediaQuery.of(context)
+                //                                                 .size
+                //                                                 .width *
+                //                                             0.5,
+                //                                     imageUrl:
+                //                                         state.charts[index]
+                //                                             ['header_image'],
+                //                                     placeholder:
+                //                                         (context, url) =>
+                //                                             const Center(
+                //                                       child:
+                //                                           CircularProgressIndicator(
+                //                                         color: btnColor,
+                //                                       ),
+                //                                     ),
+                //                                   )));
+                //                         },
+                //                         childCount: state.charts.length,
+                //                       ),
+                //                     );
+                //                   } else {
+                //                     if (state is ChartsLoading) {
+                //                       return SliverFixedExtentList(
+                //                         delegate: SliverChildListDelegate([
+                //                           const Center(
+                //                             child: CircularProgressIndicator(
+                //                                 color: btnColor),
+                //                           ),
+                //                         ]),
+                //                         itemExtent: 100,
+                //                       );
+                //                     } else if (state is NetError) {
+                //                       return SliverFixedExtentList(
+                //                         delegate: SliverChildListDelegate([
+                //                           SocketErr(
+                //                             msg: state.msg,
+                //                           )
+                //                         ]),
+                //                         itemExtent: 100,
+                //                       );
+                //                     } else {
+                //                       return SliverFixedExtentList(
+                //                           delegate: SliverChildListDelegate([
+                //                             const HttpExc(
+                //                                 msg:
+                //                                     "Server Error! Contact System Admin"),
+                //                           ]),
+                //                           itemExtent: 100);
+                //                     }
+                //                   }
+                //                 },
+                //               )
+                //             ],
+                //           ),
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ],

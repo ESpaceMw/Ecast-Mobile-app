@@ -12,7 +12,6 @@ class ChartsCubit extends Cubit<ChartsState> {
   void charts() async {
     emit(ChartsLoading());
     repository.fetchCharts().then((value) {
-      // print(value);
       if (value['err']) {
         if (value['type'] == 'net') {
           emit(NetError(msg: value['msg']));
@@ -37,7 +36,6 @@ class ChartsCubit extends Cubit<ChartsState> {
   void fetchCharts() {
     emit(ChartsLoading());
     repository.fetchChartsData().then((value) {
-      print(value);
       if (value['err']) {
         if (value['type'] == 'net') {
           emit(NetError(msg: value['msg']));

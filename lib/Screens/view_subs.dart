@@ -4,6 +4,7 @@ import 'package:ecast/Screens/view_ep.dart';
 import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
+import 'package:ecast/cubit/search_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:marquee/marquee.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert' as convert;
 
@@ -34,6 +36,7 @@ class _SubsState extends State<Subs> {
   Widget build(BuildContext context) {
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(widget.details['id']);
     BlocProvider.of<UserCubit>(context).showFollowing(widget.details['id']);
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: ListView(
         children: [
@@ -51,8 +54,8 @@ class _SubsState extends State<Subs> {
                     begin: Alignment.bottomCenter,
                     end: Alignment.center,
                     colors: [
-                      Colors.black87,
                       kBackgroundColor,
+                      Colors.black87,
                       Colors.transparent,
                     ],
                   ).createShader(rect),
@@ -143,6 +146,9 @@ class _SubsState extends State<Subs> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
+                onTap: () {
+                  about(context, size);
+                },
                 child: const FaIcon(FontAwesomeIcons.circleInfo),
               ),
               const SizedBox(
@@ -288,6 +294,9 @@ class _SubsState extends State<Subs> {
                 width: 20,
               ),
               GestureDetector(
+                onTap: () {
+                  donations(context, size);
+                },
                 child: const FaIcon(
                   FontAwesomeIcons.handHoldingDollar,
                 ),
@@ -296,6 +305,12 @@ class _SubsState extends State<Subs> {
                 width: 20,
               ),
               GestureDetector(
+                onTap: () {
+                  Share.share(
+                    "ecast.espacemw.com/${widget.details['title']}",
+                    subject: "My Podcast",
+                  );
+                },
                 child: const Icon(Icons.share),
               )
             ],
@@ -330,13 +345,17 @@ class _SubsState extends State<Subs> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => BlocProvider.value(
-                              value: PodcastsCubit(repository: repository),
+                              value: SearchCubit(
+                                repository: repository,
+                              ),
                               child: ViewEp(
                                 ep: state.episodes[index],
                                 cover: 'http://167.99.86.191' +
                                     widget.details['cover_art'],
                                 author: widget.details['author'],
                                 title: widget.details['title'],
+                                id: widget.details['id'],
+                                category: widget.details['category'][0]['name'],
                               ),
                             ),
                           ),
@@ -482,5 +501,399 @@ class _SubsState extends State<Subs> {
         ],
       ),
     );
+  }
+
+  Future<dynamic> about(BuildContext context, Size size) {
+    return showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) {
+          return ClipRRect(
+            borderRadius: const BorderRadius.horizontal(
+              left: Radius.circular(10.0),
+              right: Radius.circular(10.0),
+            ),
+            child: Container(
+              height: size.height * 0.7,
+              decoration: const BoxDecoration(
+                color: scaffoldColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ListView(
+                  children: [
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 130.0,
+                      ),
+                      child:
+                          Divider(color: Colors.grey, height: 10, thickness: 2),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "About",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(width: 8.0),
+                        Text(
+                          widget.details['title'],
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      "Description",
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Color(0xFFE2E2E2),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      widget.details['description'],
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    const Text(
+                      'Links',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Color(0xFFE2E2E2),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.globe,
+                          size: 30,
+                          color: Colors.grey[600],
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "https://www.${widget.details["author"]}.com/podcast",
+                          style: const TextStyle(
+                            color: btnColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      FaIcon(
+                        FontAwesomeIcons.facebookSquare,
+                        size: 30,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        "https://www.facebook.com/",
+                        style: TextStyle(
+                          color: btnColor,
+                        ),
+                      ),
+                      Text(widget.details['author'],
+                          style: const TextStyle(
+                            color: btnColor,
+                          ))
+                    ]),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      FaIcon(
+                        FontAwesomeIcons.instagram,
+                        size: 30,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        "https://www.instagram.com/",
+                        style: TextStyle(
+                          color: btnColor,
+                        ),
+                      ),
+                      Text(
+                        widget.details['author'],
+                        style: const TextStyle(
+                          color: btnColor,
+                        ),
+                      )
+                    ]),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      FaIcon(
+                        FontAwesomeIcons.twitter,
+                        size: 30,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        "https://www.twitter.com/",
+                        style: TextStyle(
+                          color: btnColor,
+                        ),
+                      ),
+                      Text(
+                        widget.details['author'],
+                        style: const TextStyle(
+                          color: btnColor,
+                        ),
+                      )
+                    ]),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                      FaIcon(
+                        FontAwesomeIcons.linkedin,
+                        size: 30,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        "https://www.twitter.com/",
+                        style: TextStyle(
+                          color: btnColor,
+                        ),
+                      ),
+                      Text(
+                        widget.details['author'],
+                        style: const TextStyle(
+                          color: btnColor,
+                        ),
+                      )
+                    ]),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'More Info',
+                      style: TextStyle(
+                        color: Color(0xFFE2E2E2),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 17,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.locationDot,
+                          color: Colors.grey[600],
+                          size: 30,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Country',
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.circleInfo,
+                          color: Colors.grey[600],
+                          size: 30,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'Joined July 1, 2022',
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  Future<dynamic> donations(BuildContext context, Size size) {
+    return showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return ClipRRect(
+            borderRadius: const BorderRadius.horizontal(
+              left: Radius.circular(10.0),
+              right: Radius.circular(10.0),
+            ),
+            child: Container(
+              height: size.height * 0.34,
+              decoration: BoxDecoration(color: scaffoldColor, boxShadow: [
+                BoxShadow(
+                  color: Colors.black54.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                )
+              ]),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: ListView(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 130.0,
+                      ),
+                      child:
+                          Divider(color: Colors.grey, height: 10, thickness: 2),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    const Text(
+                      "SUPPORT THE AUTHOR",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[700],
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
+                      ),
+                      width: size.width * 0.9,
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text(
+                        "TNM MPAMBA",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[700],
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
+                      ),
+                      width: size.width * 0.9,
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text(
+                        "AIRTEL MONEY",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[700],
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
+                      ),
+                      width: size.width * 0.9,
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text(
+                        "MO 626",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[700],
+                        borderRadius: BorderRadius.circular(
+                          10.0,
+                        ),
+                      ),
+                      width: size.width * 0.9,
+                      padding: const EdgeInsets.all(10.0),
+                      child: const Text(
+                        "PAYPAL",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

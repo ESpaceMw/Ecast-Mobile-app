@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:coolicons/coolicons.dart';
 import 'package:ecast/Screens/player/music_player.dart';
 import 'package:ecast/Screens/view_ep.dart';
 import 'package:ecast/Services/api.dart';
@@ -8,6 +7,7 @@ import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/cubit/charts_cubit.dart';
 import 'package:ecast/cubit/podcasts_cubit.dart';
+import 'package:ecast/cubit/search_cubit.dart';
 import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +42,7 @@ class _ViewPodcastState extends State<ViewPodcast> {
 
   @override
   Widget build(BuildContext context) {
+    // print();
     BlocProvider.of<UserCubit>(context).showFollowing(widget.details['id']);
 
     BlocProvider.of<PodcastsCubit>(context).fetchEpisodes(widget.details['id']);
@@ -58,15 +59,29 @@ class _ViewPodcastState extends State<ViewPodcast> {
                     bottomRight: Radius.circular(5.5),
                   ),
                 ),
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.34,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(widget.details['header_image']),
-                      fit: BoxFit.cover,
-                      colorFilter: const ColorFilter.mode(
-                          Colors.black45, BlendMode.darken),
+                child: ShaderMask(
+                  shaderCallback: (rect) => const LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.center,
+                    colors: [
+                      kBackgroundColor,
+                      kBackgroundColor,
+                      Colors.transparent,
+                    ],
+                  ).createShader(rect),
+                  blendMode: BlendMode.overlay,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.4,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          widget.details['header_image'],
+                        ),
+                        fit: BoxFit.cover,
+                        colorFilter: const ColorFilter.mode(
+                            Colors.black45, BlendMode.darken),
+                      ),
                     ),
                   ),
                 ),
@@ -358,12 +373,15 @@ class _ViewPodcastState extends State<ViewPodcast> {
                                   MaterialPageRoute(
                                     builder: (context) => BlocProvider.value(
                                       value:
-                                          PodcastsCubit(repository: repository),
+                                          SearchCubit(repository: repository),
                                       child: ViewEp(
                                         ep: state.episodes[index],
                                         cover: widget.details['cover_art'],
                                         author: widget.details['author'],
                                         title: widget.details['title'],
+                                        id: widget.details['id'],
+                                        category: widget.details['category'][0]
+                                            ['name'],
                                       ),
                                     ),
                                   ),

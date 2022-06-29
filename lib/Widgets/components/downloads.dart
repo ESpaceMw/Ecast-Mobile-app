@@ -18,7 +18,7 @@ class _DownloadsState extends State<Downloads> {
   Widget build(BuildContext context) {
     return const Center(
         child: Text(
-      "Downloads",
+      "This feature will be available on release day",
     ));
   }
 }

@@ -32,41 +32,43 @@ class _PlaylistState extends State<Playlist> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('You have No Playlist'),
+                children: const [
+                  // const Text('You have No Playlist'),
                   const SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    height: size.height,
-                    child: ListView(
-                      children: [
-                        Center(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, playlistInput);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: btnColor,
-                                borderRadius: BorderRadius.circular(
-                                  20.0,
-                                ),
-                              ),
-                              child: const Text(
-                                'Create Playlist',
-                                style: info,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
+                  const Text('Feature will be available for Production'),
+
+                  // Container(
+                  //   height: size.height,
+                  //   child: ListView(
+                  //     children: [
+                  //       Center(
+                  //         child: GestureDetector(
+                  //           onTap: () {
+                  //             Navigator.pushNamed(context, playlistInput);
+                  //           },
+                  //           child: Container(
+                  //             padding: const EdgeInsets.symmetric(
+                  //               horizontal: 20,
+                  //               vertical: 6,
+                  //             ),
+                  //             decoration: BoxDecoration(
+                  //               color: btnColor,
+                  //               borderRadius: BorderRadius.circular(
+                  //                 20.0,
+                  //               ),
+                  //             ),
+                  //             child: const Text(
+                  //               'Create Playlist',
+                  //               style: info,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       )
+                  //     ],
+                  //   ),
+                  // )
                 ],
               ),
             );

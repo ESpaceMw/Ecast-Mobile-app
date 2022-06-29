@@ -1,23 +1,36 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecast/Screens/player/music_player.dart';
+import 'package:ecast/Screens/view_podcasts.dart';
+import 'package:ecast/Services/api.dart';
+import 'package:ecast/Services/repos/repo.dart';
 import 'package:ecast/Utils/audioinstance.dart';
 import 'package:ecast/Utils/constants.dart';
+import 'package:ecast/cubit/podcasts_cubit.dart';
+import 'package:ecast/cubit/search_cubit.dart';
+import 'package:ecast/cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:share_plus/share_plus.dart';
+
+Repository repo = Repository(networkService: NetworkService());
 
 class ViewEp extends StatefulWidget {
   final dynamic ep;
   final String cover;
   final String author;
   final String title;
+  final String category;
+  final dynamic id;
   const ViewEp({
     Key? key,
     required this.ep,
     required this.cover,
     required this.author,
     required this.title,
+    required this.category,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -39,43 +52,13 @@ class _ViewEpState extends State<ViewEp> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<SearchCubit>(context).filterPodcasts(widget.category);
     return Scaffold(
       body: SafeArea(
         child: ListView(
           children: [
             Stack(
               children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(5.5),
-                      bottomRight: Radius.circular(5.5),
-                    ),
-                  ),
-                  child: ShaderMask(
-                    shaderCallback: (rect) => LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [
-                        Colors.black,
-                        Colors.black.withOpacity(0.7),
-                      ],
-                    ).createShader(rect),
-                    blendMode: BlendMode.darken,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/images/ob.jpg'),
-                          fit: BoxFit.cover,
-                          colorFilter:
-                              ColorFilter.mode(Colors.black54, BlendMode.dstIn),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
@@ -260,6 +243,74 @@ class _ViewEpState extends State<ViewEp> {
                 'You May Also Like',
                 style: textStyle,
               ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            BlocBuilder<SearchCubit, SearchState>(
+              builder: (context, state) {
+                if (state is FetchedCat) {
+                  return GridView.builder(
+                      shrinkWrap: true,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 2.0,
+                        crossAxisSpacing: 0,
+                      ),
+                      itemCount: state.categories.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MultiBlocProvider(
+                                providers: [
+                                  BlocProvider.value(
+                                      value: PodcastsCubit(repository: repo)),
+                                  BlocProvider.value(
+                                    value: UserCubit(repository: repo),
+                                  )
+                                ],
+                                child: ViewPodcast(
+                                    details: state.categories[index]),
+                              ),
+                            ));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(
+                              left: 15,
+                            ),
+                            child: Stack(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 13),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      imageUrl: state.categories[index]
+                                          ['cover_art'],
+                                      placeholder: (context, url) =>
+                                          const Center(
+                                        child: CircularProgressIndicator(
+                                          color: btnColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(color: btnColor),
+                  );
+                }
+              },
             )
           ],
         ),

@@ -123,20 +123,20 @@ class _ProfileState extends State<Profile> {
               ),
               GestureDetector(
                 onTap: () {
-                  showModalBottomSheet(
-                    backgroundColor: kBackgroundColor,
-                    context: context,
-                    builder: (context) {
-                      return SingleChildScrollView(
-                        child: SizedBox(
-                          height: size.height,
-                          child: Column(
-                            children: [],
-                          ),
-                        ),
-                      );
-                    },
-                  );
+                  // showModalBottomSheet(
+                  //   backgroundColor: kBackgroundColor,
+                  //   context: context,
+                  //   builder: (context) {
+                  //     return SingleChildScrollView(
+                  //       child: SizedBox(
+                  //         height: size.height,
+                  //         child: Column(
+                  //           children: [],
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // );
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(

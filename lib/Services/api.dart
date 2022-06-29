@@ -107,10 +107,8 @@ class NetworkService {
         'email': email.text,
       });
       if (request.statusCode != 200) {
-        print(request.body);
       } else {
         final response = convert.jsonDecode(request.body);
-        // print(response);
         return {'err': false, 'msg': response};
       }
     } on SocketException {
@@ -268,9 +266,11 @@ class NetworkService {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       final token = prefs.getString("token");
       final request = await http.get(
-          Uri.parse("$baseUrl/podcast/api/v1/podcast/chats/"),
-          headers: {'Authorization': 'Token $token'});
-      print(request.body);
+        Uri.parse("$baseUrl/podcast/api/v1/podcast/chats/"),
+        headers: {
+          'Authorization': "Token $token",
+        },
+      );
       if (request.statusCode == 200) {
         final response = convert.jsonDecode(request.body);
         return {'err': false, 'msg': response};
@@ -290,7 +290,6 @@ class NetworkService {
         'msg': 'Server Error! Contact System Admin',
       };
     } catch (e) {
-      print(e);
       return {
         'err': true,
         'type': 'http',
@@ -464,7 +463,6 @@ class NetworkService {
           body: {
             'podcast_id': id,
           });
-      print(request.body);
       if (request.statusCode != 200) {
         return {'err': true, 'type': 'tk', 'msg': "Error"};
       } else {
@@ -544,8 +542,6 @@ class NetworkService {
         },
       );
 
-      // print(request.body);
-
       if (request.statusCode == 401) {
         return {
           'err': true,
@@ -554,7 +550,6 @@ class NetworkService {
         };
       } else {
         final response = convert.jsonDecode(request.body);
-        // print(response);
         return {'err': false, 'msg': response};
       }
     } on SocketException {
@@ -666,7 +661,7 @@ class NetworkService {
       );
 
       if (request.statusCode != 200) {
-        // print(request.body);
+        return {'err': true, 'type': 'tk', 'msg': 'Invalid Token'};
       } else {
         final response = convert.jsonDecode(request.body);
         return {'err': false, 'msg': response['podcast_set']};
@@ -701,7 +696,7 @@ class NetworkService {
         headers: {'Authorization': 'Token $token'},
       );
       if (request.statusCode != 200) {
-        print(request.body);
+        return {'err': true, 'type': 'tk', 'msg': 'Invalid Token'};
       } else {
         final response = convert.jsonDecode(request.body);
         return {'err': false, 'msg': response};

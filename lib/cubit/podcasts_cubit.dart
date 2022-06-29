@@ -70,7 +70,6 @@ class PodcastsCubit extends Cubit<PodcastsState> {
   void unsubscribe(id) {
     emit(SubProcess());
     repository.unsubscribe(id).then((value) {
-      print(value);
       if (value['err']) {
         emit(PodcastsError(msg: value['msg']));
       } else {

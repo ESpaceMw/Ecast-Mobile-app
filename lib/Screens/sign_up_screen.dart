@@ -14,6 +14,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formkey = GlobalKey<FormState>();
+  bool _visible = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -261,7 +262,6 @@ class _SignUpState extends State<SignUp> {
                                   var birthday =
                                       "${newDate.year}-${newDate.month}-${newDate.day}";
                                   birthdate.text = birthday;
-                                  print(birthdate.text);
                                 });
                               },
                               child: IgnorePointer(
@@ -485,16 +485,35 @@ class _SignUpState extends State<SignUp> {
                                 return null;
                               },
                               controller: password,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(
+                              obscureText: _visible,
+                              decoration: InputDecoration(
+                                prefixIcon: const Icon(
                                   Icons.lock,
                                   color: whiteColor,
                                 ),
-                                suffixIcon: Icon(
-                                  Icons.visibility,
-                                  color: whiteColor,
-                                ),
+                                suffixIcon: _visible == true
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _visible = false;
+                                          });
+                                        },
+                                        child: const Icon(
+                                          Icons.visibility_off,
+                                          color: whiteColor,
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            _visible = true;
+                                          });
+                                        },
+                                        child: const Icon(
+                                          Icons.visibility,
+                                          color: whiteColor,
+                                        ),
+                                      ),
                                 hintText: "Create a password",
                                 labelText: "Password",
                                 enabledBorder: OutlineInputBorder(
