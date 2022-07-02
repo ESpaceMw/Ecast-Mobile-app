@@ -261,6 +261,38 @@ class NetworkService {
     }
   }
 
+  Future fetchAdminPodcast() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString("token");
+      final request = await http.get(
+        Uri.parse("$baseUrl/podcast/api/v1/getAdminPlaylist"),
+        headers: {'Authorization': 'Token $token'},
+      );
+
+      if (request.statusCode != 200) {
+        return {'err': true, 'type': 'tk', 'msg': 'Invalid Token'};
+      } else {
+        final response = convert.jsonDecode(request.body);
+        return {'err': false, 'msg': response};
+      }
+    } on SocketException {
+      return {'err': true, 'type': 'Net', 'msg': 'No internet Connection'};
+    } on HttpException {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact System Admin'
+      };
+    } catch (e) {
+      return {
+        'err': true,
+        'type': 'http',
+        'msg': 'Server Error! Contact System Admin'
+      };
+    }
+  }
+
   Future fetchChartsData() async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -19,7 +19,7 @@ class EcastPlaylist extends StatelessWidget {
         height: 230,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: state.playlists.length,
+          itemCount: 5,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
@@ -64,6 +64,8 @@ class EcastPlaylist extends StatelessWidget {
                       state.playlists[index]['title'],
                       style: podstyles,
                       textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

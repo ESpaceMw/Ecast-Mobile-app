@@ -18,7 +18,7 @@ class RecentlyPlayed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 180,
+      height: 150,
       child: ListView.builder(
           itemCount: state.podcasts.length,
           scrollDirection: Axis.horizontal,
@@ -26,7 +26,6 @@ class RecentlyPlayed extends StatelessWidget {
             if (state.podcasts.isEmpty) {
               return const Text("No recent plays");
             } else {
-              print(state.podcasts[index]);
               return GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(

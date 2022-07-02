@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ecast/Screens/playlists_details.dart';
+import 'package:ecast/Screens/playlists_lists.dart';
+import 'package:ecast/Screens/podcasts_list.dart';
 import 'package:ecast/Screens/view_chart.dart';
 import 'package:ecast/Screens/view_podcasts.dart';
 import 'package:ecast/Screens/wrapper.dart';
@@ -362,22 +364,64 @@ class data extends StatelessWidget {
         RecentlyPlayed(
           state: state,
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25),
-          child: Text(
-            "Recommended Podcasts",
-            style: textStyle,
+        const SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Recommended Podcasts",
+                style: textStyle,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: ((context) => BlocProvider.value(
+                            value: PodcastsCubit(repository: repos),
+                            child: const Podcasts(),
+                          )),
+                    ),
+                  );
+                },
+                child: const Text(
+                  "see all",
+                  style: podstyles,
+                ),
+              )
+            ],
           ),
         ),
         Recommended(state: state, size: size, repos: repos),
-        // const SizedBox(
-        //   height: 10,
-        // ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25),
-          child: Text(
-            "Ecast Playlists",
-            style: textStyle,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Ecast Playlists",
+                style: textStyle,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider.value(
+                        value: PodcastsCubit(repository: repos),
+                        child: const PlaylistsList(),
+                      ),
+                    ),
+                  );
+                },
+                child: const Text(
+                  "see all",
+                  style: podstyles,
+                ),
+              )
+            ],
           ),
         ),
         EcastPlaylist(state: state, size: size),

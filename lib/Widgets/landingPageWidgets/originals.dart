@@ -73,6 +73,8 @@ class Originals extends StatelessWidget {
                       state.data[index]['title'],
                       style: podstyles,
                       textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),

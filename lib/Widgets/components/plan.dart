@@ -119,7 +119,8 @@ class _PlanState extends State<Plan> {
                 items: plandetails,
                 options: CarouselOptions(
                   enlargeCenterPage: true,
-                  aspectRatio: 1.5,
+                  aspectRatio: 1.3,
+                  enlargeStrategy: CenterPageEnlargeStrategy.height,
                 ),
               ),
               const SizedBox(

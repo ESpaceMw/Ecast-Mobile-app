@@ -51,36 +51,44 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          imageUrl: widget.playlists['cover_art'],
-                          placeholder: (context, url) => const Center(
-                            child: CircularProgressIndicator(
-                              color: btnColor,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: recColor,
+                    borderRadius: BorderRadius.circular(
+                      10.0,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            width: MediaQuery.of(context).size.width * 0.5,
+                            imageUrl: widget.playlists['cover_art'],
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(
+                                color: btnColor,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Flexible(
-                      child: Text(
-                        widget.playlists['title'],
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Flexible(
+                        child: Text(
+                          widget.playlists['title'],
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(

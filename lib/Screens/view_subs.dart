@@ -43,35 +43,40 @@ class _SubsState extends State<Subs> {
           Stack(
             children: [
               Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(5.5),
-                    bottomRight: Radius.circular(5.5),
+                margin: EdgeInsets.only(
+                  bottom: size.height * 0.1,
+                ),
+                height: MediaQuery.of(context).size.height * 0.25,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(50.0),
+                    bottomRight: Radius.circular(50.0),
+                  ),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      'http://167.99.86.191' + widget.details['header_image'],
+                    ),
+                    fit: BoxFit.cover,
+                    colorFilter: const ColorFilter.mode(
+                        Colors.black45, BlendMode.darken),
                   ),
                 ),
-                child: ShaderMask(
-                  shaderCallback: (rect) => const LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.center,
-                    colors: [
-                      kBackgroundColor,
-                      Colors.black87,
-                      Colors.transparent,
-                    ],
-                  ).createShader(rect),
-                  blendMode: BlendMode.overlay,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 0.4,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          'http://167.99.86.191' +
-                              widget.details['header_image'],
-                        ),
-                        fit: BoxFit.cover,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.black45, BlendMode.darken),
+              ),
+              Positioned(
+                bottom: 0.0,
+                left: size.width * 0.25,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                    10.0,
+                  ),
+                  child: CachedNetworkImage(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    imageUrl:
+                        'http://167.99.86.191' + widget.details['cover_art'],
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(
+                        color: btnColor,
                       ),
                     ),
                   ),
@@ -98,29 +103,14 @@ class _SubsState extends State<Subs> {
                   ],
                 ),
               ),
-              Positioned(
-                top: MediaQuery.of(context).size.height * 0.1,
-                left: MediaQuery.of(context).size.width * 0.25,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: CachedNetworkImage(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    imageUrl:
-                        'http://167.99.86.191' + widget.details['cover_art'],
-                    placeholder: (context, url) => const Center(
-                      child: CircularProgressIndicator(
-                        color: btnColor,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
           Text(
             widget.details['title'],
-            style: titleStyles,
+            style: podTitleStyles,
             textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           Text(
             widget.details['author'],
@@ -355,6 +345,8 @@ class _SubsState extends State<Subs> {
                                 author: widget.details['author'],
                                 title: widget.details['title'],
                                 id: widget.details['id'],
+                                coverArt: 'http://167.99.86.191' +
+                                    widget.details['header_image'],
                                 category: widget.details['category'][0]['name'],
                               ),
                             ),

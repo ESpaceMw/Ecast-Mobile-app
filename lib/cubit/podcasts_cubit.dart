@@ -78,6 +78,25 @@ class PodcastsCubit extends Cubit<PodcastsState> {
     });
   }
 
+  void fetchPlaylists() async {
+    emit(SubProcess());
+    repository.fetchAdminPlaylists().then((value) {
+      if (value['err']) {
+        emit(
+          PodcastsError(
+            msg: value['msg'],
+          ),
+        );
+      } else {
+        emit(
+          PlaylistsFetched(
+            playlists: value['msg'],
+          ),
+        );
+      }
+    });
+  }
+
   void fetchRelatedPodcasts() {
     emit(SubProcess());
   }

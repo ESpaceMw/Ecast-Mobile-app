@@ -58,7 +58,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
   @override
   Widget build(BuildContext context) {
     _audioManager.play();
-    // BlocProvider.of<ChartsCubit>(context).fetchCharts();
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -68,6 +67,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
             scaffoldColor,
             scaffoldColor,
             bg,
+            scaffoldColor,
           ],
           tileMode: TileMode.repeated,
         ),
@@ -184,7 +184,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
                     DropdownButtonHideUnderline(
                       child: DropdownButton(
                         value: dropDownvalue,
-                        // dropdownColor: whiteColor,
                         onChanged: (String? value) {
                           setState(() {
                             dropDownvalue = value!;

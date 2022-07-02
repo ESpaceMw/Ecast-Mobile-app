@@ -26,6 +26,11 @@ class Menu extends StatefulWidget {
 
 class _MenuState extends State<Menu> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     BlocProvider.of<UserCubit>(context).userProfile();
     return Scaffold(
@@ -119,34 +124,31 @@ class _MenuState extends State<Menu> {
           const SizedBox(
             height: 20,
           ),
-          GestureDetector(
-            onTap: () => Navigator.pushNamed(context, '/notes'),
-            child: ListTile(
-              leading: Container(
-                padding: const EdgeInsets.all(15.0),
-                decoration: boxColor,
-                child: Icon(
-                  Coolicons.note,
-                  color: iconColor,
-                  size: 23,
-                ),
+          ListTile(
+            leading: Container(
+              padding: const EdgeInsets.all(15.0),
+              decoration: boxColor,
+              child: Icon(
+                Coolicons.note,
+                color: iconColor,
+                size: 23,
               ),
-              title: const Text(
-                "Notes",
-                style: textStyle,
-              ),
-              trailing: const FaIcon(
-                FontAwesomeIcons.angleRight,
-                size: 20,
-              ),
+            ),
+            title: const Text(
+              "Notes",
+              style: textStyle,
+            ),
+            trailing: const FaIcon(
+              FontAwesomeIcons.angleRight,
+              size: 20,
             ),
           ),
           const SizedBox(
             height: 20,
           ),
           GestureDetector(
-            onTap: () {
-              // TODO: implement link binding
+            onTap: () async {
+              await launchUrl(Uri.parse("https://www.ecast.espacemw.com/help"));
             },
             child: ListTile(
               leading: Container(

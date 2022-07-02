@@ -45,3 +45,8 @@ class Unsubscribed extends PodcastsState {
 
   Unsubscribed({required this.msg});
 }
+
+class PlaylistsFetched extends PodcastsState {
+  final List playlists;
+  PlaylistsFetched({required this.playlists});
+}

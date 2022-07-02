@@ -47,10 +47,15 @@ const podstyles = TextStyle(
 
 const textStyle = TextStyle(
   fontSize: 18,
-  fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.w700,
 );
 
 const titleStyles = TextStyle(
+  fontSize: 20,
+  fontWeight: FontWeight.bold,
+);
+
+const podTitleStyles = TextStyle(
   fontSize: 25,
   fontWeight: FontWeight.bold,
 );
@@ -123,53 +128,33 @@ const playlistInput = '/add_playlist';
 
 List<String> options = ['Cast', 'Download'];
 
-List genres = [
-  {'art_url': '', 'title': 'Arts'},
-  {'art_url': "", 'title': ''},
-];
-
 Repository repository = Repository(networkService: NetworkService());
 
 // plan list
 List<Widget> plans = [
   Container(
     width: 1000,
-    decoration: BoxDecoration(
-      color: btnColor,
-      borderRadius: BorderRadius.circular(
-        10.0,
+    child: Center(
+      child: Image.asset(
+        "assets/images/1.png",
       ),
     ),
-    child: const Center(
-        child: Text(
-      'Solo Packages',
-    )),
   ),
   Container(
     width: 1000,
-    decoration: BoxDecoration(
-      color: btnColor,
-      borderRadius: BorderRadius.circular(
-        10.0,
+    child: Center(
+      child: Image.asset(
+        "assets/images/3.png",
       ),
     ),
-    child: const Center(
-        child: Text(
-      'Duo Package',
-    )),
   ),
   Container(
     width: 1000,
-    decoration: BoxDecoration(
-      color: btnColor,
-      borderRadius: BorderRadius.circular(
-        10.0,
+    child: Center(
+      child: Image.asset(
+        "assets/images/DUO.png",
       ),
     ),
-    child: const Center(
-        child: Text(
-      'Squad',
-    )),
   )
 ];
 
@@ -273,145 +258,7 @@ List<Widget> reslits = [
 
 // plan details const list
 List<Widget> plandetails = [
-  Container(
-    width: 1000,
-    decoration: BoxDecoration(
-        color: kBackgroundColor, borderRadius: BorderRadius.circular(10.0)),
-    child: Column(
-      children: const [
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            "Solo Package",
-            textAlign: TextAlign.center,
-            style: packageStyles,
-          ),
-        ),
-        SizedBox(height: 10),
-        Text(
-          'Solo Daily',
-          style: planStyles,
-        ),
-        Text(
-          'MK 250',
-          style: priceStyles,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          'Solo Weekly',
-          style: planStyles,
-        ),
-        Text(
-          'MK 1,500',
-          style: priceStyles,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          'Solo Monthly',
-          style: planStyles,
-        ),
-        Text(
-          'MK 5,000',
-          style: priceStyles,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-      ],
-    ),
-  ),
-  Container(
-    width: 1000,
-    decoration: BoxDecoration(
-        color: kBackgroundColor, borderRadius: BorderRadius.circular(10.0)),
-    child: Column(
-      children: const [
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            "Duo Package",
-            textAlign: TextAlign.center,
-            style: packageStyles,
-          ),
-        ),
-        SizedBox(height: 10),
-        Text(
-          'Duo Weekly',
-          style: planStyles,
-        ),
-        Text(
-          'MK 2,500',
-          style: priceStyles,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          'Duo Monthly',
-          style: planStyles,
-        ),
-        Text(
-          'MK 7,500',
-          style: priceStyles,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-      ],
-    ),
-  ),
-  Container(
-    width: 1000,
-    decoration: BoxDecoration(
-      color: kBackgroundColor,
-      borderRadius: BorderRadius.circular(
-        10.0,
-      ),
-    ),
-    child: Column(
-      children: const [
-        Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            "Squad Package",
-            textAlign: TextAlign.center,
-            style: packageStyles,
-          ),
-        ),
-        SizedBox(
-          height: 8.0,
-        ),
-        Text("Max 5 people"),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          'Squad Weekly',
-          style: planStyles,
-        ),
-        Text(
-          'MK 3,500',
-          style: priceStyles,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        Text(
-          'Squad Monthly',
-          style: planStyles,
-        ),
-        Text(
-          'MK 10,000',
-          style: priceStyles,
-        ),
-        SizedBox(
-          height: 10,
-        ),
-      ],
-    ),
-  )
+  Container(width: 3000, child: Image.asset("assets/images/solo.png")),
+  Container(child: Image.asset("assets/images/duo.png")),
+  Container(child: Image.asset("assets/images/squad.png"))
 ];

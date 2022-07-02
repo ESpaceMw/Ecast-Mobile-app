@@ -23,6 +23,7 @@ class ViewEp extends StatefulWidget {
   final String title;
   final String category;
   final dynamic id;
+  final String coverArt;
   const ViewEp({
     Key? key,
     required this.ep,
@@ -31,6 +32,7 @@ class ViewEp extends StatefulWidget {
     required this.title,
     required this.category,
     required this.id,
+    required this.coverArt,
   }) : super(key: key);
 
   @override
@@ -59,6 +61,40 @@ class _ViewEpState extends State<ViewEp> {
           children: [
             Stack(
               children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(5.5),
+                      bottomRight: Radius.circular(5.5),
+                    ),
+                  ),
+                  child: ShaderMask(
+                    shaderCallback: (rect) => LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        kBackgroundColor,
+                        kBackgroundColor,
+                        Colors.black.withOpacity(0.7),
+                      ],
+                    ).createShader(rect),
+                    blendMode: BlendMode.darken,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            widget.coverArt,
+                          ),
+                          fit: BoxFit.cover,
+                          colorFilter: const ColorFilter.mode(
+                              Colors.black54, BlendMode.dstIn),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
@@ -86,15 +122,12 @@ class _ViewEpState extends State<ViewEp> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 20),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: CachedNetworkImage(
-                                width: MediaQuery.of(context).size.width * 0.4,
-                                imageUrl: widget.cover,
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator(
-                                  color: btnColor,
-                                ),
+                            child: CachedNetworkImage(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              imageUrl: widget.cover,
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(
+                                color: btnColor,
                               ),
                             ),
                           ),
@@ -284,18 +317,14 @@ class _ViewEpState extends State<ViewEp> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.only(top: 13),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: CachedNetworkImage(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.4,
-                                      imageUrl: state.categories[index]
-                                          ['cover_art'],
-                                      placeholder: (context, url) =>
-                                          const Center(
-                                        child: CircularProgressIndicator(
-                                          color: btnColor,
-                                        ),
+                                  child: CachedNetworkImage(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    imageUrl: state.categories[index]
+                                        ['cover_art'],
+                                    placeholder: (context, url) => const Center(
+                                      child: CircularProgressIndicator(
+                                        color: btnColor,
                                       ),
                                     ),
                                   ),

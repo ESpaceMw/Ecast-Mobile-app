@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecast/Screens/playlists_details.dart';
 import 'package:ecast/Screens/view_podcasts.dart';
 import 'package:ecast/Services/api.dart';
 import 'package:ecast/Services/repos/repo.dart';
@@ -12,12 +13,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 final Repository repository = Repository(networkService: NetworkService());
 
-class Podcasts extends StatelessWidget {
-  const Podcasts({Key? key}) : super(key: key);
+class PlaylistsList extends StatelessWidget {
+  const PlaylistsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<PodcastsCubit>(context).fetchPodcasts();
+    BlocProvider.of<PodcastsCubit>(context).fetchPlaylists();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -40,7 +41,7 @@ class Podcasts extends StatelessWidget {
                       const SizedBox(
                         width: 20,
                       ),
-                      const Text("Recommended Podcasts", style: titleStyles)
+                      const Text("Ecast Podcasts", style: titleStyles)
                     ],
                   ),
                 ]),
@@ -48,15 +49,15 @@ class Podcasts extends StatelessWidget {
               ),
               BlocBuilder<PodcastsCubit, PodcastsState>(
                 builder: (context, state) {
-                  if (state is Pod) {
-                    if (state.arts.isEmpty) {
+                  if (state is PlaylistsFetched) {
+                    if (state.playlists.isEmpty) {
                       return SliverFixedExtentList(
                         delegate: SliverChildListDelegate([
                           Container(
                             height: MediaQuery.of(context).size.height * 0.8,
                             child: const Center(
                               child: Text(
-                                'No Podcasts in this category',
+                                'No Platlists Available',
                                 style: textStyle,
                               ),
                             ),
@@ -70,21 +71,13 @@ class Podcasts extends StatelessWidget {
                           (context, index) {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => MultiBlocProvider(
-                                    providers: [
-                                      BlocProvider.value(
-                                          value: PodcastsCubit(
-                                              repository: repository)),
-                                      BlocProvider.value(
-                                        value:
-                                            UserCubit(repository: repository),
-                                      )
-                                    ],
-                                    child:
-                                        ViewPodcast(details: state.arts[index]),
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => PlaylistDetails(
+                                      playlists: state.playlists[index],
+                                    ),
                                   ),
-                                ));
+                                );
                               },
                               child: Container(
                                 width: 100,
@@ -97,7 +90,7 @@ class Podcasts extends StatelessWidget {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
                                         child: CachedNetworkImage(
-                                          imageUrl: state.arts[index]
+                                          imageUrl: state.playlists[index]
                                               ['cover_art'],
                                           placeholder: (context, url) =>
                                               const Center(
@@ -112,15 +105,9 @@ class Podcasts extends StatelessWidget {
                                       height: 7,
                                     ),
                                     Text(
-                                      state.arts[index]['title'],
+                                      state.playlists[index]['title'],
                                       style: podstyles,
                                       textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    Text(
-                                      state.arts[index]['author'],
-                                      style: TextStyle(color: Colors.grey[400]),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -129,7 +116,7 @@ class Podcasts extends StatelessWidget {
                               ),
                             );
                           },
-                          childCount: state.arts.length,
+                          childCount: state.playlists.length,
                         ),
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,

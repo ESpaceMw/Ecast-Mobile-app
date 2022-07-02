@@ -18,13 +18,13 @@ class Recommended extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // prin()
     return Container(
-        height: 227,
+        height: 250,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: state.data.length,
+          itemCount: 4,
           itemBuilder: (context, index) {
+            // print(state.data[index]);
             return GestureDetector(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -41,7 +41,7 @@ class Recommended extends StatelessWidget {
                 ));
               },
               child: Container(
-                width: 150,
+                width: 160,
                 margin: const EdgeInsets.only(
                   top: 10,
                   bottom: 10,
@@ -54,7 +54,6 @@ class Recommended extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 13),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
                         child: CachedNetworkImage(
                           width: size.width * 0.39,
                           imageUrl: state.data[index]['cover_art'],
@@ -73,6 +72,17 @@ class Recommended extends StatelessWidget {
                       state.data[index]['title'],
                       style: podstyles,
                       textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      state.data[index]['author'],
+                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
                   ],
                 ),

@@ -65,6 +65,11 @@ class Repository {
     return playlist;
   }
 
+  Future fetchAdminPlaylists() async {
+    final playlist = await networkService.fetchAdminPlaylist();
+    return playlist;
+  }
+
   Future createPlaylist() async {
     final data = await networkService.createPlaylist();
     return data;
