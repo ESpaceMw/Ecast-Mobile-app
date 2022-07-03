@@ -258,7 +258,24 @@ List<Widget> reslits = [
 
 // plan details const list
 List<Widget> plandetails = [
-  Container(width: 3000, child: Image.asset("assets/images/solo.png")),
-  Container(child: Image.asset("assets/images/duo.png")),
-  Container(child: Image.asset("assets/images/squad.png"))
+  ClipRRect(
+    borderRadius: BorderRadius.circular(
+      10.0,
+    ),
+    child: Container(
+        width: 3000,
+        child: Image.asset(
+          "assets/images/solo.png",
+        )),
+  ),
+  ClipRRect(
+      borderRadius: BorderRadius.circular(
+        10.0,
+      ),
+      child: Container(child: Image.asset("assets/images/duo.png"))),
+  ClipRRect(
+      borderRadius: BorderRadius.circular(
+        10.0,
+      ),
+      child: Container(child: Image.asset("assets/images/squad.png")))
 ];

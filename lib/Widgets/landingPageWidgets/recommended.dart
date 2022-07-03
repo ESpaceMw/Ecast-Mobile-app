@@ -82,6 +82,7 @@ class Recommended extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontWeight: FontWeight.w300,
+                        color: Colors.grey,
                       ),
                     ),
                   ],

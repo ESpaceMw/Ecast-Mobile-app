@@ -53,15 +53,12 @@ class Originals extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 13),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: CachedNetworkImage(
-                          width: size.width * 0.39,
-                          imageUrl: state.data[index]['cover_art'],
-                          placeholder: (context, url) => const Center(
-                            child: CircularProgressIndicator(
-                              color: btnColor,
-                            ),
+                      child: CachedNetworkImage(
+                        width: size.width * 0.39,
+                        imageUrl: state.data[index]['cover_art'],
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(
+                            color: btnColor,
                           ),
                         ),
                       ),

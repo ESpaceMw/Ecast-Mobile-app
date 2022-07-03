@@ -12,6 +12,7 @@ import 'package:ecast/Utils/constants.dart';
 import 'package:ecast/Utils/logic.dart';
 import 'package:ecast/Widgets/Errors/socketerr.dart';
 import 'package:ecast/Widgets/components/indicator.dart';
+import 'package:ecast/Widgets/landingPageWidgets/ads.dart';
 import 'package:ecast/Widgets/landingPageWidgets/ecast_playlists.dart';
 import 'package:ecast/Widgets/landingPageWidgets/originals.dart';
 import 'package:ecast/Widgets/landingPageWidgets/radio_button.dart';
@@ -388,8 +389,8 @@ class data extends StatelessWidget {
                   );
                 },
                 child: const Text(
-                  "see all",
-                  style: podstyles,
+                  "see All",
+                  // style: podstyles,
                 ),
               )
             ],
@@ -397,7 +398,7 @@ class data extends StatelessWidget {
         ),
         Recommended(state: state, size: size, repos: repos),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -417,14 +418,39 @@ class data extends StatelessWidget {
                   );
                 },
                 child: const Text(
-                  "see all",
-                  style: podstyles,
+                  "see All",
+                  // style: podstyles,
                 ),
               )
             ],
           ),
         ),
         EcastPlaylist(state: state, size: size),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
+          ),
+          child: Row(
+            children: [
+              const Text(
+                "Ads",
+                style: textStyle,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                "Suggested For You",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[400],
+                ),
+              )
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        const Ads(),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: Text(

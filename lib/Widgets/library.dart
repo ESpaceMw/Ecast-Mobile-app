@@ -104,7 +104,7 @@ class _LibraryState extends State<Library> {
         });
       },
       child: Container(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.all(10),
         margin: const EdgeInsets.only(left: 5),
         decoration: BoxDecoration(
           color: _currentBuild == index ? btnColor : null,
